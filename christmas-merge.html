@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>산타의 크리스마스 머지</title>
+<style>
+:root{--red:#e8505b;--green:#3f9d6b;--cream:#fff7e8;--ink:#5b3a3a;--gold:#f6b93b}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;touch-action:none}
+html,body{margin:0;height:100%;font-family:"Jua","Apple SD Gothic Neo","Malgun Gothic",sans-serif;color:var(--ink)}
+body{background:linear-gradient(#bfe6ff,#e9f6ff 55%,#fff 100%);display:flex;justify-content:center;overflow:hidden}
+.snow{position:fixed;top:-10px;color:#fff;text-shadow:0 0 4px #9fd3f5;animation:fall linear infinite;pointer-events:none;z-index:0}
+@keyframes fall{to{transform:translate(30px,105vh)}}
+#app{position:relative;z-index:1;width:100%;max-width:440px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.top{display:flex;gap:6px;align-items:center}
+h1{font-size:18px;margin:0;flex:1;color:var(--red);text-shadow:0 2px 0 #fff}
+.pill{background:#fff;border:3px solid var(--gold);border-radius:999px;padding:3px 9px;font-size:14px;box-shadow:0 3px 0 #e0a21d;white-space:nowrap}
+.tabs{display:flex;gap:6px}
+.tab{flex:1;border:3px solid #fff;border-radius:14px;padding:6px;font:inherit;font-size:15px;background:#fff9;color:var(--ink);cursor:pointer}
+.tab.on{background:var(--red);color:#fff;box-shadow:0 3px 0 #b83a44}
+.orders{display:flex;gap:7px}
+.order{flex:1;background:var(--cream);border:3px solid var(--green);border-radius:16px;padding:5px 4px;text-align:center;box-shadow:0 4px 0 #2f7d54;cursor:pointer}
+.order:active{transform:translateY(3px)}
+.order b{display:block;font-size:28px;line-height:1.2}.order small{font-size:12px;color:var(--green)}
+.order.ok{animation:pulse .8s infinite;border-color:var(--red);box-shadow:0 4px 0 #b83a44}
+@keyframes pulse{50%{transform:scale(1.06)}}
+.board{background:linear-gradient(#2f7d54,#256645);border:4px solid #8b5a3c;border-radius:20px;padding:7px;box-shadow:0 6px 0 #6a432a,inset 0 0 20px #0004;display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
+.cell{aspect-ratio:1;background:#ffffff26;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:clamp(24px,8.5vw,36px);position:relative}
+.cell.over{background:#ffffff66;outline:3px dashed #fff}
+.it{pointer-events:none;filter:drop-shadow(0 3px 2px #0005);animation:pop .25s}
+.cell.drag .it{opacity:.25}
+.cell i{position:absolute;right:3px;bottom:1px;font:normal 10px sans-serif;color:#fff;background:#0006;border-radius:6px;padding:0 4px;pointer-events:none}
+.cell.w{background:#bfe6ffaa;box-shadow:0 0 10px #fff inset}
+@keyframes pop{0%{transform:scale(.3)}70%{transform:scale(1.25)}100%{transform:scale(1)}}
+.bar{display:flex;gap:8px}
+.btn{flex:1;border:3px solid #fff;border-radius:18px;padding:10px 6px;font:inherit;font-size:15px;color:#fff;cursor:pointer;box-shadow:0 5px 0 #0003}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 #0003}
+.gen{background:var(--red);flex:1.6}.buy{background:var(--green)}.snd{flex:.4;background:#5a8fd8}
+.town{display:none;background:linear-gradient(#9fd3f5,#e9f6ff 45%,#fff 45%);border:4px solid #fff;border-radius:20px;padding:10px;box-shadow:0 6px 0 #9fd3f5;grid-template-columns:repeat(4,1fr);gap:8px}
+.slot{aspect-ratio:1;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:clamp(28px,10vw,42px);cursor:pointer;background:#fff8;border:3px dashed #9fd3f5}
+.slot.own{background:#fff;border:3px solid var(--green);animation:pop .4s}
+.slot:not(.own){filter:grayscale(1) opacity(.55)}
+.slot small{font-size:12px;color:var(--red)}
+.tinfo{grid-column:1/-1;text-align:center;font-size:13px}
+.ghost{position:fixed;z-index:9;pointer-events:none;font-size:46px;transform:translate(-50%,-60%) scale(1.2);filter:drop-shadow(0 8px 4px #0004)}
+.fx{position:fixed;z-index:9;pointer-events:none;font-size:20px;color:var(--gold);font-weight:bold;text-shadow:0 2px 0 #fff;animation:up 1s forwards}
+@keyframes up{to{transform:translateY(-60px);opacity:0}}
+#toast{position:fixed;left:50%;top:14%;transform:translateX(-50%);background:#fff;border:3px solid var(--red);border-radius:14px;padding:6px 14px;opacity:0;transition:opacity .2s;z-index:10;pointer-events:none;text-align:center}
+.help{font-size:12px;text-align:center;opacity:.7}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="top"><h1>🎅 산타의 머지</h1><div class="pill" id="lv"></div><div class="pill" id="coin"></div></div>
+  <div class="tabs"><button class="tab on" id="t1">🎁 머지</button><button class="tab" id="t2">🏘️ 마을 꾸미기</button></div>
+  <div id="gameV">
+    <div class="orders" id="orders"></div>
+    <div class="board" id="board" style="margin:8px 0"></div>
+    <div class="bar">
+      <button class="btn gen" id="gen">🎁 선물 뽑기 <span id="en"></span></button>
+      <button class="btn buy" id="buy">⚡ 충전 30🪙</button>
+      <button class="btn snd" id="snd">🔊</button>
+    </div>
+    <div class="help">같은 아이템을 끌어 합치기 · ⛄ 눈사람을 아이템에 올리면 한 단계 UP! · 주문 탭=납품</div>
+  </div>
+  <div class="town" id="town"></div>
+</div>
+<div id="toast"></div>
+<script>
+const CH=[['🍬','🍭','🍪','🧁','🍰','🎂'],['❄️','🔔','⭐','🎁','🎄','🎅'],['🧦','🧤','🧣','🧥','🦌','🛷']],N=30,MAXE=20,MAXL=5;
+const BLD=[['🏠',40],['🌲',70],['⛪',120],['🎡',180],['⛲',260],['🏰',380],['🎪',520],['🚂',700]];
+let S={g:Array(N).fill(null),e:14,c:0,m:0,o:[],t:Date.now(),b:[],mute:0,inc:Date.now()};
+try{const d=JSON.parse(localStorage.getItem('xmerge2'));if(d&&d.g&&d.g.length==N)S=Object.assign(S,d)}catch(e){}
+const $=id=>document.getElementById(id),R=n=>Math.floor(Math.random()*n);
+const save=()=>{try{localStorage.setItem('xmerge2',JSON.stringify(S))}catch(e){}};
+const face=v=>v.w?'⛄':CH[v.c][v.l];
+/* 효과음 (WebAudio) */
+let A;function snd(f,d=.14,t='sine',v=.14){if(S.mute)return;try{A=A||new(window.AudioContext||window.webkitAudioContext)();const o=A.createOscillator(),g=A.createGain();o.type=t;o.frequency.value=f;g.gain.setValueAtTime(v,A.currentTime);g.gain.exponentialRampToValueAtTime(.001,A.currentTime+d);o.connect(g);g.connect(A.destination);o.start();o.stop(A.currentTime+d)}catch(e){}}
+const jingle=a=>a.forEach((f,i)=>setTimeout(()=>snd(f,.2,'triangle'),i*95));
+function toast(t){const e=$('toast');e.textContent=t;e.style.opacity=1;clearTimeout(toast.h);toast.h=setTimeout(()=>e.style.opacity=0,1200)}
+function fx(txt,x,y){const e=document.createElement('div');e.className='fx';e.textContent=txt;e.style.left=x+'px';e.style.top=y+'px';document.body.appendChild(e);setTimeout(()=>e.remove(),1000)}
+function fillOrders(){while(S.o.length<3){const l=1+R(MAXL);S.o.push({c:R(3),l,r:(l+1)*12})}}
+function render(){
+  $('board').innerHTML=S.g.map((v,i)=>`<div class="cell${v&&v.w?' w':''}" data-i="${i}">${v?`<span class="it">${face(v)}</span>${v.w?'':`<i>${v.l+1}</i>`}`:''}</div>`).join('');
+  $('orders').innerHTML=S.o.map((o,i)=>{const has=S.g.some(v=>v&&!v.w&&v.c==o.c&&v.l==o.l);return`<div class="order${has?' ok':''}" data-o="${i}"><b>${CH[o.c][o.l]}</b><small>🪙 ${o.r}</small></div>`}).join('');
+  $('coin').textContent='🪙 '+S.c;$('lv').textContent='Lv.'+(1+Math.floor(S.m/10));$('en').textContent='⚡'+Math.floor(S.e);$('snd').textContent=S.mute?'🔇':'🔊';
+  $('town').innerHTML=BLD.map((b,i)=>{const own=S.b.includes(i);return`<div class="slot${own?' own':''}" data-b="${i}">${b[0]}${own?'':`<small>🪙${b[1]}</small>`}</div>`}).join('')+`<div class="tinfo">마을 건물 ${S.b.length}/${BLD.length} · 건물 1개당 10초마다 🪙+1 (현재 +${S.b.length})</div>`;
+  save();
+}
+function spawn(){
+  if(S.e<1){snd(180,.2,'square');return toast('⚡ 에너지가 부족해요!')}
+  const em=S.g.map((v,i)=>v?-1:i).filter(i=>i>=0);
+  if(!em.length){snd(180,.2,'square');return toast('보드가 가득 찼어요!')}
+  S.e--;const r=Math.random();
+  S.g[em[R(em.length)]]=r<.08?{w:1}:{c:R(3),l:r<.3?1:0};
+  snd(520,.1,'triangle');render();
+}
+$('gen').onclick=spawn;
+$('buy').onclick=()=>{if(S.c<30){snd(180,.2,'square');return toast('코인이 부족해요')}S.c-=30;S.e=Math.min(MAXE,S.e+5);snd(660,.15);render()};
+$('snd').onclick=()=>{S.mute=S.mute?0:1;render();snd(600)};
+$('orders').onclick=e=>{
+  const el=e.target.closest('.order');if(!el)return;const k=+el.dataset.o,o=S.o[k];
+  const i=S.g.findIndex(v=>v&&!v.w&&v.c==o.c&&v.l==o.l);
+  if(i<0){snd(200,.15,'square');return toast(CH[o.c][o.l]+' 아직 없어요!')}
+  S.g[i]=null;S.c+=o.r;S.o.splice(k,1);fx('+'+o.r+'🪙',e.clientX,e.clientY);jingle([523,659,784,1047]);fillOrders();render();
+};
+/* 마을 */
+$('town').onclick=e=>{
+  const el=e.target.closest('.slot');if(!el)return;const i=+el.dataset.b;
+  if(S.b.includes(i))return toast('이미 지었어요 🏘️');
+  if(S.c<BLD[i][1]){snd(180,.2,'square');return toast('코인이 부족해요 (🪙'+BLD[i][1]+')')}
+  S.c-=BLD[i][1];S.b.push(i);jingle([392,523,659,784,1047]);toast(BLD[i][0]+' 완공!');render();
+};
+const show=v=>{$('gameV').style.display=v?'block':'none';$('town').style.display=v?'none':'grid';$('t1').className='tab'+(v?' on':'');$('t2').className='tab'+(v?'':' on')};
+$('t1').onclick=()=>show(1);$('t2').onclick=()=>show(0);
+/* 드래그 & 머지 */
+let drag=null;
+$('board').addEventListener('pointerdown',e=>{
+  const c=e.target.closest('.cell');if(!c)return;const i=+c.dataset.i,v=S.g[i];if(!v)return;
+  const g=document.createElement('div');g.className='ghost';g.textContent=face(v);document.body.appendChild(g);
+  c.classList.add('drag');drag={i,g};mv(e);
+});
+function mv(e){if(!drag)return;drag.g.style.left=e.clientX+'px';drag.g.style.top=e.clientY+'px';
+  document.querySelectorAll('.over').forEach(x=>x.classList.remove('over'));
+  const t=document.elementFromPoint(e.clientX,e.clientY),c=t&&t.closest&&t.closest('.cell');if(c)c.classList.add('over')}
+addEventListener('pointermove',mv);
+function up(v,cell){v.l++;S.m++;snd(440+v.l*110,.18,'triangle');
+  if(v.l==MAXL){S.c+=10;jingle([784,988,1175]);toast('✨ 최고 단계 달성! +10🪙')}
+  const r=cell.getBoundingClientRect();fx('✨',r.left+r.width/2,r.top);S.e=Math.min(MAXE,S.e+.3)}
+addEventListener('pointerup',e=>{
+  if(!drag)return;const{i,g}=drag;drag=null;g.remove();
+  document.querySelectorAll('.over').forEach(x=>x.classList.remove('over'));
+  const t=document.elementFromPoint(e.clientX,e.clientY),c=t&&t.closest&&t.closest('.cell');
+  if(c){const j=+c.dataset.i,a=S.g[i],b=S.g[j];
+    if(j!==i){
+      if(b&&a.w&&!b.w){ if(b.l>=MAXL)toast('이미 최고 단계예요!');else{S.g[i]=null;up(b,c);toast('⛄ 마법! 한 단계 UP')} }
+      else if(b&&b.w&&!a.w){ if(a.l>=MAXL)toast('이미 최고 단계예요!');else{S.g[j]=a;S.g[i]=null;up(a,c);toast('⛄ 마법! 한 단계 UP')} }
+      else if(b&&!a.w&&!b.w&&a.c==b.c&&a.l==b.l){
+        if(a.l>=MAXL){snd(200,.15,'square');toast('최고 단계! 🎉 주문으로 납품하세요')}
+        else{S.g[i]=null;up(b,c)}
+      }else{S.g[j]=a;S.g[i]=b;snd(330,.06)}
+    }}
+  render();
+});
+fillOrders();
+if(!S.g.some(v=>v))for(let k=0;k<6;k++)S.g[k*3]={c:R(3),l:k%2};
+setInterval(()=>{
+  if(S.e<MAXE&&Date.now()-S.t>=6000){S.e=Math.min(MAXE,S.e+1);S.t=Date.now();render()}else if(S.e>=MAXE)S.t=Date.now();
+  if(S.b.length&&Date.now()-S.inc>=10000){S.c+=S.b.length;S.inc=Date.now();render()}else if(!S.b.length)S.inc=Date.now();
+},1000);
+for(let i=0;i<22;i++){const s=document.createElement('div');s.className='snow';s.textContent=Math.random()<.5?'❄':'•';
+  s.style.cssText+=`left:${R(100)}vw;font-size:${8+R(14)}px;animation-duration:${6+R(8)}s;animation-delay:-${R(12)}s;opacity:${.5+Math.random()*.5}`;document.body.appendChild(s)}
+render();
+</script>
+</body>
+</html>
