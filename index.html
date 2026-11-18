@@ -2,155 +2,393 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>산타의 크리스마스 머지</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#7e2244">
+<title>🎄 산타의 눈꽃 마을 머지</title>
 <style>
-:root{--red:#e8505b;--green:#3f9d6b;--cream:#fff7e8;--ink:#5b3a3a;--gold:#f6b93b}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;touch-action:none}
-html,body{margin:0;height:100%;font-family:"Jua","Apple SD Gothic Neo","Malgun Gothic",sans-serif;color:var(--ink)}
-body{background:linear-gradient(#bfe6ff,#e9f6ff 55%,#fff 100%);display:flex;justify-content:center;overflow:hidden}
-.snow{position:fixed;top:-10px;color:#fff;text-shadow:0 0 4px #9fd3f5;animation:fall linear infinite;pointer-events:none;z-index:0}
-@keyframes fall{to{transform:translate(30px,105vh)}}
-#app{position:relative;z-index:1;width:100%;max-width:440px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
-.top{display:flex;gap:6px;align-items:center}
-h1{font-size:18px;margin:0;flex:1;color:var(--red);text-shadow:0 2px 0 #fff}
-.pill{background:#fff;border:3px solid var(--gold);border-radius:999px;padding:3px 9px;font-size:14px;box-shadow:0 3px 0 #e0a21d;white-space:nowrap}
-.tabs{display:flex;gap:6px}
-.tab{flex:1;border:3px solid #fff;border-radius:14px;padding:6px;font:inherit;font-size:15px;background:#fff9;color:var(--ink);cursor:pointer}
-.tab.on{background:var(--red);color:#fff;box-shadow:0 3px 0 #b83a44}
-.orders{display:flex;gap:7px}
-.order{flex:1;background:var(--cream);border:3px solid var(--green);border-radius:16px;padding:5px 4px;text-align:center;box-shadow:0 4px 0 #2f7d54;cursor:pointer}
-.order:active{transform:translateY(3px)}
-.order b{display:block;font-size:28px;line-height:1.2}.order small{font-size:12px;color:var(--green)}
-.order.ok{animation:pulse .8s infinite;border-color:var(--red);box-shadow:0 4px 0 #b83a44}
-@keyframes pulse{50%{transform:scale(1.06)}}
-.board{background:linear-gradient(#2f7d54,#256645);border:4px solid #8b5a3c;border-radius:20px;padding:7px;box-shadow:0 6px 0 #6a432a,inset 0 0 20px #0004;display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
-.cell{aspect-ratio:1;background:#ffffff26;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:clamp(24px,8.5vw,36px);position:relative}
-.cell.over{background:#ffffff66;outline:3px dashed #fff}
-.it{pointer-events:none;filter:drop-shadow(0 3px 2px #0005);animation:pop .25s}
-.cell.drag .it{opacity:.25}
-.cell i{position:absolute;right:3px;bottom:1px;font:normal 10px sans-serif;color:#fff;background:#0006;border-radius:6px;padding:0 4px;pointer-events:none}
-.cell.w{background:#bfe6ffaa;box-shadow:0 0 10px #fff inset}
-@keyframes pop{0%{transform:scale(.3)}70%{transform:scale(1.25)}100%{transform:scale(1)}}
-.bar{display:flex;gap:8px}
-.btn{flex:1;border:3px solid #fff;border-radius:18px;padding:10px 6px;font:inherit;font-size:15px;color:#fff;cursor:pointer;box-shadow:0 5px 0 #0003}
-.btn:active{transform:translateY(4px);box-shadow:0 1px 0 #0003}
-.gen{background:var(--red);flex:1.6}.buy{background:var(--green)}.snd{flex:.4;background:#5a8fd8}
-.town{display:none;background:linear-gradient(#9fd3f5,#e9f6ff 45%,#fff 45%);border:4px solid #fff;border-radius:20px;padding:10px;box-shadow:0 6px 0 #9fd3f5;grid-template-columns:repeat(4,1fr);gap:8px}
-.slot{aspect-ratio:1;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:clamp(28px,10vw,42px);cursor:pointer;background:#fff8;border:3px dashed #9fd3f5}
-.slot.own{background:#fff;border:3px solid var(--green);animation:pop .4s}
-.slot:not(.own){filter:grayscale(1) opacity(.55)}
-.slot small{font-size:12px;color:var(--red)}
-.tinfo{grid-column:1/-1;text-align:center;font-size:13px}
-.ghost{position:fixed;z-index:9;pointer-events:none;font-size:46px;transform:translate(-50%,-60%) scale(1.2);filter:drop-shadow(0 8px 4px #0004)}
-.fx{position:fixed;z-index:9;pointer-events:none;font-size:20px;color:var(--gold);font-weight:bold;text-shadow:0 2px 0 #fff;animation:up 1s forwards}
-@keyframes up{to{transform:translateY(-60px);opacity:0}}
-#toast{position:fixed;left:50%;top:14%;transform:translateX(-50%);background:#fff;border:3px solid var(--red);border-radius:14px;padding:6px 14px;opacity:0;transition:opacity .2s;z-index:10;pointer-events:none;text-align:center}
-.help{font-size:12px;text-align:center;opacity:.7}
+:root{--wine:#8f2c4c;--wine2:#bd3e5c;--pink:#fff0f2;--cream:#fff9e9;--gold:#ffbd52;--pine:#34745c;--pine2:#205e4e;--ink:#563c4a;--muted:#917a86;--sky:#dcefff;--line:#ead7cf}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{height:100%;background:#ecf4ff}body{margin:0;min-height:100%;font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:var(--ink);background:radial-gradient(ellipse at 50% -8%,#ffe7e4 0,#e1efff 41%,#d3e7f7 75%,#eaf5ff);}
+button{font:inherit;cursor:pointer;touch-action:manipulation}button:focus-visible,.cell:focus-visible,.plot:focus-visible{outline:3px solid #f5b23b;outline-offset:2px}button:disabled{cursor:default;opacity:.55}button:active:not(:disabled){transform:translateY(1px)}
+#app{position:relative;max-width:790px;min-height:100dvh;margin:auto;background:linear-gradient(180deg,#fff9f3 0,#fff5f2 290px,#fffefa 100%);box-shadow:0 10px 65px #4e6d8740;overflow:hidden}
+header{position:relative;padding:16px 16px 12px;background:linear-gradient(127deg,#742340 0%,#a42e4b 60%,#bd4555 100%);color:white;overflow:hidden;border-bottom:4px solid #f4c876}
+header:before{content:'✦　·　❄　✧　·　❄　✦　·　✧';font-size:24px;color:#fff7;white-space:nowrap;position:absolute;right:-40px;top:3px;letter-spacing:12px;transform:rotate(-6deg);pointer-events:none}header:after{content:'';position:absolute;bottom:-17px;left:-10%;width:120%;height:28px;border-radius:50%;background:#fffdf7;opacity:.98}
+.brand-row{display:flex;align-items:center;justify-content:space-between;gap:10px;position:relative;z-index:1}.brand{display:flex;gap:10px;align-items:center;min-width:0}.brand-icon{width:47px;height:47px;border:2px solid #ffdb8c;background:#fff9ef;border-radius:15px;display:grid;place-items:center;font-size:30px;box-shadow:0 3px #611b35}.brand h1{font-size:19px;margin:0;line-height:1.25;letter-spacing:-.7px}.brand p{font-size:11px;margin:3px 0 0;opacity:.84}.iconbtn{background:#ffffff24;border:1px solid #ffffff55;border-radius:12px;color:white;min-width:36px;height:37px;font-size:20px}
+.resource-row{position:relative;z-index:1;display:flex;gap:8px;margin-top:13px}.resource{flex:1;min-width:0;border-radius:14px;background:#fffdf1;color:var(--ink);padding:8px 9px;box-shadow:0 3px #661e37aa;display:flex;align-items:center;gap:6px;border:2px solid #f7d4c0}.resource .emoji{font-size:22px;flex:none}.resource strong{display:block;font-size:15px;line-height:1.1;white-space:nowrap;font-variant-numeric:tabular-nums}.resource small{display:block;font-size:10px;color:#9a7785;margin-top:2px;white-space:nowrap}.resource.energy{border-color:#ffca6d}.resource.energy small{color:#a26822}
+.tabs{position:relative;z-index:2;display:flex;padding:13px 14px 0;gap:8px;background:#fffdf7}.tab{flex:1;border:2px solid #efded9;padding:11px 8px;border-radius:16px 16px 8px 8px;background:#fff1eb;color:#98757a;font-weight:850;letter-spacing:-.4px;font-size:14px}.tab.active{background:linear-gradient(180deg,#e75e6b,#bb3a57);color:white;border-color:#bb3a57;box-shadow:0 3px #972946}
+.page{padding:13px 14px 26px;display:none}.page.active{display:block}.panel{background:#fff;border:2px solid #f0ddce;border-radius:20px;box-shadow:0 5px 0 #d9c9b854;overflow:hidden}.section-title{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:4px 0 10px;font-size:16px;font-weight:900;letter-spacing:-.6px}.section-title small{font-size:11px;font-weight:600;color:var(--muted)}
+.story{display:flex;align-items:center;gap:10px;background:linear-gradient(105deg,#fff1dd,#fff8f2);border:2px solid #ffe5c0;border-radius:16px;padding:10px 12px;margin-bottom:13px}.story-portrait{font-size:33px;filter:drop-shadow(0 2px #ab7d5f50)}.story-copy{flex:1;min-width:0}.story-title{font-size:12px;font-weight:900;color:#9a5361}.story-sub{font-size:11px;color:#a47b71;margin-top:3px}.level-track{height:5px;border-radius:30px;background:#ead5c0;margin-top:6px;overflow:hidden}.level-fill{height:100%;background:linear-gradient(90deg,#ffa64c,#ff6379);width:10%;transition:width .25s}
+.orders{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.order{min-width:0;background:#fffdf4;border:2px solid #eedfc8;border-radius:17px;padding:9px 8px 8px;text-align:center;position:relative;box-shadow:0 3px 0 #e9d4b8}.order.ready{border-color:#51b583;background:linear-gradient(#eefff2,#fffef2);box-shadow:0 4px 0 #75bf87}.order .who{display:flex;justify-content:center;align-items:center;gap:3px;font-size:22px}.order .name{font-size:10px;font-weight:900;white-space:nowrap;color:#855a5a;overflow:hidden;text-overflow:ellipsis}.order .saying{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#bd7793;margin:4px 0}.wants{display:flex;justify-content:center;gap:4px;min-height:38px}.want{background:#fff6e9;border:1px solid #ebddc7;border-radius:10px;width:38px;padding:1px 0;position:relative;font-size:23px}.want.have{background:#e5fff2;border-color:#8ad2a7}.want em{font-size:10px;position:absolute;right:-3px;bottom:-6px;font-style:normal;background:#fff;border-radius:50%;width:15px;height:15px;line-height:15px;border:1px solid #e0d6c8}.reward{font-size:10px;color:#9c6471;margin:8px 0 5px;font-weight:900;white-space:nowrap}.ship{width:100%;border:0;background:#d7c5ba;color:white;padding:7px 0;border-radius:9px;font-size:11px;font-weight:850}.ready .ship{background:linear-gradient(#48ba84,#268a64);box-shadow:0 2px #146d4f}
+.board-head{display:flex;align-items:center;justify-content:space-between;margin:17px 2px 7px;gap:4px}.board-head strong{font-size:16px}.board-head span{font-size:11px;color:#9b7d84}.board-frame{padding:9px;border:4px solid #ca925f;background:linear-gradient(150deg,#c9e5cd,#e4f1d4);border-radius:21px;box-shadow:0 5px 0 #9b684a,0 8px 17px #70513e28;position:relative}.board-frame:before{content:'❄';position:absolute;right:5px;top:0;font-size:30px;color:#ffffff80;pointer-events:none}.board{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px;touch-action:none;user-select:none;-webkit-user-select:none;overscroll-behavior:contain}.cell{position:relative;aspect-ratio:1;min-width:0;background:linear-gradient(130deg,#f8fff3e6,#fffdf3c9);border:1px solid #9fbd9566;border-radius:12px;display:grid;place-items:center;touch-action:none;user-select:none;-webkit-user-select:none;cursor:pointer;box-shadow:inset 0 2px #fff9}.cell:after{content:'✧';position:absolute;top:2px;left:4px;color:#a8d0a3;font-size:8px}.cell .item{font-size:clamp(22px,5.4vw,40px);line-height:1;pointer-events:none;filter:drop-shadow(0 3px 1px #745b3d35)}.cell .level{position:absolute;right:3px;bottom:2px;border-radius:6px;background:#966945cf;color:white;font-size:9px;font-weight:800;padding:1px 4px;pointer-events:none}.cell.selected{outline:3px solid #ffb341;background:#fff6d9}.cell.target{outline:3px dashed #f29250;background:#ffefce}.cell.dragging .item{opacity:.3}.cell.match{background:linear-gradient(#e0ffe2,#fffad9);box-shadow:inset 0 0 0 2px #89bf83}.cell.special{background:linear-gradient(140deg,#d3eaff,#fff)}.cell.pop{animation:bounce .26s ease}@keyframes bounce{50%{transform:scale(1.09)}}
+.drag-ghost{position:fixed;z-index:999;pointer-events:none;font-size:51px;line-height:1;transform:translate(-50%,-70%) scale(1.12);filter:drop-shadow(0 5px 4px #755c6b7a)}
+.item-info{margin-top:10px;border-radius:14px;border:1px solid #e6dccd;background:#fffdf6;padding:10px 12px;display:flex;align-items:center;gap:10px;min-height:58px}.selected-icon{font-size:31px;min-width:38px;text-align:center}.item-copy{flex:1;min-width:0}.item-copy strong{font-size:12px}.item-copy small{display:block;font-size:10px;color:#95838a;margin-top:3px}.mini-btn{font-size:11px;font-weight:900;border:0;padding:9px 10px;border-radius:10px;color:#8b5960;background:#fce6e1;white-space:nowrap}
+.generator-title{font-weight:900;font-size:14px;margin:17px 3px 9px}.generators{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.generator{position:relative;border:2px solid #e4cfb8;background:linear-gradient(155deg,#fff,#fff4df);padding:10px 4px;border-radius:16px;box-shadow:0 3px #debf9e;text-align:center;color:#70524b}.generator .gicon{display:block;font-size:30px;filter:drop-shadow(0 2px #cfae7a);margin-bottom:3px}.generator strong{display:block;font-size:12px;white-space:nowrap;letter-spacing:-.8px}.generator small{display:block;font-size:10px;margin-top:4px;color:#ae6a67}.generator:disabled{filter:grayscale(.5)}.bottom-help{text-align:center;color:#aa8e90;font-size:11px;margin-top:13px;line-height:1.5}.hint{font-size:11px;color:#8c6d71;padding:4px 2px 0}
+/* 실제 마을 지도 */
+.village-scene{position:relative;overflow:hidden;border-radius:24px;border:4px solid white;box-shadow:0 7px 0 #9ac9d5,0 10px 26px #779cbd4d;background:linear-gradient(180deg,#8ac4eb 0%,#c9e9ff 32%,#edfaff 33%,#e4f4e2 100%);padding:12px 10px 20px;min-height:320px}.scene-sky{height:83px;position:relative;display:flex;align-items:flex-start;justify-content:center}.scene-sky:after{content:'☁️　　　 ☁️';position:absolute;left:10%;top:10px;font-size:24px;opacity:.7}.scene-moon{position:absolute;right:7%;top:0;font-size:43px;filter:drop-shadow(0 0 8px white)}.scene-title{position:absolute;top:19px;left:10px;color:#fff;text-shadow:0 2px 4px #3678ad;font-size:18px;font-weight:1000}.scene-caption{position:absolute;left:11px;top:43px;color:#fff;text-shadow:0 1px 4px #447da2;font-size:10px;font-weight:800}.mountains{position:absolute;left:0;right:0;bottom:-9px;height:38px;background:linear-gradient(135deg,transparent 16%,#d5eafa 16% 26%,transparent 26% 38%,#b5d8ef 38% 52%,transparent 52% 62%,#e8f3ff 62% 83%,transparent 83%);opacity:.85}
+.town-vista{margin:0 auto 11px;max-width:580px;height:122px;border-radius:15px;overflow:hidden;background:linear-gradient(#c9e9fb,#f4ffff);border:2px solid #ffffffdd;box-shadow:0 4px 0 #9dced4;position:relative}.town-vista svg{display:block;width:100%;height:100%}.village-grid{position:relative;display:grid;grid-template-columns:repeat(7, minmax(0,1fr));gap:2px;aspect-ratio:1;max-width:580px;margin:0 auto;border-radius:16px;border:4px solid #ffffffbe;padding:6px;background:radial-gradient(ellipse at center,#dbf0db,#bbdfd0);box-shadow:0 8px 8px #5288714a;overflow:hidden}.plot{aspect-ratio:1;border:1px solid #ffffffa0;border-radius:8px;position:relative;background:radial-gradient(ellipse at 65% 25%,#f9fff8a8 0,#e6f5e4 60%,#ceeac9 100%);display:flex;align-items:center;justify-content:center;padding:0;touch-action:manipulation;min-width:0;color:inherit}.plot:before{content:'·';position:absolute;top:2px;left:5px;color:#fff;font-size:13px;pointer-events:none}.plot.road{border-color:transparent;background:linear-gradient(145deg,#f4e4c4,#d7c8aa);box-shadow:inset 0 1px 2px #b09e7c30}.plot.road:before{content:'';height:2px;width:40%;background:#fff6d3;left:30%;top:48%;transform:rotate(0deg)}.plot.road.vertical:before{width:2px;height:35%;top:32%;left:49%}.plot.road.cross:before{width:38%;height:2px;left:31%;top:49%;transform:rotate(45deg)}.plot.lake{background:linear-gradient(135deg,#bee9f3,#88c7e4);border-color:#fff}.plot.lake:before{content:'≈';color:#e4fcff;font-size:19px;top:15%;left:35%}.plot .town-icon{font-size:clamp(26px,8vw,49px);line-height:1;filter:drop-shadow(0 5px 2px #6c9a817e);transform:translateY(-3px);pointer-events:none;transition:transform .16s}.plot:hover .town-icon{transform:translateY(-6px) scale(1.08)}.plot .mini-income{position:absolute;bottom:2px;right:0;font-size:9px;background:#fff8d9dc;border-radius:6px;color:#b78822}.plot .place-name{position:absolute;bottom:1px;left:2px;right:2px;text-align:center;background:#fffffff0;color:#895e6e;border-radius:4px;font-weight:900;font-size:8px;line-height:1.1;white-space:nowrap;overflow:hidden}.plot.move-from{outline:3px solid #ffae4b;z-index:2;animation:bounce 1s infinite}.plot.just-built{animation:shine 1.15s 2}.plot.empty-hint:active{background:#fff8c7}.plot .ambient{font-size:clamp(8px,2vw,17px);opacity:.8;pointer-events:none}.plot .town-icon.starter{font-size:clamp(27px,8vw,50px)}@keyframes shine{50%{background:#fff6b5;box-shadow:0 0 18px 6px #ffe69d;transform:scale(1.05)}}
+.village-status{margin:10px 0 12px;background:#fff5df;border:2px solid #f2dcba;border-radius:14px;padding:10px;display:flex;justify-content:space-around;gap:8px;text-align:center}.village-status strong{display:block;color:#8e5061;font-size:18px}.village-status small{font-size:10px;color:#a07b80}.scene-instruction{border:1px solid #d8c8e2;background:#fdf6ff;padding:9px 10px;border-radius:12px;font-size:11px;margin:12px 0;color:#846b94;text-align:center}.shop-title{font-size:16px;font-weight:900;margin:18px 0 8px}.shop-sub{font-size:11px;margin:-3px 0 10px;color:#947f81}.shop-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.shop-card{display:flex;gap:8px;align-items:center;background:#fff;border:2px solid #edddca;border-radius:15px;padding:9px;min-width:0}.shop-icon{font-size:31px;flex:none}.shop-text{flex:1;min-width:0}.shop-text strong{display:block;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.shop-text small{display:block;font-size:9px;color:#a5848c;line-height:1.3;min-height:22px;margin:3px 0}.shop-card button{border:0;border-radius:8px;background:#348e6b;color:white;padding:7px 5px;font-weight:900;font-size:10px;width:100%;white-space:nowrap}.shop-card button:disabled{background:#e6d5c8;color:#8c807c}
+#toast{position:fixed;z-index:1200;top:20%;left:50%;transform:translateX(-50%) translateY(-8px);background:#6d2949ee;color:white;border:2px solid #ffe2b6;padding:12px 17px;border-radius:15px;font-size:13px;font-weight:800;max-width:min(90vw,420px);text-align:center;pointer-events:none;opacity:0;transition:opacity .15s,transform .15s;box-shadow:0 8px 24px #6e254351}#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#overlay{display:none;position:fixed;inset:0;background:#27182aa1;z-index:1500;align-items:center;justify-content:center;padding:20px}#overlay.show{display:flex}.dialog{background:#fffdf6;border:4px solid #f3d4ab;border-radius:23px;padding:19px;max-width:380px;width:100%;box-shadow:0 10px 30px #281b285b}.dialog h2{font-size:20px;margin:0 0 12px;color:#942f50}.dialog p{font-size:13px;line-height:1.9;margin:8px 0}.dialog .actions{display:flex;gap:8px;margin-top:17px}.dialog button{flex:1;border:0;background:#ba4460;color:white;padding:11px;border-radius:11px;font-size:12px;font-weight:900}.dialog button.alt{background:#eee0d4;color:#755d62}
+@media (max-width:410px){header{padding:12px 11px 12px}.brand h1{font-size:17px}.resource-row{gap:5px}.resource{padding:7px 5px;gap:4px}.resource .emoji{font-size:18px}.resource strong{font-size:13px}.resource small{font-size:9px}.page{padding:11px 9px 25px}.tabs{padding:13px 9px 0}.orders{gap:5px}.order{padding:7px 3px}.order .who{font-size:19px}.order .name{font-size:9px}.want{width:34px;font-size:20px}.board{gap:4px}.board-frame{padding:6px}.shop-card{padding:7px;gap:5px}.shop-icon{font-size:27px}}
+@media(min-width:650px){#app{padding-bottom:30px}.page{padding-left:30px;padding-right:30px}.resource{max-width:190px}.board-frame{max-width:610px;margin:auto}.cell .item{font-size:43px}.generators{max-width:590px;margin:auto}.item-info{max-width:610px;margin:12px auto}.scene-sky{height:100px}.village-grid{aspect-ratio:1.18}.shop-list{grid-template-columns:repeat(3,1fr)}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
 <div id="app">
-  <div class="top"><h1>🎅 산타의 머지</h1><div class="pill" id="lv"></div><div class="pill" id="coin"></div></div>
-  <div class="tabs"><button class="tab on" id="t1">🎁 머지</button><button class="tab" id="t2">🏘️ 마을 꾸미기</button></div>
-  <div id="gameV">
-    <div class="orders" id="orders"></div>
-    <div class="board" id="board" style="margin:8px 0"></div>
-    <div class="bar">
-      <button class="btn gen" id="gen">🎁 선물 뽑기 <span id="en"></span></button>
-      <button class="btn buy" id="buy">⚡ 충전 30🪙</button>
-      <button class="btn snd" id="snd">🔊</button>
-    </div>
-    <div class="help">같은 아이템을 끌어 합치기 · ⛄ 눈사람을 아이템에 올리면 한 단계 UP! · 주문 탭=납품</div>
+<header>
+  <div class="brand-row"><div class="brand"><div class="brand-icon">🎅</div><div><h1>산타의 눈꽃 마을</h1><p>손님 선물을 만들고, 마을을 빛내 주세요 ✨</p></div></div><button class="iconbtn" id="settings" aria-label="설정과 게임 도움말">☰</button></div>
+  <div class="resource-row">
+    <div class="resource energy"><span class="emoji">⚡</span><div><strong id="energyText">20 / 30</strong><small id="energyTimer">충전 중</small></div></div>
+    <div class="resource"><span class="emoji">🪙</span><div><strong id="coinText">0</strong><small>마을 꾸미기</small></div></div>
+    <div class="resource"><span class="emoji">⭐</span><div><strong id="starText">0</strong><small>건물 건설</small></div></div>
+    <div class="resource"><span class="emoji">🏅</span><div><strong id="levelText">Lv.1</strong><small id="deliveryText">납품 0회</small></div></div>
   </div>
-  <div class="town" id="town"></div>
+</header>
+<nav class="tabs"><button class="tab active" id="tabMerge">🎁 머지 작업장</button><button class="tab" id="tabVillage">🏘️ 눈꽃 마을 꾸미기</button></nav>
+<section class="page active" id="mergePage">
+  <div class="story"><span class="story-portrait">🧑🏻‍🎄</span><div class="story-copy"><div class="story-title" id="storyTitle">산타의 겨울 마을 복구 작전!</div><div class="story-sub" id="storySub">손님 주문을 채우면 별과 코인을 받아요.</div><div class="level-track"><div class="level-fill" id="levelFill"></div></div></div></div>
+  <div class="section-title">💌 손님 주문서 <small>필요한 선물을 완성하고 납품!</small></div>
+  <div class="orders" id="orders"></div>
+  <div class="board-head"><strong>🧩 선물 머지 보드</strong><span id="boardCounter">0 / 36칸</span></div>
+  <div class="board-frame"><div class="board" id="board" role="grid" aria-label="같은 선물을 드래그하여 합치는 머지 보드"></div></div>
+  <div class="item-info" id="itemInfo"><div class="selected-icon">👆</div><div class="item-copy"><strong>같은 선물을 끌어 겹쳐 보세요!</strong><small>같은 아이템 2개 → 한 단계 높은 아이템</small></div></div>
+  <div class="generator-title">🎁 선물 제작소 <span style="font-size:10px;color:#b58e8e;font-weight:600">제작 1회 = ⚡1</span></div>
+  <div class="generators" id="generators"></div>
+  <div class="bottom-help">🎀 주문 완성 → 납품 → ⭐ 별 획득 → 🏘️ 마을에 건물 짓기<br>☃️ 눈사람은 다른 아이템에 올리면 한 단계 업그레이드!</div>
+</section>
+<section class="page" id="villagePage">
+  <div class="section-title">🏘️ 나만의 크리스마스 마을 <small>건물이 지도에 실제로 놓여요!</small></div>
+  <div class="village-scene"><div class="scene-sky"><div class="scene-title">❄️ SNOWY VILLAGE</div><div class="scene-caption">산타와 이웃들의 겨울 동네</div><div class="scene-moon">🌤️</div><div class="mountains"></div></div><div class="town-vista" id="townVista" aria-label="건물을 지으면 변하는 눈꽃 마을 풍경"></div><div class="village-grid" id="villageGrid" aria-label="직접 꾸밀 수 있는 마을 지도"></div></div>
+  <div class="village-status" id="villageStatus"></div>
+  <div class="scene-instruction" id="villageInstruction">🏗️ 아래 건물을 구매하면 마을에 자동 배치됩니다. 건물을 누르고 빈 땅을 누르면 위치를 옮길 수 있어요!</div>
+  <div class="shop-title">🏠 건물 짓기</div><p class="shop-sub">손님 주문을 납품해 얻은 ⭐ 별로 마을을 발전시켜 보세요.</p><div class="shop-list" id="buildingShop"></div>
+  <div class="shop-title">🎀 마을 장식하기</div><p class="shop-sub">장식은 여러 개 구매할 수 있어요. 🪙 코인으로 예쁘게 꾸며 보세요.</p><div class="shop-list" id="decorShop"></div>
+  <div class="bottom-help">마을 건물은 1분마다 코인을 생산합니다. 접속하지 않은 동안에도 일정 시간 적립돼요.</div>
+</section>
 </div>
-<div id="toast"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+<div id="overlay" role="dialog" aria-modal="true" aria-labelledby="dialogTitle"><div class="dialog"><h2 id="dialogTitle">🎄 게임 안내</h2><div id="dialogContent"></div><div class="actions" id="dialogActions"></div></div></div>
 <script>
-const CH=[['🍬','🍭','🍪','🧁','🍰','🎂'],['❄️','🔔','⭐','🎁','🎄','🎅'],['🧦','🧤','🧣','🧥','🦌','🛷']],N=30,MAXE=20,MAXL=5;
-const BLD=[['🏠',40],['🌲',70],['⛪',120],['🎡',180],['⛲',260],['🏰',380],['🎪',520],['🚂',700]];
-let S={g:Array(N).fill(null),e:14,c:0,m:0,o:[],t:Date.now(),b:[],mute:0,inc:Date.now()};
-try{const d=JSON.parse(localStorage.getItem('xmerge2'));if(d&&d.g&&d.g.length==N)S=Object.assign(S,d)}catch(e){}
-const $=id=>document.getElementById(id),R=n=>Math.floor(Math.random()*n);
-const save=()=>{try{localStorage.setItem('xmerge2',JSON.stringify(S))}catch(e){}};
-const face=v=>v.w?'⛄':CH[v.c][v.l];
-/* 효과음 (WebAudio) */
-let A;function snd(f,d=.14,t='sine',v=.14){if(S.mute)return;try{A=A||new(window.AudioContext||window.webkitAudioContext)();const o=A.createOscillator(),g=A.createGain();o.type=t;o.frequency.value=f;g.gain.setValueAtTime(v,A.currentTime);g.gain.exponentialRampToValueAtTime(.001,A.currentTime+d);o.connect(g);g.connect(A.destination);o.start();o.stop(A.currentTime+d)}catch(e){}}
-const jingle=a=>a.forEach((f,i)=>setTimeout(()=>snd(f,.2,'triangle'),i*95));
-function toast(t){const e=$('toast');e.textContent=t;e.style.opacity=1;clearTimeout(toast.h);toast.h=setTimeout(()=>e.style.opacity=0,1200)}
-function fx(txt,x,y){const e=document.createElement('div');e.className='fx';e.textContent=txt;e.style.left=x+'px';e.style.top=y+'px';document.body.appendChild(e);setTimeout(()=>e.remove(),1000)}
-function fillOrders(){while(S.o.length<3){const l=1+R(MAXL);S.o.push({c:R(3),l,r:(l+1)*12})}}
-function render(){
-  $('board').innerHTML=S.g.map((v,i)=>`<div class="cell${v&&v.w?' w':''}" data-i="${i}">${v?`<span class="it">${face(v)}</span>${v.w?'':`<i>${v.l+1}</i>`}`:''}</div>`).join('');
-  $('orders').innerHTML=S.o.map((o,i)=>{const has=S.g.some(v=>v&&!v.w&&v.c==o.c&&v.l==o.l);return`<div class="order${has?' ok':''}" data-o="${i}"><b>${CH[o.c][o.l]}</b><small>🪙 ${o.r}</small></div>`}).join('');
-  $('coin').textContent='🪙 '+S.c;$('lv').textContent='Lv.'+(1+Math.floor(S.m/10));$('en').textContent='⚡'+Math.floor(S.e);$('snd').textContent=S.mute?'🔇':'🔊';
-  $('town').innerHTML=BLD.map((b,i)=>{const own=S.b.includes(i);return`<div class="slot${own?' own':''}" data-b="${i}">${b[0]}${own?'':`<small>🪙${b[1]}</small>`}</div>`}).join('')+`<div class="tinfo">마을 건물 ${S.b.length}/${BLD.length} · 건물 1개당 10초마다 🪙+1 (현재 +${S.b.length})</div>`;
-  save();
+'use strict';
+/* All-in-one offline-friendly GitHub Pages game. No external libraries or assets. */
+const $=id=>document.getElementById(id);
+const KEY='christmas_merge_v3';
+const GRID=36,MAX_ENERGY=30,ENERGY_TIME=45000,INCOME_TIME=60000;
+const CHAINS=[
+ {name:'달콤 베이커리',icon:'🍪',items:['🍬','🍭','🍪','🧁','🍰','🎂'],names:['사탕','막대사탕','쿠키','컵케이크','크리스마스 케이크','파티 케이크']},
+ {name:'산타 선물 공방',icon:'🎁',items:['❄️','🔔','⭐','🎁','🎄','🎅'],names:['눈송이','종','반짝이는 별','선물 상자','크리스마스 트리','산타 선물']},
+ {name:'포근한 겨울',icon:'🧣',items:['🧦','🧤','🧣','🧥','🦌','🛷'],names:['양말','장갑','목도리','겨울 외투','루돌프','산타 썰매']}
+];
+const CLIENTS=[['👧🏻','하나','크리스마스 선물 주세요!'],['👩🏻‍🦰','엘리','오늘 파티에 필요해요!'],['👨🏻‍🦳','루돌프 할아버지','멋진 선물이 기다려져요!'],['🧑🏻','민준','친구에게 줄 거예요!'],['👩🏻‍🍳','제과점 주인','축제 준비 중이에요!'],['👦🏻','도윤','산타 할아버지 부탁해요!'],['👵🏻','마을 할머니','따뜻한 겨울을 부탁해요!']];
+const BUILDINGS=[
+ {id:'cafe',icon:'☕',name:'눈꽃 카페',price:4,currency:'star',income:1,desc:'따뜻한 코코아 가게'},
+ {id:'house',icon:'🏡',name:'진저브레드 집',price:7,currency:'star',income:2,desc:'달콤한 크리스마스 집'},
+ {id:'shop',icon:'🏪',name:'선물 가게',price:11,currency:'star',income:3,desc:'반짝이는 선물 상점'},
+ {id:'chapel',icon:'⛪',name:'눈꽃 예배당',price:15,currency:'star',income:4,desc:'종소리가 울려 퍼져요'},
+ {id:'carousel',icon:'🎠',name:'겨울 회전목마',price:21,currency:'star',income:6,desc:'친구들이 모이는 놀이터'},
+ {id:'fountain',icon:'⛲',name:'겨울 분수 광장',price:25,currency:'star',income:7,desc:'마을 사람들이 모이는 광장'},
+ {id:'castle',icon:'🏰',name:'산타의 성',price:30,currency:'star',income:9,desc:'마을의 꿈같은 랜드마크'},
+ {id:'fair',icon:'🎡',name:'별빛 관람차',price:39,currency:'star',income:12,desc:'밤에 더 빛나는 명소'},
+ {id:'circus',icon:'🎪',name:'크리스마스 서커스',price:43,currency:'star',income:13,desc:'축제의 하이라이트'},
+ {id:'train',icon:'🚂',name:'북극 특급열차',price:50,currency:'star',income:15,desc:'선물 배달을 책임져요'}
+];
+const DECORS=[
+ {id:'tree',icon:'🎄',name:'반짝이는 트리',price:35,currency:'coin',income:0,desc:'마을의 축제 분위기'},
+ {id:'pine',icon:'🌲',name:'눈 덮인 전나무',price:15,currency:'coin',income:0,desc:'포근한 겨울 숲'},
+ {id:'snowman',icon:'⛄',name:'눈사람',price:25,currency:'coin',income:0,desc:'아이들의 인기 친구'},
+ {id:'light',icon:'💡',name:'크리스마스 가로등',price:20,currency:'coin',income:0,desc:'골목을 밝히는 등불'},
+ {id:'bench',icon:'🪑',name:'산책 벤치',price:18,currency:'coin',income:0,desc:'잠깐 쉬어 가는 공간'},
+ {id:'flower',icon:'🌷',name:'겨울 꽃밭',price:22,currency:'coin',income:0,desc:'눈 속에서도 꽃이 피어요'},
+ {id:'gift',icon:'🎁',name:'선물 장식',price:18,currency:'coin',income:0,desc:'마을 곳곳의 선물'},
+ {id:'deer',icon:'🦌',name:'루돌프 조형물',price:32,currency:'coin',income:0,desc:'산타의 단짝'}
+];
+const ALL_PLACES=[{id:'starter',icon:'🏠',name:'산타 우체국',income:1},...BUILDINGS,...DECORS];
+const ROADS=new Set([3,10,17,21,22,23,24,25,26,27,31,38,45]);
+const WATER=new Set([0,7]);
+const AUTO_SLOTS=[16,18,9,11,29,33,37,39,15,19,8,12,30,32,36,40,1,5,14,20,28,34,42,44,46,48,2,4,6,13,35,41,43,47];
+const rand=n=>Math.floor(Math.random()*n);
+const fmt=n=>Math.floor(n).toLocaleString('ko-KR');
+const blank=()=>({version:3,g:Array(GRID).fill(null),e:22,c:80,stars:0,xp:0,delivered:0,merges:0,orders:[],orderSerial:0,energyAt:Date.now(),incomeAt:Date.now(),places:[{id:'starter',pos:8},{id:'pine',pos:12},{id:'pine',pos:30},{id:'tree',pos:9},{id:'snowman',pos:33},{id:'light',pos:36}],sound:true});
+let S=blank(),selected=-1,moveFrom=null,justBuilt=-1,drag=null,tab='merge',audioCtx=null,toastHandle=null;
+function definition(id){return ALL_PLACES.find(b=>b.id===id)}
+function createOrder(){
+ const index=S.orderSerial++;
+ const client=CLIENTS[index%CLIENTS.length];
+ const difficulty=Math.min(3,Math.floor(S.delivered/6));
+ const count=S.delivered>=3 && (index%3===2)?2:1;
+ const needs=[];
+ for(let k=0;k<count;k++){
+   let level=1+(index+k+rand(3))%Math.min(3,2+difficulty);
+   if(S.delivered<2)level=1;
+   if(S.delivered<6)level=Math.min(level,2);
+   needs.push({c:(index+k+rand(3))%3,l:level});
+ }
+ const coins=needs.reduce((sum,n)=>sum+14*Math.pow(2,n.l),0)+(count>1?18:8);
+ const stars=needs.reduce((sum,n)=>sum+Math.max(2,n.l),0)+(count>1?1:0);
+ return {id:index,client:index%CLIENTS.length,needs,coins,stars};
 }
-function spawn(){
-  if(S.e<1){snd(180,.2,'square');return toast('⚡ 에너지가 부족해요!')}
-  const em=S.g.map((v,i)=>v?-1:i).filter(i=>i>=0);
-  if(!em.length){snd(180,.2,'square');return toast('보드가 가득 찼어요!')}
-  S.e--;const r=Math.random();
-  S.g[em[R(em.length)]]=r<.08?{w:1}:{c:R(3),l:r<.3?1:0};
-  snd(520,.1,'triangle');render();
+function prepareOrders(){while(S.orders.length<3)S.orders.push(createOrder())}
+function mergeOldSave(){
+ try{
+   const old=JSON.parse(localStorage.getItem('xmerge2')||'null');
+   if(!old||!Array.isArray(old.g))return;
+   if(old.g.length===30){
+     for(let i=0;i<30;i++)S.g[Math.floor(i/5)*6+(i%5)]=old.g[i];
+     S.e=Math.min(MAX_ENERGY,Math.max(0,+old.e||0));S.c=+old.c||0;S.xp=(+old.m||0)*2;S.merges=+old.m||0;
+     const legacy=['house','pine','chapel','fair','fountain','castle','circus','train'];
+     if(Array.isArray(old.b))old.b.forEach(i=>{const id=legacy[i];const pos=AUTO_SLOTS.find(p=>!S.places.some(v=>v.pos===p)&&!ROADS.has(p));if(id&&pos!==undefined)S.places.push({id,pos})});
+     S.energyAt=Date.now();S.incomeAt=Date.now();
+   }
+ }catch(e){}
 }
-$('gen').onclick=spawn;
-$('buy').onclick=()=>{if(S.c<30){snd(180,.2,'square');return toast('코인이 부족해요')}S.c-=30;S.e=Math.min(MAXE,S.e+5);snd(660,.15);render()};
-$('snd').onclick=()=>{S.mute=S.mute?0:1;render();snd(600)};
-$('orders').onclick=e=>{
-  const el=e.target.closest('.order');if(!el)return;const k=+el.dataset.o,o=S.o[k];
-  const i=S.g.findIndex(v=>v&&!v.w&&v.c==o.c&&v.l==o.l);
-  if(i<0){snd(200,.15,'square');return toast(CH[o.c][o.l]+' 아직 없어요!')}
-  S.g[i]=null;S.c+=o.r;S.o.splice(k,1);fx('+'+o.r+'🪙',e.clientX,e.clientY);jingle([523,659,784,1047]);fillOrders();render();
-};
-/* 마을 */
-$('town').onclick=e=>{
-  const el=e.target.closest('.slot');if(!el)return;const i=+el.dataset.b;
-  if(S.b.includes(i))return toast('이미 지었어요 🏘️');
-  if(S.c<BLD[i][1]){snd(180,.2,'square');return toast('코인이 부족해요 (🪙'+BLD[i][1]+')')}
-  S.c-=BLD[i][1];S.b.push(i);jingle([392,523,659,784,1047]);toast(BLD[i][0]+' 완공!');render();
-};
-const show=v=>{$('gameV').style.display=v?'block':'none';$('town').style.display=v?'none':'grid';$('t1').className='tab'+(v?' on':'');$('t2').className='tab'+(v?'':' on')};
-$('t1').onclick=()=>show(1);$('t2').onclick=()=>show(0);
-/* 드래그 & 머지 */
-let drag=null;
-$('board').addEventListener('pointerdown',e=>{
-  const c=e.target.closest('.cell');if(!c)return;const i=+c.dataset.i,v=S.g[i];if(!v)return;
-  const g=document.createElement('div');g.className='ghost';g.textContent=face(v);document.body.appendChild(g);
-  c.classList.add('drag');drag={i,g};mv(e);
-});
-function mv(e){if(!drag)return;drag.g.style.left=e.clientX+'px';drag.g.style.top=e.clientY+'px';
-  document.querySelectorAll('.over').forEach(x=>x.classList.remove('over'));
-  const t=document.elementFromPoint(e.clientX,e.clientY),c=t&&t.closest&&t.closest('.cell');if(c)c.classList.add('over')}
-addEventListener('pointermove',mv);
-function up(v,cell){v.l++;S.m++;snd(440+v.l*110,.18,'triangle');
-  if(v.l==MAXL){S.c+=10;jingle([784,988,1175]);toast('✨ 최고 단계 달성! +10🪙')}
-  const r=cell.getBoundingClientRect();fx('✨',r.left+r.width/2,r.top);S.e=Math.min(MAXE,S.e+.3)}
-addEventListener('pointerup',e=>{
-  if(!drag)return;const{i,g}=drag;drag=null;g.remove();
-  document.querySelectorAll('.over').forEach(x=>x.classList.remove('over'));
-  const t=document.elementFromPoint(e.clientX,e.clientY),c=t&&t.closest&&t.closest('.cell');
-  if(c){const j=+c.dataset.i,a=S.g[i],b=S.g[j];
-    if(j!==i){
-      if(b&&a.w&&!b.w){ if(b.l>=MAXL)toast('이미 최고 단계예요!');else{S.g[i]=null;up(b,c);toast('⛄ 마법! 한 단계 UP')} }
-      else if(b&&b.w&&!a.w){ if(a.l>=MAXL)toast('이미 최고 단계예요!');else{S.g[j]=a;S.g[i]=null;up(a,c);toast('⛄ 마법! 한 단계 UP')} }
-      else if(b&&!a.w&&!b.w&&a.c==b.c&&a.l==b.l){
-        if(a.l>=MAXL){snd(200,.15,'square');toast('최고 단계! 🎉 주문으로 납품하세요')}
-        else{S.g[i]=null;up(b,c)}
-      }else{S.g[j]=a;S.g[i]=b;snd(330,.06)}
-    }}
-  render();
-});
-fillOrders();
-if(!S.g.some(v=>v))for(let k=0;k<6;k++)S.g[k*3]={c:R(3),l:k%2};
-setInterval(()=>{
-  if(S.e<MAXE&&Date.now()-S.t>=6000){S.e=Math.min(MAXE,S.e+1);S.t=Date.now();render()}else if(S.e>=MAXE)S.t=Date.now();
-  if(S.b.length&&Date.now()-S.inc>=10000){S.c+=S.b.length;S.inc=Date.now();render()}else if(!S.b.length)S.inc=Date.now();
-},1000);
-for(let i=0;i<22;i++){const s=document.createElement('div');s.className='snow';s.textContent=Math.random()<.5?'❄':'•';
-  s.style.cssText+=`left:${R(100)}vw;font-size:${8+R(14)}px;animation-duration:${6+R(8)}s;animation-delay:-${R(12)}s;opacity:${.5+Math.random()*.5}`;document.body.appendChild(s)}
-render();
+function load(){
+ try{
+   const saved=JSON.parse(localStorage.getItem(KEY)||'null');
+   if(saved && saved.version===3 && Array.isArray(saved.g) && saved.g.length===GRID && Array.isArray(saved.places)){
+     S={...blank(),...saved};
+   }else mergeOldSave();
+ }catch(e){S=blank()}
+ S.e=Math.min(MAX_ENERGY,Math.max(0,Number(S.e)||0));
+ if(!Array.isArray(S.orders))S.orders=[];
+ if(!Array.isArray(S.places))S.places=[];
+ if(!Array.isArray(S.g)||S.g.length!==GRID)S.g=Array(GRID).fill(null);
+ if(!Number.isFinite(S.energyAt))S.energyAt=Date.now();
+ if(!Number.isFinite(S.incomeAt))S.incomeAt=Date.now();
+ if(!S.g.some(Boolean)){
+   [[0,0,0],[1,0,0],[6,1,0],[7,1,0],[12,2,0],[13,2,0],[19,0,1]].forEach(([i,c,l])=>S.g[i]={c,l});
+ }
+ prepareOrders();syncTime();save();
+}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function syncTime(){
+ const now=Date.now();let dirty=false;
+ if(S.e>=MAX_ENERGY){S.energyAt=now}
+ else{const step=Math.max(0,Math.floor((now-S.energyAt)/ENERGY_TIME));if(step){S.e=Math.min(MAX_ENERGY,S.e+step);S.energyAt+=step*ENERGY_TIME;if(S.e>=MAX_ENERGY)S.energyAt=now;dirty=true}}
+ const incomePerMinute=S.places.reduce((sum,p)=>sum+(definition(p.id)?.income||0),0);
+ const paySteps=Math.min(180,Math.max(0,Math.floor((now-S.incomeAt)/INCOME_TIME)));
+ if(paySteps>0){S.c+=paySteps*incomePerMinute;S.incomeAt=now;dirty=true}
+ if(dirty)save();
+ return dirty;
+}
+function spendEnergy(){syncTime();if(S.e<1){toast('⚡ 번개가 부족해요! 시간이 지나면 자동 충전됩니다.');beep(180);return false}if(S.e>=MAX_ENERGY)S.energyAt=Date.now();S.e--;return true}
+function beep(freq=640){if(!S.sound)return;try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();const o=audioCtx.createOscillator(),v=audioCtx.createGain();o.type='sine';o.frequency.value=freq;v.gain.setValueAtTime(.065,audioCtx.currentTime);v.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+.11);o.connect(v);v.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+.12)}catch(e){}}
+function toast(msg){const el=$('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastHandle);toastHandle=setTimeout(()=>el.classList.remove('show'),1950)}
+function face(v){if(v.w)return '⛄';return CHAINS[v.c]?.items[v.l]||'🎁'}
+function itemName(v){if(v.w)return '마법 눈사람';return CHAINS[v.c]?.names[v.l]||'선물'}
+function markDemand(){const needed=new Map();for(const o of S.orders)for(const n of o.needs){const k=n.c+':'+n.l;needed.set(k,(needed.get(k)||0)+1)}return needed}
+function renderTop(){
+ $('energyText').textContent=`${Math.floor(S.e)} / ${MAX_ENERGY}`;
+ const left=S.e>=MAX_ENERGY?0:Math.max(0,ENERGY_TIME-(Date.now()-S.energyAt));
+ $('energyTimer').textContent=S.e>=MAX_ENERGY?'충전 완료':`+1 충전 ${Math.floor(Math.ceil(left/1000)/60)}:${String(Math.ceil(left/1000)%60).padStart(2,'0')}`;
+ $('coinText').textContent=fmt(S.c);$('starText').textContent=fmt(S.stars);$('levelText').textContent='Lv.'+(1+Math.floor(S.xp/120));$('deliveryText').textContent=`납품 ${S.delivered}회`;
+ const progress=S.xp%120;$('levelFill').style.width=(progress/120*100)+'%';
+ $('storyTitle').textContent=S.delivered<3?'🎅 산타의 겨울 마을 복구 작전!':S.delivered<9?'🎄 크리스마스 축제를 준비해요!':'✨ 눈꽃 마을을 더욱 빛나게!';
+ $('storySub').textContent=`다음 레벨까지 경험치 ${120-progress} · 주문 납품으로 건설 별 획득`;
+}
+function matchesFor(order){
+ const used=new Set();let found=[];
+ for(const need of order.needs){const idx=S.g.findIndex((v,i)=>!used.has(i)&&v&&!v.w&&v.c===need.c&&v.l===need.l);if(idx<0)found.push(-1);else{used.add(idx);found.push(idx)}}
+ return found;
+}
+function renderOrders(){
+ $('orders').innerHTML=S.orders.map((o,i)=>{
+   const client=CLIENTS[o.client],found=matchesFor(o),ready=found.every(p=>p>=0);
+   const needs=o.needs.map((n,j)=>`<div class="want ${found[j]>=0?'have':''}" title="${CHAINS[n.c].names[n.l]}">${CHAINS[n.c].items[n.l]}<em>${found[j]>=0?'✓':'0/1'}</em></div>`).join('');
+   return `<div class="order ${ready?'ready':''}"><div class="who"><span>${client[0]}</span><span class="name">${client[1]}</span></div><div class="saying">“${client[2]}”</div><div class="wants">${needs}</div><div class="reward">🪙${fmt(o.coins)} &nbsp; ⭐${o.stars}</div><button class="ship" data-order="${i}" ${ready?'':'disabled'}>${ready?'✔ 납품하기':'준비 중...'}</button></div>`;
+ }).join('');
+}
+function renderBoard(){
+ const targets=markDemand();let occupied=0;
+ $('board').innerHTML=S.g.map((v,i)=>{
+   if(v)occupied++;
+   const match=v&&!v.w&&targets.has(v.c+':'+v.l);
+   const inner=v?`<span class="item">${face(v)}</span>${v.w?'':`<span class="level">${v.l+1}</span>`}`:'';
+   return `<button type="button" role="gridcell" aria-label="${v?itemName(v)+' '+(v.l+1)+'단계':'빈 칸'}" data-cell="${i}" class="cell ${v&&v.w?'special':''} ${i===selected?'selected':''} ${match?'match':''}">${inner}</button>`;
+ }).join('');
+ $('boardCounter').textContent=`${occupied} / ${GRID}칸`;
+ renderSelected();
+}
+function renderSelected(){
+ const v=S.g[selected],el=$('itemInfo');
+ if(!v){el.innerHTML='<div class="selected-icon">👆</div><div class="item-copy"><strong>같은 선물을 끌어 겹쳐 보세요!</strong><small>같은 아이템 2개 → 한 단계 높은 아이템</small></div>';return}
+ const money=v.w?5:Math.max(2,Math.pow(2,v.l+1));
+ el.innerHTML=`<div class="selected-icon">${face(v)}</div><div class="item-copy"><strong>${itemName(v)} ${v.w?'':`· ${v.l+1}단계`}</strong><small>${v.w?'다른 아이템에 올리면 한 단계 상승':'똑같은 아이템과 머지하거나 주문에 납품하세요'}</small></div><button class="mini-btn" id="sellItem">판매 +${money}🪙</button>`;
+ $('sellItem').onclick=()=>sellSelected();
+}
+function renderGenerators(){
+ $('generators').innerHTML=CHAINS.map((g,i)=>`<button class="generator" type="button" data-gen="${i}" ${S.e<1?'disabled':''}><span class="gicon">${g.icon}</span><strong>${g.name}</strong><small>⚡ 1 사용 · 제작</small></button>`).join('');
+}
+function renderMerge(){renderTop();renderOrders();renderBoard();renderGenerators()}
+function produce(chain){
+ const empty=S.g.findIndex(v=>!v);
+ if(empty===-1)return toast('보드가 가득 찼어요! 머지하거나 납품하여 공간을 만들어 주세요.');
+ if(!spendEnergy())return;
+ const r=Math.random();S.g[empty]=r<.035?{w:1}:{c:chain,l:r<.16?1:0};
+ selected=empty;beep(550);renderMerge();save();
+}
+function completeOrder(i){
+ const o=S.orders[i];if(!o)return;
+ const found=matchesFor(o);
+ if(!found.every(k=>k>=0))return toast('아직 필요한 선물이 모두 준비되지 않았어요!');
+ found.forEach(k=>S.g[k]=null);S.c+=o.coins;S.stars+=o.stars;S.xp+=20+o.needs.length*7;S.delivered++;
+ selected=-1;S.orders.splice(i,1);prepareOrders();beep(840);
+ renderMerge();save();toast(`🎉 주문 납품 성공! 🪙${fmt(o.coins)} + ⭐${o.stars} 획득`);
+}
+function sellSelected(){
+ const i=selected,v=S.g[i];if(!v)return;
+ const money=v.w?5:Math.max(2,Math.pow(2,v.l+1));
+ // Selling is optional; requested customer orders remain the main source of rewards.
+ S.c+=money;S.g[i]=null;selected=-1;beep(470);renderMerge();save();toast(`선물 판매 완료! 🪙 +${money}`);
+}
+function mergePieces(i,j){
+ if(i===j){selected=i;return}
+ const a=S.g[i],b=S.g[j];if(!a)return;
+ if(b&&a.w&&b.w){toast('눈사람끼리는 합칠 수 없어요.');return}
+ if(b&&(a.w||b.w)){
+   const normal=a.w?b:a;
+   if(normal.l>=5){toast('이미 최고 단계입니다!');return}
+   const target=a.w?j:j;
+   if(a.w){S.g[i]=null;normal.l++;S.g[j]=normal}
+   else{S.g[i]=null;S.g[j]=normal;normal.l++}
+   S.xp+=3;S.merges++;selected=target;beep(920);toast('⛄ 눈사람의 마법! 한 단계 UP!');return;
+ }
+ if(b&&!a.w&&!b.w&&a.c===b.c&&a.l===b.l){
+   if(a.l>=5){toast('최고 단계는 주문에 납품하거나 판매하세요!');return}
+   S.g[i]=null;b.l++;S.xp+=3;S.merges++;selected=j;beep(760);
+   if(b.l===5){S.stars++;toast('🌟 최고 단계 달성! ⭐ +1')}return;
+ }
+ S.g[i]=b||null;S.g[j]=a;selected=j;beep(400);
+}
+function endDrag(e,cancel=false){
+ if(!drag)return;
+ const d=drag;drag=null;if(d.ghost)d.ghost.remove();
+ document.querySelectorAll('.cell.target,.cell.dragging').forEach(x=>x.classList.remove('target','dragging'));
+ try{$('board').releasePointerCapture(e.pointerId)}catch(err){}
+ if(cancel)return;
+ const el=document.elementFromPoint(e.clientX,e.clientY)?.closest('[data-cell]');
+ const j=el?Number(el.dataset.cell):d.i;
+ if(d.moved && el)mergePieces(d.i,j);else selected=d.i;
+ renderMerge();save();
+}
+function installDrag(){
+ const board=$('board');
+ board.addEventListener('pointerdown',e=>{
+   const el=e.target.closest('[data-cell]');if(!el)return;
+   const i=Number(el.dataset.cell),v=S.g[i];if(!v){selected=-1;renderSelected();return}
+   e.preventDefault();
+   try{board.setPointerCapture(e.pointerId)}catch(err){}
+   drag={i,pointerId:e.pointerId,x:e.clientX,y:e.clientY,moved:false,ghost:null};
+   selected=i;el.classList.add('dragging');
+ });
+ board.addEventListener('pointermove',e=>{
+   if(!drag||drag.pointerId!==e.pointerId)return;
+   e.preventDefault();
+   if(!drag.moved&&Math.hypot(e.clientX-drag.x,e.clientY-drag.y)>6){
+     drag.moved=true;drag.ghost=document.createElement('div');drag.ghost.className='drag-ghost';drag.ghost.textContent=face(S.g[drag.i]);document.body.appendChild(drag.ghost);
+   }
+   if(drag.ghost){drag.ghost.style.left=e.clientX+'px';drag.ghost.style.top=e.clientY+'px';}
+   document.querySelectorAll('.cell.target').forEach(el=>el.classList.remove('target'));
+   const el=document.elementFromPoint(e.clientX,e.clientY)?.closest('[data-cell]');if(el&&Number(el.dataset.cell)!==drag.i)el.classList.add('target');
+ });
+ board.addEventListener('pointerup',e=>{if(drag&&drag.pointerId===e.pointerId)endDrag(e)});
+ board.addEventListener('pointercancel',e=>endDrag(e,true));
+ window.addEventListener('touchmove',e=>{if(drag)e.preventDefault()},{passive:false});
+}
+function freeSlot(){return AUTO_SLOTS.find(p=>!ROADS.has(p)&&!WATER.has(p)&&!S.places.some(x=>x.pos===p))}
+function placeName(id){return definition(id)?.name||id}
+function townIncome(){return S.places.reduce((sum,p)=>sum+(definition(p.id)?.income||0),0)}
+function build(item){
+ const def=definition(item);if(!def)return;
+ if(BUILDINGS.some(b=>b.id===item)&&S.places.some(p=>p.id===item))return toast('이미 건설한 건물이에요!');
+ const pos=freeSlot();if(pos===undefined)return toast('마을의 빈 땅이 없어요! 기존 장식의 위치를 조정해 주세요.');
+ const field=def.currency==='star'?'stars':'c';
+ if(S[field]<def.price)return toast(`${def.currency==='star'?'⭐ 별':'🪙 코인'}이 부족해요! 주문을 납품해서 모아 보세요.`);
+ S[field]-=def.price;S.places.push({id:item,pos});moveFrom=null;justBuilt=pos;
+ beep(740);renderTop();renderVillage();save();toast(`🎉 ${def.name} 완공! 마을 지도에 배치했어요.`);
+}
+function movePlot(pos){
+ if(ROADS.has(pos)||WATER.has(pos))return toast('길이나 연못에는 건물을 놓을 수 없어요.');
+ const entity=S.places.find(p=>p.pos===pos);
+ if(moveFrom===null){
+   if(entity){moveFrom=pos;renderVillage();toast(`${placeName(entity.id)} 선택! 빈 땅을 누르면 옮겨져요.`)}
+   else toast('아래 건물이나 장식을 구매해 이 땅을 꾸며 보세요!');
+   return;
+ }
+ if(moveFrom===pos){moveFrom=null;renderVillage();return}
+ const moving=S.places.find(p=>p.pos===moveFrom);if(!moving){moveFrom=null;return}
+ if(entity){entity.pos=moveFrom;moving.pos=pos}else moving.pos=pos;
+ moveFrom=null;justBuilt=pos;renderVillage();save();beep(640);toast('🏡 원하는 위치로 옮겼어요!');
+}
+function renderVista(){
+ const hills=`<path d="M0 112 Q100 68 207 104 Q318 64 436 105 Q510 77 600 106 L600 185 L0 185 Z" fill="#e6f5ee"/><path d="M0 145 Q160 114 300 144 Q448 105 600 145 L600 185 L0 185Z" fill="#cfecdc"/><path d="M-10 153 Q180 132 310 168 Q460 194 610 155" fill="none" stroke="#fae4ba" stroke-width="24"/><path d="M-10 153 Q180 132 310 168 Q460 194 610 155" fill="none" stroke="#fff6df" stroke-width="3" stroke-dasharray="9 9"/>`;
+ const stars=Array.from({length:16},(_,i)=>`<circle cx="${14+(i*67)%560}" cy="${10+(i*31)%65}" r="${i%3===0?2:1.2}" fill="#fff" opacity=".85"/>`).join('');
+ const places=S.places.slice().sort((a,b)=>Math.floor(a.pos/7)-Math.floor(b.pos/7)).map(p=>{
+  const def=definition(p.id);if(!def)return '';
+  const col=p.pos%7,row=Math.floor(p.pos/7);const x=57+col*81+(row%2)*8,y=91+row*9;const building=p.id==='starter'||BUILDINGS.some(b=>b.id===p.id);
+  if(building){
+   const wall=p.id==='castle'?'#d9d5f5':p.id==='cafe'?'#ffdfad':p.id==='chapel'?'#fcefe1':'#f8d3c2';
+   const roof=p.id==='castle'?'#7468a1':p.id==='cafe'?'#bb566c':p.id==='chapel'?'#68899c':'#a64a60';
+   return `<g transform="translate(${x} ${y})"><ellipse cx="0" cy="10" rx="31" ry="7" fill="#578f8675"/><rect x="-25" y="-37" width="50" height="45" rx="3" fill="${wall}" stroke="#fdfaf1" stroke-width="3"/><path d="M-32 -37 L0 -63 L32 -37 Z" fill="${roof}" stroke="#fff4e5" stroke-width="4" stroke-linejoin="round"/><path d="M-27 -38 Q-13 -43 0 -41 T27 -38" fill="none" stroke="white" stroke-width="5"/><rect x="-8" y="-14" width="16" height="22" rx="5" fill="#986958"/><rect x="-21" y="-28" width="11" height="12" rx="2" fill="#ffe7a1" stroke="white" stroke-width="2"/><rect x="10" y="-28" width="11" height="12" rx="2" fill="#ffe7a1" stroke="white" stroke-width="2"/><text x="0" y="-45" font-size="17" text-anchor="middle">${def.icon}</text></g>`;
+  }
+  return `<g transform="translate(${x} ${y})"><ellipse rx="22" ry="5" cy="7" fill="#52877940"/><text y="4" x="0" text-anchor="middle" font-size="40">${def.icon}</text></g>`;
+ }).join('');
+ $('townVista').innerHTML=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 185" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="winterSky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#82c6e7"/><stop offset="1" stop-color="#f7ffff"/></linearGradient></defs><rect width="600" height="185" fill="url(#winterSky)"/>${stars}<circle cx="517" cy="30" r="20" fill="#fff6cc" opacity=".85"/>${hills}${places}<path d="M0 180 Q135 159 260 176 T600 172 L600 185 L0 185 Z" fill="#fff" opacity=".8"/></svg>`;
+}
+function renderVillage(){
+ renderVista();
+ $('villageGrid').innerHTML=Array.from({length:49},(_,pos)=>{
+   const place=S.places.find(p=>p.pos===pos),def=place&&definition(place.id),road=ROADS.has(pos),lake=WATER.has(pos);
+   const ambient=(!place&&!road&&!lake&&(pos%11===1||pos%13===4))?'❄':'';
+   const name=(def?.name||'빈 눈밭');
+   return `<button class="plot ${road?'road':''} ${road&&pos%7===3?'vertical':''} ${pos===24?'cross':''} ${lake?'lake':''} ${pos===moveFrom?'move-from':''} ${pos===justBuilt?'just-built':''}" data-plot="${pos}" type="button" aria-label="${name}" title="${name}" ${road||lake?'disabled':''}>${def?`<span class="town-icon ${place.id==='starter'?'starter':''}">${def.icon}</span><span class="place-name">${def.name}</span>`:`<span class="ambient">${ambient}</span>`}</button>`;
+ }).join('');
+ const income=townIncome(),houses=S.places.filter(p=>BUILDINGS.some(b=>b.id===p.id)||p.id==='starter').length;
+ $('villageStatus').innerHTML=`<div><strong>${houses}</strong><small>운영 중인 건물</small></div><div><strong>${S.places.length}</strong><small>마을 시설/장식</small></div><div><strong>+${income}🪙</strong><small>1분마다 자동 수익</small></div>`;
+ $('villageInstruction').textContent=moveFrom===null?'🏗️ 건설하면 지도에 자동 배치! 건물을 누르고 빈 땅을 누르면 위치를 바꿀 수 있어요.':`📍 ${placeName(S.places.find(p=>p.pos===moveFrom)?.id)} 이동 중 — 빈 땅을 누르거나 같은 건물을 다시 누르면 취소됩니다.`;
+ const renderShop=(arr)=>arr.map(b=>{
+   const owned=BUILDINGS.includes(b)&&S.places.some(p=>p.id===b.id);
+   return `<div class="shop-card"><span class="shop-icon">${b.icon}</span><div class="shop-text"><strong>${b.name}</strong><small>${b.desc}${b.income?` · +${b.income}🪙/분`:''}</small><button data-build="${b.id}" ${owned?'disabled':''}>${owned?'건설 완료':`${b.currency==='star'?'⭐':'🪙'} ${b.price} · 설치`}</button></div></div>`;
+ }).join('');
+ $('buildingShop').innerHTML=renderShop(BUILDINGS);$('decorShop').innerHTML=renderShop(DECORS);
+}
+function showTab(which){
+ if(drag){drag.ghost?.remove();drag=null}
+ tab=which;moveFrom=null;
+ $('tabMerge').classList.toggle('active',which==='merge');$('tabVillage').classList.toggle('active',which==='village');
+ $('mergePage').classList.toggle('active',which==='merge');$('villagePage').classList.toggle('active',which==='village');
+ if(which==='village')renderVillage();else renderMerge();
+ window.scrollTo({top:0,behavior:'instant'});
+}
+function modal(title,body,actions){
+ $('dialogTitle').textContent=title;$('dialogContent').innerHTML=body;
+ $('dialogActions').innerHTML='';actions.forEach(a=>{const button=document.createElement('button');button.textContent=a.text;if(a.alt)button.className='alt';button.onclick=()=>{closeModal();a.fn?.()};$('dialogActions').appendChild(button)});
+ $('overlay').classList.add('show');
+}
+function closeModal(){$('overlay').classList.remove('show')}
+function settings(){modal('🎄 산타의 머지 안내',
+ `<p>💌 <b>주문:</b> 손님이 요청하는 아이템을 만들면 <b>납품하기</b> 버튼이 초록색으로 바뀝니다. 납품하면 코인과 건설용 별을 받아요.</p>
+ <p>🎁 <b>제작:</b> 아래 제작소를 누를 때마다 번개 1개를 써서 선물을 만들어요. 같은 아이템을 드래그해서 합쳐 보세요.</p>
+ <p>⚡ <b>충전:</b> 45초마다 번개가 1개 충전되고, 게임을 닫아 둔 동안도 시간이 계산돼요. 최대 30개입니다.</p>
+ <p>🏘️ <b>마을:</b> 건물을 건설하면 마을 지도에 바로 놓입니다. 건물을 눌러 다른 빈 땅으로 이동할 수 있어요.</p>
+ <p>🎵 효과음 ${S.sound?'켜짐':'꺼짐'}</p>`,
+ [{text:S.sound?'🔇 소리 끄기':'🔊 소리 켜기',fn:()=>{S.sound=!S.sound;save();toast(S.sound?'효과음 켜짐':'효과음 꺼짐')}},{text:'🗑️ 초기화',alt:true,fn:confirmReset},{text:'게임 계속하기',fn:()=>{}}]
+ )}
+function confirmReset(){modal('게임을 처음부터 시작할까요?','<p>현재 선물, 코인, 별, 건물 배치와 주문이 모두 초기화됩니다. 복구할 수 없습니다.</p>',[{text:'취소',alt:true},{text:'네, 초기화',fn:()=>{S=blank();selected=-1;moveFrom=null;prepareOrders();save();renderMerge();renderVillage();showTab('merge');toast('새로운 마을을 시작했어요!')}}])}
+function init(){
+ load();renderMerge();renderVillage();installDrag();
+ $('orders').addEventListener('click',e=>{const el=e.target.closest('[data-order]');if(el)completeOrder(Number(el.dataset.order))});
+ $('generators').addEventListener('click',e=>{const el=e.target.closest('[data-gen]');if(el)produce(Number(el.dataset.gen))});
+ $('villageGrid').addEventListener('click',e=>{const el=e.target.closest('[data-plot]');if(el)movePlot(Number(el.dataset.plot))});
+ $('buildingShop').addEventListener('click',e=>{const el=e.target.closest('[data-build]');if(el)build(el.dataset.build)});
+ $('decorShop').addEventListener('click',e=>{const el=e.target.closest('[data-build]');if(el)build(el.dataset.build)});
+ $('tabMerge').onclick=()=>showTab('merge');$('tabVillage').onclick=()=>showTab('village');$('settings').onclick=settings;
+ $('overlay').addEventListener('click',e=>{if(e.target===$('overlay'))closeModal()});
+ setInterval(()=>{const beforeE=S.e,beforeC=S.c;syncTime();renderTop();if(beforeE!==S.e)renderGenerators();if(beforeC!==S.c&&tab==='village')renderVillage()},1000);
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden){syncTime();renderTop();renderGenerators();if(tab==='village')renderVillage()}});
+ window.addEventListener('pagehide',save);
+}
+init();
 </script>
 </body>
 </html>
