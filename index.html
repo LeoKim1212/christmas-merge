@@ -3,310 +3,219 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#df6f78">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#ea7a78">
 <title>산타의 머지 스토리</title>
 <style>
 :root{
-  --bg:#fff7f3;--paper:#fffdfb;--line:#ead7d1;--text:#644d57;--muted:#a28990;
-  --rose:#e86e7b;--rose-dark:#c85467;--peach:#fff0e3;--gold:#ffcb5b;--green:#4bb585;--green-dark:#2f8f66;
-  --sky:#bfe7ff;--sky2:#e9f8ff;--board:#f5ecd7;--board2:#ecdab7;--snow:#f3fbff;--shadow:0 8px 24px rgba(121,79,92,.12);
+  --bg:#fff8f5; --paper:#fffefc; --line:#ebddd7; --text:#6a5058; --muted:#a78d95;
+  --rose:#ea7a78; --rose2:#d75c70; --gold:#f8c95a; --green:#55be8b; --green2:#2e9a6d;
+  --peach:#fff2e4; --shadow:0 10px 28px rgba(132,98,110,.12); --blue:#83d6f0; --board:#f6ecd6;
+  --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;min-height:100%;background:linear-gradient(180deg,#fef4ee,#f7fbff 65%,#eef8fb);font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:var(--text)}
-body.modal-open{overflow:hidden}
-button{font:inherit;border:0;cursor:pointer}button:disabled{opacity:.5;cursor:default}button:active:not(:disabled){transform:translateY(1px)}
-#app{max-width:520px;margin:0 auto;min-height:100dvh;background:linear-gradient(180deg,#fff9f7 0,#fffdfa 180px,#fbfffe 100%);box-shadow:0 0 0 1px #fff inset,0 12px 36px rgba(103,92,105,.12);overflow:hidden;position:relative}
-.header{position:relative;padding:14px 14px 12px;background:linear-gradient(180deg,#f39aa0 0,#e96d79 60%,#db5f76 100%);color:#fff;overflow:hidden}
-.header:before,.header:after{content:'';position:absolute;border-radius:50%;background:rgba(255,255,255,.15)}
-.header:before{width:180px;height:180px;left:-60px;top:-110px}.header:after{width:180px;height:180px;right:-50px;top:-70px}
-.profile-row{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.profile{display:flex;align-items:center;gap:10px;min-width:0}
-.avatar-badge{width:54px;height:54px;border-radius:18px;background:linear-gradient(180deg,#fff7d8,#ffefbf);box-shadow:0 4px 0 rgba(160,86,101,.35),inset 0 0 0 2px rgba(255,255,255,.75);display:grid;place-items:center;font-size:32px;position:relative}
-.avatar-badge .lv{position:absolute;left:-2px;bottom:-4px;background:#8151c8;color:#fff;border:2px solid #fff;padding:1px 7px;border-radius:999px;font-weight:900;font-size:12px}
-.brand-copy{min-width:0}.brand-copy strong{display:block;font-size:17px;letter-spacing:-.4px}.brand-copy small{display:block;opacity:.88;margin-top:2px;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:210px}
-.icon-stack{display:flex;gap:8px}.circle-btn{width:38px;height:38px;border-radius:14px;background:rgba(255,255,255,.2);color:#fff;font-size:18px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.28)}
-.resource-row{position:relative;z-index:2;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:12px}
-.resource{background:var(--paper);color:var(--text);border-radius:18px;padding:8px 8px;display:flex;align-items:center;gap:7px;box-shadow:0 4px 0 rgba(130,67,81,.26);min-width:0;border:1px solid #f2dfd4}
-.resource .ico{width:28px;height:28px;border-radius:12px;display:grid;place-items:center;font-size:18px;flex:none}
-.resource .txt{min-width:0}.resource strong{display:block;font-size:14px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.resource small{display:block;font-size:10px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.resource.energy .ico{background:#fff0ae}.resource.coin .ico{background:#ffefc8}.resource.ruby .ico{background:#ffe0f2}.resource.star .ico{background:#edf4ff}
-.event-strip{display:flex;gap:10px;overflow:auto;padding:12px 14px 0;scrollbar-width:none}.event-strip::-webkit-scrollbar{display:none}
-.event-card{min-width:150px;background:linear-gradient(180deg,#fffaf6,#fff3e8);border:1px solid #f4dfcb;border-radius:20px;padding:10px 12px;box-shadow:var(--shadow);position:relative}.event-card .tag{display:inline-flex;gap:4px;align-items:center;font-size:10px;font-weight:900;padding:5px 9px;border-radius:999px;background:#fff0f4;color:#cb6179}.event-card strong{display:block;margin-top:8px;font-size:14px;letter-spacing:-.4px}.event-card p{margin:4px 0 0;font-size:11px;color:var(--muted);line-height:1.4}.event-card .mini-progress{height:7px;border-radius:999px;background:#efe5dc;margin-top:9px;overflow:hidden}.event-card .mini-progress span{display:block;height:100%;background:linear-gradient(90deg,#ffb44e,#f57179)}
-.tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;padding:14px 14px 0}.tab{background:#fff2eb;border:1px solid #f0ddd4;border-bottom-width:3px;color:#a07b82;padding:10px 6px;border-radius:16px 16px 10px 10px;font-size:12px;font-weight:900;letter-spacing:-.4px}.tab.active{background:linear-gradient(180deg,#ed7885,#d95f79);color:#fff;border-color:#d95f79;box-shadow:0 4px 0 #bb4a62}
-.page{display:none;padding:14px}.page.active{display:block}
-.section{background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:13px;margin-bottom:14px}
-.section h3{margin:0 0 10px;font-size:16px;letter-spacing:-.4px}.section-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}.sub{font-size:11px;color:var(--muted)}
-.story-card{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#fff4e7,#fffdf5);border:1px solid #f3e0c4;border-radius:18px;padding:11px}.story-card .portrait{width:54px;height:54px;border-radius:18px;background:linear-gradient(180deg,#fff1f5,#fff);display:grid;place-items:center;font-size:30px;box-shadow:inset 0 0 0 1px #f7dce2}.story-card .copy{min-width:0;flex:1}.story-card strong{display:block;font-size:13px}.story-card p{margin:3px 0 0;font-size:11px;color:var(--muted);line-height:1.45}.story-card .story-btn{background:#fce7da;color:#a56761;border-radius:12px;padding:8px 10px;font-weight:900;font-size:11px}
-.order-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-.order{background:linear-gradient(180deg,#fffdf7,#fff5ea);border:1px solid #f2e0ca;border-radius:18px;padding:10px;box-shadow:0 4px 0 #ead6bb;min-width:0;display:flex;flex-direction:column;gap:8px}.order.ready{background:linear-gradient(180deg,#effff6,#fffef8);border-color:#9fddbb;box-shadow:0 4px 0 #9fd3b2}.order-head{display:flex;align-items:center;gap:7px}.avatar-chip{width:34px;height:34px;border-radius:12px;background:#fff;display:grid;place-items:center;font-size:21px;box-shadow:inset 0 0 0 1px #f0e2d8}.order-head .name{font-size:11px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.order-head .line{font-size:10px;color:#b38188;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.want-row{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;min-height:46px}.want-item{width:40px;height:40px;border-radius:12px;background:linear-gradient(180deg,#fff,#f7f0ea);border:1px solid #eadad0;display:grid;place-items:center;font-size:21px;position:relative;box-shadow:inset 0 1px #fff}.want-item.ok{background:linear-gradient(180deg,#eefcf2,#f8fff9);border-color:#8ad0a8}.want-item em{position:absolute;right:-2px;bottom:-5px;min-width:16px;height:16px;border-radius:50%;padding:0 3px;background:#fff;border:1px solid #ebddd4;font-style:normal;font-size:9px;line-height:14px;text-align:center}
-.order-reward{font-size:10px;color:#96666d;font-weight:900;text-align:center}.order button{margin-top:auto;border-radius:12px;padding:9px 6px;background:#d8c9c0;color:#fff;font-size:11px;font-weight:900}.order.ready button{background:linear-gradient(180deg,#57c48d,#359f74)}
-.board-wrap{background:linear-gradient(180deg,#ffe1ac,#f2b86b);border-radius:24px;padding:12px;box-shadow:0 8px 0 #d48a4a,0 18px 28px rgba(162,101,53,.18)}
-.board-top{display:flex;justify-content:space-between;align-items:center;gap:8px;color:#7d4e41;margin-bottom:10px}.board-top strong{font-size:16px}.board-top .meta{font-size:11px;color:#8f6a5d}
-.board-panel{background:linear-gradient(180deg,#f8eedc,#f4e6cf);border-radius:20px;padding:10px;border:2px solid rgba(255,255,255,.55);position:relative;overflow:hidden}
-.board-panel:before{content:'';position:absolute;inset:0;background-image:linear-gradient(to right,rgba(255,255,255,.12) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,.12) 1px,transparent 1px);background-size:calc(100%/7) calc(100%/8);pointer-events:none}
-.board{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;position:relative;touch-action:none;user-select:none;-webkit-user-select:none}
-.cell{aspect-ratio:1;border-radius:14px;background:rgba(255,255,255,.34);border:1px solid rgba(219,197,164,.95);display:grid;place-items:center;position:relative;touch-action:none;user-select:none;overflow:hidden;box-shadow:inset 0 2px rgba(255,255,255,.6)}
-.cell.empty{background:rgba(255,255,255,.18)}.cell.selected{outline:3px solid #57b7ff}.cell.target{outline:3px dashed #ef9458}.cell.match{box-shadow:inset 0 0 0 2px #9ad5a4}.cell.dragging .piece{opacity:.25}
-.piece{width:86%;height:86%;border-radius:18px;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 6px 10px rgba(153,118,103,.18),inset 0 1px rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.75)}
-.piece .icon{font-size:24px;line-height:1}.piece .badge{position:absolute;left:4px;top:4px;width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.8);display:grid;place-items:center;font-size:10px;color:#7e6367;font-weight:900}
-.chain-gift{background:linear-gradient(180deg,#fff0b4,#ffd981)}.chain-feast{background:linear-gradient(180deg,#ffe2d7,#ffc6b5)}.chain-studio{background:linear-gradient(180deg,#d6efff,#a4d9ff)}.chain-jewel{background:linear-gradient(180deg,#e8dbff,#c8b3ff)}.chain-closet{background:linear-gradient(180deg,#ffdff0,#ffbad6)}.chain-token{background:linear-gradient(180deg,#fff,#f0f0f0)}
-.drag-ghost{position:fixed;z-index:1000;pointer-events:none;transform:translate(-50%,-65%) scale(1.08);filter:drop-shadow(0 10px 12px rgba(0,0,0,.22))}
-.info-bar{margin-top:10px;background:#fffdf8;border:1px solid #eaded3;border-radius:18px;padding:10px;display:flex;align-items:center;gap:10px}.info-icon{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;background:#fff;box-shadow:inset 0 0 0 1px #efe1d7;font-size:26px;flex:none}.info-copy{min-width:0;flex:1}.info-copy strong{display:block;font-size:13px}.info-copy small{display:block;margin-top:3px;color:var(--muted);font-size:11px;line-height:1.45}.info-actions{display:flex;gap:8px;flex:none}.small-btn{border-radius:12px;padding:9px 10px;background:#fcebe5;color:#985d68;font-size:11px;font-weight:900;white-space:nowrap}
-.generator-panel{margin-top:13px}.generator-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.generator{background:linear-gradient(180deg,#fffdf7,#fff3ea);border:1px solid #f0ddd1;border-radius:18px;padding:11px 10px;box-shadow:var(--shadow);text-align:left;position:relative}.generator.locked{filter:grayscale(.25);opacity:.74}.generator .gen-top{display:flex;align-items:center;gap:10px}.generator .gen-icon{width:42px;height:42px;border-radius:16px;display:grid;place-items:center;font-size:24px;background:linear-gradient(180deg,#fff,#fff6ef);box-shadow:inset 0 0 0 1px #f0dfd6}.generator strong{display:block;font-size:13px}.generator small{display:block;font-size:10px;color:var(--muted);margin-top:2px}.generator .gen-foot{display:flex;justify-content:space-between;align-items:center;margin-top:9px}.gen-tag{font-size:10px;font-weight:900;padding:5px 8px;border-radius:999px;background:#ffe8ef;color:#cf6980}.gen-cost{font-size:11px;font-weight:900;color:#9b6973}
-.scroll-note{text-align:center;color:#a28a90;font-size:11px;padding-top:10px;line-height:1.45}
-.village-hero{background:linear-gradient(180deg,#9fd8ff,#dff4ff 38%,#f5fdff 39%,#f2f5f7 100%);border-radius:24px;border:1px solid #ddeef8;padding:14px;box-shadow:var(--shadow)}
-.skyline{display:flex;justify-content:space-between;align-items:flex-start}.cloud{font-size:18px;opacity:.85}.village-status{font-size:12px;font-weight:900;color:#5d7fa4;background:rgba(255,255,255,.85);padding:8px 10px;border-radius:14px;box-shadow:0 4px 10px rgba(119,168,189,.18)}
-.plot-grid{margin-top:12px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.plot{aspect-ratio:1;border-radius:18px;background:linear-gradient(180deg,#ffffff,#eef6f7);border:1px solid #d6ebf4;position:relative;display:grid;place-items:center;font-size:26px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.55)}.plot.empty{background:linear-gradient(180deg,#ffffffaa,#eef6f766);border-style:dashed}.plot .mini-label{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);padding:2px 7px;border-radius:999px;background:rgba(255,255,255,.92);font-size:9px;font-weight:900;color:#638090;max-width:90%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.place-select{outline:3px dashed #f18c64}.shop-row{display:flex;gap:8px;overflow:auto;padding-top:10px;scrollbar-width:none}.shop-row::-webkit-scrollbar{display:none}.shop-item{min-width:120px;background:#fff;border:1px solid #e6ded4;border-radius:18px;padding:10px;box-shadow:var(--shadow)}.shop-item .top{display:flex;gap:10px;align-items:center}.shop-item .bico{width:36px;height:36px;border-radius:14px;background:#fff7ef;display:grid;place-items:center;font-size:22px}.shop-item strong{display:block;font-size:13px}.shop-item small{display:block;font-size:10px;color:var(--muted);margin-top:2px}.shop-item .buy{margin-top:8px;width:100%;padding:8px;border-radius:12px;background:linear-gradient(180deg,#56c48c,#349f74);color:#fff;font-weight:900;font-size:11px}.shop-item .owned{background:#ece7e0;color:#907f77}
-.style-scene{background:linear-gradient(180deg,#ffd9de,#ffeef2 40%,#fff8fb);border:1px solid #f0d8de;border-radius:24px;padding:14px;box-shadow:var(--shadow)}
-.avatar-stage{position:relative;height:280px;border-radius:20px;background:linear-gradient(180deg,#fff3f6,#fffafc 62%,#fdebe7);overflow:hidden;display:flex;align-items:flex-end;justify-content:center}
-.avatar-stage:before{content:'';position:absolute;left:50%;top:22px;transform:translateX(-50%);width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,#fff,#ffe7f0 65%,transparent 66%);opacity:.9}
-.avatar{position:relative;width:150px;height:250px;z-index:2}
-.avatar .head{position:absolute;left:50%;top:18px;transform:translateX(-50%);width:74px;height:82px;border-radius:40px;background:#ffd9c8;box-shadow:inset 0 -5px rgba(212,151,130,.15)}
-.avatar .hair{position:absolute;left:50%;top:10px;transform:translateX(-50%);width:90px;height:86px;border-radius:50px 50px 40px 40px;background:#6d4a43}.avatar .hair:after{content:'';position:absolute;left:10px;right:10px;bottom:-6px;height:30px;border-radius:0 0 24px 24px;background:inherit}
-.avatar .hair.hair-ponytail:before{content:'';position:absolute;right:-16px;top:18px;width:34px;height:52px;border-radius:0 26px 26px 20px;background:inherit;transform:rotate(10deg)}
-.avatar .hair.hair-braid:before{content:'';position:absolute;left:-6px;top:34px;width:20px;height:62px;border-radius:18px;background:inherit;box-shadow:76px 0 0 0 inherit}
-.avatar .face{position:absolute;left:50%;top:46px;transform:translateX(-50%);font-size:14px;color:#7e5560}.avatar .torso{position:absolute;left:50%;top:104px;transform:translateX(-50%);width:88px;height:70px;border-radius:28px 28px 24px 24px;background:#f6c0c8}.avatar .skirt{position:absolute;left:50%;top:162px;transform:translateX(-50%);width:112px;height:76px;border-radius:16px 16px 36px 36px;background:#ea6678;clip-path:polygon(18% 0,82% 0,100% 100%,0 100%)}
-.avatar .legs{position:absolute;left:50%;top:198px;transform:translateX(-50%);width:78px;height:46px;background:linear-gradient(90deg,#ffd8c5 0 42%,transparent 42% 58%,#ffd8c5 58% 100%);border-radius:0 0 16px 16px}.avatar .shoes{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:84px;height:16px;background:linear-gradient(90deg,#5d4450 0 40%,transparent 40% 60%,#5d4450 60% 100%);border-radius:20px}
-.avatar.outfit-knit .torso{background:#f4ddd4}.avatar.outfit-knit .skirt{background:#d67483}.avatar.outfit-dress .torso{background:#e95669}.avatar.outfit-dress .skirt{background:#ff8797}.avatar.outfit-coat .torso{background:#7ba3d9}.avatar.outfit-coat .skirt{background:#6c88c5}.avatar.outfit-santa .torso{background:#c63949}.avatar.outfit-santa .skirt{background:#de5565}.avatar .acc{position:absolute;left:50%;top:120px;transform:translateX(-50%);font-size:24px}.avatar.bg-shop .avatar-stage-bg,.avatar.bg-plaza .avatar-stage-bg,.avatar.bg-cabin .avatar-stage-bg{display:block}
-.style-row{display:grid;grid-template-columns:1fr;gap:10px;margin-top:12px}.option-group h4{margin:0 0 8px;font-size:13px}.option-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.style-opt{background:#fff;border:1px solid #ebdce1;border-radius:16px;padding:9px;text-align:center;position:relative}.style-opt.locked{opacity:.55}.style-opt.active{outline:3px solid #68bbff}.style-opt .preview{width:100%;aspect-ratio:1;border-radius:14px;background:linear-gradient(180deg,#fff7fb,#fff);display:grid;place-items:center;font-size:24px}.style-opt strong{display:block;font-size:11px;margin-top:6px}.style-opt small{display:block;font-size:9px;color:var(--muted);margin-top:2px}
-.book-group+.book-group{margin-top:14px}.book-chain{display:flex;gap:8px;overflow:auto;padding-bottom:4px;scrollbar-width:none}.book-chain::-webkit-scrollbar{display:none}.book-item{min-width:70px;background:#fff;border:1px solid #ebdfd6;border-radius:18px;padding:8px;text-align:center}.book-item .bicon{width:48px;height:48px;border-radius:16px;margin:0 auto 6px;display:grid;place-items:center;font-size:24px}.book-item .q{background:#f6f2ef;color:#c3b4ae}.book-item strong{display:block;font-size:10px}.book-item small{display:block;font-size:9px;color:var(--muted);margin-top:2px}
-.mission-tabs{display:flex;gap:8px;margin-bottom:10px}.mission-tab{padding:8px 12px;border-radius:999px;background:#fff0ec;color:#a0757f;font-size:11px;font-weight:900}.mission-tab.active{background:linear-gradient(180deg,#ef7d88,#dc6478);color:#fff}
-.mission-list{display:grid;gap:9px}.mission{background:linear-gradient(180deg,#fffdf8,#fff5ec);border:1px solid #efdfd3;border-radius:18px;padding:11px}.mission .head{display:flex;justify-content:space-between;align-items:center;gap:8px}.mission .head strong{font-size:13px}.mission .head span{font-size:10px;color:#b7837f}.mission p{margin:5px 0 8px;font-size:11px;color:var(--muted);line-height:1.45}.progress{height:10px;border-radius:999px;background:#efe5dd;overflow:hidden}.progress span{display:block;height:100%;background:linear-gradient(90deg,#77cc9c,#51ba84)}.mission .foot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:9px}.reward-chip{font-size:10px;font-weight:900;padding:6px 8px;border-radius:999px;background:#fff0e4;color:#af7a59}.claim{padding:8px 10px;border-radius:12px;background:#e6ddd6;color:#8e7f76;font-size:11px;font-weight:900}.claim.ready{background:linear-gradient(180deg,#58c58e,#35a074);color:#fff}
-.footer-space{height:8px}
-.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:rgba(76,54,64,.92);color:#fff;padding:12px 16px;border-radius:16px;font-size:12px;z-index:1100;opacity:0;pointer-events:none;transition:.2s;box-shadow:0 8px 20px rgba(0,0,0,.18)}.toast.show{opacity:1;bottom:28px}
-.modal-backdrop{position:fixed;inset:0;background:rgba(57,41,50,.56);display:none;z-index:1050;padding:22px 16px;align-items:center;justify-content:center}.modal-backdrop.show{display:flex}.modal{width:min(100%,460px);max-height:min(85dvh,760px);background:#fff;border-radius:28px;overflow:hidden;box-shadow:0 26px 50px rgba(39,22,29,.35);display:flex;flex-direction:column}.modal-head{padding:14px 16px;background:linear-gradient(180deg,#79d7f0,#57c5e2);color:#fff;display:flex;justify-content:space-between;align-items:center}.modal-head.alt{background:linear-gradient(180deg,#f6b25f,#ef8f58)}.modal-head strong{font-size:18px;letter-spacing:-.5px}.close-btn{width:36px;height:36px;border-radius:14px;background:rgba(255,255,255,.22);color:#fff;font-size:22px}.modal-body{padding:16px;overflow:auto}
-.chain-flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.flow-item{background:#f7fbff;border:1px solid #d7edf6;border-radius:18px;padding:8px;text-align:center}.flow-item .bicon{width:50px;height:50px;margin:0 auto 6px;border-radius:18px;display:grid;place-items:center;font-size:26px}.flow-item strong{display:block;font-size:11px}.flow-item small{display:block;font-size:9px;color:var(--muted)}.locked-q{background:#f3f0ed!important;color:#b7a8a4!important}
-.dialogue{display:grid;gap:10px}.linebox{background:#fff8ef;border:1px solid #f1e0ca;border-radius:18px;padding:10px 12px}.linebox strong{display:block;font-size:12px}.linebox p{margin:4px 0 0;font-size:12px;line-height:1.55;color:#795a60}
-@media (max-width:420px){
-  .resource-row{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .tabs{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .order-list{grid-template-columns:1fr}
-  .generator-row{grid-template-columns:1fr 1fr}
-  .profile .brand-copy small{max-width:150px}
-}
+html,body{margin:0;height:100%;background:linear-gradient(180deg,#fff2ef 0,#f6fbff 60%,#eef9fb 100%);font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:var(--text);overscroll-behavior:none}
+body{overflow:hidden}
+button{font:inherit;border:0;cursor:pointer}button:disabled{opacity:.52;cursor:default}button:active:not(:disabled){transform:translateY(1px)}
+#app{width:100%;max-width:520px;height:100dvh;margin:0 auto;background:linear-gradient(180deg,#fff9f8 0,#fffdfa 220px,#fbfffe 100%);box-shadow:0 0 0 1px #fff inset,0 12px 40px rgba(103,92,105,.12);overflow:hidden;position:relative}
+.topbar{padding:calc(10px + var(--safe-top)) 12px 8px;background:linear-gradient(180deg,#f49c9d 0,#ea7b7b 62%,#dd6678 100%);color:#fff;position:relative;z-index:10;box-shadow:0 4px 18px rgba(183,91,105,.22)}
+.topbar:before,.topbar:after{content:'';position:absolute;border-radius:50%;background:rgba(255,255,255,.12);pointer-events:none}.topbar:before{width:190px;height:190px;left:-70px;top:-130px}.topbar:after{width:170px;height:170px;right:-45px;top:-90px}
+.headline{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:10px}.logo{display:flex;gap:10px;align-items:center;min-width:0}.logo-badge{width:52px;height:52px;border-radius:18px;background:linear-gradient(180deg,#fff7d9,#fff0b2);display:grid;place-items:center;box-shadow:0 4px 0 rgba(134,65,82,.28);font-size:29px;position:relative}.logo-badge .lv{position:absolute;left:-2px;bottom:-4px;background:#7f57d0;border:2px solid #fff;border-radius:999px;padding:1px 7px;color:#fff;font-size:11px;font-weight:900}.logo-copy{min-width:0}.logo-copy strong{display:block;font-size:18px;letter-spacing:-.5px}.logo-copy small{display:block;opacity:.92;font-size:11px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px}.mini-actions{display:flex;gap:8px}.round{width:38px;height:38px;border-radius:14px;background:rgba(255,255,255,.2);color:#fff;font-size:18px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
+.currency-row{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:10px}.currency{min-width:0;background:var(--paper);color:var(--text);display:flex;align-items:center;gap:7px;padding:8px;border-radius:18px;box-shadow:0 4px 0 rgba(130,67,81,.22);border:1px solid #f2dfd4}.currency .chip{width:28px;height:28px;border-radius:12px;display:grid;place-items:center;font-size:18px;flex:none}.currency .tx{min-width:0}.currency strong{display:block;font-size:14px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.currency small{display:block;font-size:10px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.energy .chip{background:#fff0a5}.coin .chip{background:#ffe9b8}.ruby .chip{background:#ffdced}.star .chip{background:#e9f3ff}
+.main{height:calc(100dvh - 134px - var(--safe-top));display:flex;flex-direction:column}
+.content{flex:1;min-height:0;position:relative}
+.page{position:absolute;inset:0;padding:10px 12px 8px;display:none}.page.active{display:flex}.page.scroll{overflow:auto;display:none;padding-bottom:78px}.page.scroll.active{display:block}
+.page.merge{display:none;flex-direction:column;gap:8px;overflow:hidden}.page.merge.active{display:flex}
+.story-strip{background:linear-gradient(135deg,#fff4e6,#fffdf8);border:1px solid #f2dfc4;border-radius:18px;padding:10px 12px;display:flex;align-items:center;gap:10px;box-shadow:var(--shadow)}.story-portrait{width:46px;height:46px;border-radius:15px;background:#fff;box-shadow:inset 0 0 0 1px #f4e0d8;overflow:hidden;flex:none}.story-copy{min-width:0;flex:1}.story-copy strong{display:block;font-size:12px}.story-copy small{display:block;font-size:10px;color:var(--muted);margin-top:3px;line-height:1.35}.story-link{padding:8px 10px;border-radius:12px;background:#fbe7df;color:#9a6665;font-size:11px;font-weight:900;white-space:nowrap}
+.order-rail{display:flex;gap:8px;overflow:auto;scrollbar-width:none;padding-bottom:1px}.order-rail::-webkit-scrollbar{display:none}.order-card{min-width:152px;max-width:152px;background:linear-gradient(180deg,#fffefb,#fff5eb);border:1px solid #efe0d4;border-radius:18px;padding:8px;box-shadow:0 4px 0 #ebd5c2;display:flex;flex-direction:column;gap:7px}.order-card.ready{background:linear-gradient(180deg,#f2fff8,#fffef9);border-color:#9fddb8;box-shadow:0 4px 0 #a5d3b5}.person-row{display:flex;align-items:center;gap:8px}.portrait{width:40px;height:40px;border-radius:14px;background:#fff;box-shadow:inset 0 0 0 1px #f1e1d8;overflow:hidden;flex:none}.pmeta{min-width:0}.pmeta strong{display:block;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pmeta small{display:block;font-size:9px;color:#b17d85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.want-list{display:flex;gap:5px;justify-content:center;min-height:39px}.want{width:36px;height:36px;border-radius:12px;background:linear-gradient(180deg,#fff,#faf5ef);border:1px solid #eadbd1;padding:4px;position:relative}.want.ok{background:linear-gradient(180deg,#eefcf5,#fff)}.want .n{position:absolute;right:-1px;bottom:-4px;background:#fff;border:1px solid #ebddd4;border-radius:999px;padding:0 4px;font-size:9px;font-weight:900;color:#8a7073}.order-reward{font-size:10px;text-align:center;font-weight:900;color:#96666d}.order-card .go{border-radius:11px;padding:8px 5px;background:#ddcdc2;color:#fff;font-size:11px;font-weight:900}.order-card.ready .go{background:linear-gradient(180deg,#58c58d,#36a074)}
+.merge-shell{flex:1;min-height:0;display:flex;flex-direction:column;gap:8px}.board-shell{flex:1;min-height:0;background:linear-gradient(180deg,#ffd89f,#f0b565);border-radius:24px;padding:10px;box-shadow:0 8px 0 #d88d4f,0 16px 28px rgba(171,113,62,.18);display:flex;flex-direction:column;gap:8px}.board-top{display:flex;justify-content:space-between;align-items:center;color:#865846;padding:0 4px}.board-top strong{font-size:15px}.board-top small{font-size:10px}.board-panel{flex:1;min-height:0;background:linear-gradient(180deg,#f6ecd6,#f2e2c5);border-radius:20px;padding:8px;border:2px solid rgba(255,255,255,.55);position:relative;overflow:hidden}.board-panel:before{content:'';position:absolute;inset:0;background-image:linear-gradient(to right,rgba(255,255,255,.13) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,.13) 1px,transparent 1px);background-size:calc(100%/7) calc(100%/8);pointer-events:none}
+.board{height:100%;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));grid-template-rows:repeat(8,1fr);gap:4px;touch-action:none;user-select:none;-webkit-user-select:none;position:relative}.cell{border-radius:13px;background:rgba(255,255,255,.34);border:1px solid rgba(218,196,164,.95);position:relative;display:grid;place-items:center;overflow:hidden;box-shadow:inset 0 2px rgba(255,255,255,.6);touch-action:none}.cell.empty{background:rgba(255,255,255,.14)}.cell.selected{outline:3px solid #57b7ff}.cell.target{outline:3px dashed #ef9458}.cell.need{box-shadow:inset 0 0 0 2px #9ad5a4}.cell.dragging .piece{opacity:.25}.piece{width:90%;height:90%;border-radius:17px;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 4px 10px rgba(153,118,103,.16), inset 0 1px rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.78);background:#fff}.piece .badge{position:absolute;left:4px;top:4px;min-width:18px;height:18px;padding:0 4px;border-radius:999px;background:rgba(255,255,255,.86);display:grid;place-items:center;font-size:10px;color:#7d6467;font-weight:900;z-index:1}.piece .art{width:76%;height:76%}.gGift{background:linear-gradient(180deg,#fff0b7,#ffd777)}.gFeast{background:linear-gradient(180deg,#ffe4d8,#ffc5b7)}.gStudio{background:linear-gradient(180deg,#dff2ff,#a7dcff)}.gJewel{background:linear-gradient(180deg,#eee1ff,#c8b6ff)}.gCloset{background:linear-gradient(180deg,#ffe1ef,#ffbad6)}
+.info-dock{display:flex;align-items:center;gap:8px;background:#fffdf8;border:1px solid #eaded3;border-radius:18px;padding:8px 10px}.info-icon{width:44px;height:44px;border-radius:15px;background:#fff;box-shadow:inset 0 0 0 1px #efe1d7;display:grid;place-items:center;flex:none}.info-copy{flex:1;min-width:0}.info-copy strong{display:block;font-size:12px}.info-copy small{display:block;font-size:10px;color:var(--muted);margin-top:3px;line-height:1.35}.info-actions{display:flex;gap:6px}.mini{padding:8px 9px;border-radius:12px;background:#fcebe5;color:#985d68;font-size:10px;font-weight:900;white-space:nowrap}
+.gen-dock{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:8px}.gen-dock-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}.gen-dock-head strong{font-size:12px}.gen-dock-head small{font-size:10px;color:var(--muted)}.gen-row{display:flex;gap:7px;overflow:auto;scrollbar-width:none}.gen-row::-webkit-scrollbar{display:none}.gen{min-width:110px;background:linear-gradient(180deg,#fffdf7,#fff3eb);border:1px solid #f0ddd1;border-radius:16px;padding:8px;box-shadow:0 3px 0 #ead8cc}.gen.locked{filter:grayscale(.18);opacity:.74}.gen .gtop{display:flex;align-items:center;gap:8px}.gen .gico{width:38px;height:38px;border-radius:14px;background:#fff;box-shadow:inset 0 0 0 1px #f0dfd6;display:grid;place-items:center;flex:none}.gen strong{display:block;font-size:11px;line-height:1.15}.gen small{display:block;font-size:9px;color:var(--muted);margin-top:2px}.gen .gfoot{display:flex;justify-content:space-between;align-items:center;margin-top:7px;font-size:10px;font-weight:900}.tag{padding:4px 7px;border-radius:999px;background:#ffe8ef;color:#cf6980;font-size:9px}
+.nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;padding:8px 12px calc(8px + var(--safe-bottom));background:linear-gradient(180deg,#fff,#fff9f5);border-top:1px solid #eedfda;box-shadow:0 -5px 18px rgba(154,125,133,.08)}.nav button{padding:8px 4px 7px;border-radius:16px;background:#fff4ee;border:1px solid #efddd3;color:#9f7b80;font-size:11px;font-weight:900;display:flex;flex-direction:column;align-items:center;gap:4px}.nav button.active{background:linear-gradient(180deg,#ef7e86,#dc6478);color:#fff;border-color:#dc6478;box-shadow:0 4px 0 #c35066}.nav .ico{font-size:18px;line-height:1}
+.panel{background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:12px;margin-bottom:12px}.panel h3{margin:0 0 10px;font-size:16px}.panel-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}.sub{font-size:11px;color:var(--muted)}
+.village-hero{background:linear-gradient(180deg,#a6dafd,#e2f5ff 37%,#f9feff 38%,#eef4f8 100%);border-radius:24px;border:1px solid #ddeef8;padding:12px;box-shadow:var(--shadow)}.sky-status{display:flex;justify-content:space-between;align-items:flex-start}.sky-status .cloud{font-size:18px;opacity:.84}.sky-status .badge{font-size:12px;font-weight:900;color:#5d7fa4;background:rgba(255,255,255,.86);padding:8px 10px;border-radius:14px;box-shadow:0 4px 10px rgba(119,168,189,.18)}.plots{margin-top:12px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.plot{aspect-ratio:1;border-radius:18px;background:linear-gradient(180deg,#ffffff,#eef6f7);border:1px solid #d6ebf4;position:relative;display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(255,255,255,.55)}.plot.empty{background:linear-gradient(180deg,#ffffffaa,#eef6f766);border-style:dashed}.plot.sel{outline:3px dashed #ef8b67}.plot .label{position:absolute;left:50%;bottom:5px;transform:translateX(-50%);padding:2px 7px;border-radius:999px;background:rgba(255,255,255,.92);font-size:9px;font-weight:900;color:#638090;max-width:90%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.vShop{display:flex;gap:8px;overflow:auto;padding-top:10px;scrollbar-width:none}.vShop::-webkit-scrollbar{display:none}.buy-card{min-width:126px;background:#fff;border:1px solid #e6ded4;border-radius:18px;padding:10px;box-shadow:var(--shadow)}.buy-card .t{display:flex;gap:8px;align-items:center}.buy-card .bico{width:38px;height:38px;border-radius:14px;background:#fff6ee;display:grid;place-items:center}.buy-card strong{display:block;font-size:12px}.buy-card small{display:block;font-size:9px;color:var(--muted);margin-top:2px}.buy-card .buy{margin-top:8px;width:100%;padding:8px;border-radius:12px;background:linear-gradient(180deg,#56c48c,#349f74);color:#fff;font-weight:900;font-size:10px}.buy-card .buy.locked{background:#ece7e0;color:#907f77}
+.style-stage{background:linear-gradient(180deg,#ffdbe3,#fff1f4 40%,#fff9fb);border:1px solid #f0d8de;border-radius:24px;padding:14px;box-shadow:var(--shadow)}.doll-stage{position:relative;height:280px;border-radius:20px;background:linear-gradient(180deg,#fff3f6,#fffafc 62%,#fdebe7);overflow:hidden;display:flex;align-items:flex-end;justify-content:center}.doll-stage:before{content:'';position:absolute;left:50%;top:22px;transform:translateX(-50%);width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,#fff,#ffe7f0 65%,transparent 66%);opacity:.9}.avatarBox{width:180px;height:250px;position:relative;z-index:2}.styleGroup+.styleGroup{margin-top:12px}.styleGroup h4{margin:0 0 8px;font-size:13px}.styleGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.styleOpt{background:#fff;border:1px solid #ebdce1;border-radius:16px;padding:8px;text-align:center}.styleOpt.locked{opacity:.56}.styleOpt.active{outline:3px solid #68bbff}.styleOpt .pv{aspect-ratio:1;border-radius:14px;background:linear-gradient(180deg,#fff7fb,#fff);display:grid;place-items:center}.styleOpt strong{display:block;font-size:10px;margin-top:6px}.styleOpt small{display:block;font-size:9px;color:var(--muted);margin-top:2px}
+.bookGroup+.bookGroup{margin-top:14px}.bookRow{display:flex;gap:8px;overflow:auto;scrollbar-width:none;padding-bottom:2px}.bookRow::-webkit-scrollbar{display:none}.bookItem{min-width:74px;background:#fff;border:1px solid #ebdfd6;border-radius:18px;padding:8px;text-align:center}.bookItem .ic{width:50px;height:50px;border-radius:16px;margin:0 auto 6px;display:grid;place-items:center;background:#fff}.bookItem .q{background:#f3f0ed;color:#b7a8a4}.bookItem strong{display:block;font-size:10px}.bookItem small{display:block;font-size:9px;color:var(--muted);margin-top:2px}
+.missionTabs{display:flex;gap:8px;margin-bottom:10px}.missionTabs button{padding:8px 12px;border-radius:999px;background:#fff0ec;color:#a0757f;font-size:11px;font-weight:900}.missionTabs button.active{background:linear-gradient(180deg,#ef7d88,#dc6478);color:#fff}.mList{display:grid;gap:9px}.mission{background:linear-gradient(180deg,#fffdf8,#fff5ec);border:1px solid #efdfd3;border-radius:18px;padding:11px}.mission .hd{display:flex;justify-content:space-between;align-items:center;gap:8px}.mission .hd strong{font-size:13px}.mission .hd span{font-size:10px;color:#b7837f}.mission p{margin:5px 0 8px;font-size:11px;color:var(--muted);line-height:1.45}.bar{height:10px;border-radius:999px;background:#efe5dd;overflow:hidden}.bar span{display:block;height:100%;background:linear-gradient(90deg,#77cc9c,#51ba84)}.mission .ft{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:9px}.reward{font-size:10px;font-weight:900;padding:6px 8px;border-radius:999px;background:#fff0e4;color:#af7a59}.claim{padding:8px 10px;border-radius:12px;background:#e6ddd6;color:#8e7f76;font-size:11px;font-weight:900}.claim.ready{background:linear-gradient(180deg,#58c58e,#35a074);color:#fff}
+.toast{position:fixed;left:50%;bottom:78px;transform:translateX(-50%);background:rgba(76,54,64,.92);color:#fff;padding:12px 16px;border-radius:16px;font-size:12px;z-index:1100;opacity:0;pointer-events:none;transition:.2s;box-shadow:0 8px 20px rgba(0,0,0,.18)}.toast.show{opacity:1;bottom:86px}.modal-bg{position:fixed;inset:0;background:rgba(57,41,50,.56);display:none;z-index:1200;padding:18px 16px;align-items:center;justify-content:center}.modal-bg.show{display:flex}.modal{width:min(100%,460px);max-height:min(86dvh,780px);background:#fff;border-radius:28px;overflow:hidden;box-shadow:0 26px 50px rgba(39,22,29,.35);display:flex;flex-direction:column}.mhead{padding:14px 16px;background:linear-gradient(180deg,#79d7f0,#57c5e2);color:#fff;display:flex;justify-content:space-between;align-items:center}.mhead.alt{background:linear-gradient(180deg,#f6b25f,#ef8f58)}.mhead strong{font-size:18px;letter-spacing:-.5px}.close{width:36px;height:36px;border-radius:14px;background:rgba(255,255,255,.22);color:#fff;font-size:22px}.mbody{padding:16px;overflow:auto}.dialogue{display:grid;gap:10px}.bubble{background:#fff8ef;border:1px solid #f1e0ca;border-radius:18px;padding:10px 12px}.bubble strong{display:block;font-size:12px}.bubble p{margin:4px 0 0;font-size:12px;line-height:1.55;color:#795a60}.chainGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.chainCell{background:#f7fbff;border:1px solid #d7edf6;border-radius:18px;padding:8px;text-align:center}.chainCell .x{width:52px;height:52px;margin:0 auto 6px;border-radius:18px;background:#fff;display:grid;place-items:center}.chainCell strong{display:block;font-size:10px}.chainCell small{display:block;font-size:9px;color:var(--muted)}
+.dragGhost{position:fixed;z-index:1300;pointer-events:none;transform:translate(-50%,-66%) scale(1.08);filter:drop-shadow(0 10px 12px rgba(0,0,0,.22))}
+@media (max-width:420px){.currency-row{grid-template-columns:repeat(2,minmax(0,1fr))}.main{height:calc(100dvh - 182px - var(--safe-top))}.order-card{min-width:145px;max-width:145px}.gen{min-width:108px}.styleGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head>
 <body>
 <div id="app">
-  <header class="header">
-    <div class="profile-row">
-      <div class="profile">
-        <div class="avatar-badge">🎄<span class="lv" id="levelBadge">1</span></div>
-        <div class="brand-copy">
+  <div class="topbar">
+    <div class="headline">
+      <div class="logo">
+        <div class="logo-badge">🎄<span class="lv" id="levelBadge">1</span></div>
+        <div class="logo-copy">
           <strong>산타의 머지 스토리</strong>
-          <small id="headerStory">눈꽃 마을을 복구하고, 주인공을 꾸며 보세요.</small>
+          <small id="storySummary">눈꽃 마을을 복구하고 손님들의 부탁을 도와주세요.</small>
         </div>
       </div>
-      <div class="icon-stack">
-        <button class="circle-btn" id="soundBtn" aria-label="사운드">🔊</button>
-        <button class="circle-btn" id="helpBtn" aria-label="도움말">❔</button>
+      <div class="mini-actions">
+        <button class="round" id="soundBtn">🔊</button>
+        <button class="round" id="helpBtn">❔</button>
       </div>
     </div>
-    <div class="resource-row">
-      <div class="resource energy"><div class="ico">⚡</div><div class="txt"><strong id="energyText">0 / 40</strong><small id="energyTimer">충전중</small></div></div>
-      <div class="resource coin"><div class="ico">🪙</div><div class="txt"><strong id="coinText">0</strong><small>상점 · 건물 구매</small></div></div>
-      <div class="resource ruby"><div class="ico">💎</div><div class="txt"><strong id="rubyText">0</strong><small>희귀 보상</small></div></div>
-      <div class="resource star"><div class="ico">⭐</div><div class="txt"><strong id="starText">0</strong><small id="deliverySummary">납품 0회</small></div></div>
+    <div class="currency-row">
+      <div class="currency energy"><div class="chip">⚡</div><div class="tx"><strong id="energyText">0 / 40</strong><small id="energyTimer">충전중</small></div></div>
+      <div class="currency coin"><div class="chip">🪙</div><div class="tx"><strong id="coinText">0</strong><small>건물 · 장식 구매</small></div></div>
+      <div class="currency ruby"><div class="chip">💎</div><div class="tx"><strong id="rubyText">0</strong><small>특별 이벤트 보상</small></div></div>
+      <div class="currency star"><div class="chip">⭐</div><div class="tx"><strong id="starText">0</strong><small id="deliveryText">납품 0회</small></div></div>
     </div>
-  </header>
+  </div>
 
-  <div class="event-strip" id="eventStrip"></div>
-
-  <nav class="tabs" id="tabs"></nav>
-
-  <section class="page active" id="page-merge">
-    <div class="section">
-      <div class="story-card">
-        <div class="portrait">👩🏻</div>
-        <div class="copy">
-          <strong id="mergeStoryTitle">에피소드 1 · 사라진 축제 준비물</strong>
-          <p id="mergeStoryCopy">손님들의 부탁을 들어 주고, 별을 모아 크리스마스 축제를 다시 열어 주세요.</p>
+  <div class="main">
+    <div class="content">
+      <section class="page merge active" id="page-merge">
+        <div class="story-strip">
+          <div class="story-portrait" id="storyPortrait"></div>
+          <div class="story-copy">
+            <strong id="mergeStoryTitle">에피소드 1 · 사라진 축제 준비물</strong>
+            <small id="mergeStoryCopy">손님 주문을 완료하고 별을 모아 눈꽃 마을 축제를 다시 준비하세요.</small>
+          </div>
+          <button class="story-link" id="storyBtn">스토리</button>
         </div>
-        <button class="story-btn" id="storyBtn">스토리</button>
-      </div>
-    </div>
 
-    <div class="section">
-      <div class="section-top"><h3>손님 주문</h3><div class="sub">완료 시 코인 · 별 · 경험치 획득</div></div>
-      <div class="order-list" id="orderList"></div>
-    </div>
+        <div class="order-rail" id="orderRail"></div>
 
-    <div class="board-wrap">
-      <div class="board-top"><strong>머지 보드</strong><div class="meta" id="boardMeta">0 / 56 칸 사용 중</div></div>
-      <div class="board-panel">
-        <div class="board" id="board"></div>
-      </div>
-      <div class="info-bar" id="infoBar"></div>
-    </div>
-
-    <div class="section generator-panel">
-      <div class="section-top"><h3>작업대 / 선물상자</h3><div class="sub">눌러서 해당 라인의 재료를 생성하세요</div></div>
-      <div class="generator-row" id="generatorRow"></div>
-      <div class="scroll-note">같은 아이템끼리 드래그하여 머지하세요 · 아이템이나 작업대를 누르면 아래 설명과 도감 정보를 볼 수 있어요.</div>
-    </div>
-  </section>
-
-  <section class="page" id="page-village">
-    <div class="section">
-      <div class="section-top"><h3>눈꽃 마을</h3><div class="sub">별로 건물을 해금하고 코인으로 장식하세요</div></div>
-      <div class="village-hero">
-        <div class="skyline"><div class="cloud">☁️ ❄️ ☁️</div><div class="village-status" id="villageStatus">마을 수입 +0 / 1분</div></div>
-        <div class="plot-grid" id="plotGrid"></div>
-      </div>
-      <div class="shop-row" id="shopRow"></div>
-      <div class="scroll-note" id="placeHint">상점에서 아이템을 선택하면 빈 부지에 배치할 수 있어요.</div>
-    </div>
-  </section>
-
-  <section class="page" id="page-style">
-    <div class="section style-scene">
-      <div class="section-top"><h3>주인공 꾸미기</h3><div class="sub">미션과 별 보상으로 꾸미기 아이템 해금</div></div>
-      <div class="avatar-stage" id="avatarStage">
-        <div class="avatar-stage-bg"></div>
-        <div class="avatar" id="avatarPreview">
-          <div class="hair"></div>
-          <div class="head"></div>
-          <div class="face">◕‿◕</div>
-          <div class="torso"></div>
-          <div class="skirt"></div>
-          <div class="legs"></div>
-          <div class="shoes"></div>
-          <div class="acc"></div>
+        <div class="merge-shell">
+          <div class="board-shell">
+            <div class="board-top"><strong>머지 보드</strong><small id="boardMeta">0 / 56 칸</small></div>
+            <div class="board-panel"><div class="board" id="board"></div></div>
+          </div>
+          <div class="info-dock" id="infoDock"></div>
+          <div class="gen-dock">
+            <div class="gen-dock-head"><strong>작업대 / 생성기</strong><small>한 화면에서 바로 생성 · 머지</small></div>
+            <div class="gen-row" id="genRow"></div>
+          </div>
         </div>
-      </div>
-      <div class="style-row" id="styleOptions"></div>
-    </div>
-  </section>
+      </section>
 
-  <section class="page" id="page-book">
-    <div class="section">
-      <div class="section-top"><h3>머지 도감</h3><div class="sub">미발견 아이템은 ? 로 표시됩니다</div></div>
-      <div id="bookWrap"></div>
+      <section class="page scroll" id="page-village"></section>
+      <section class="page scroll" id="page-style"></section>
+      <section class="page scroll" id="page-book"></section>
+      <section class="page scroll" id="page-missions"></section>
     </div>
-  </section>
 
-  <section class="page" id="page-missions">
-    <div class="section">
-      <div class="section-top"><h3>이벤트 · 미션 · 업적</h3><div class="sub">완료 후 보상을 수령하세요</div></div>
-      <div class="mission-tabs" id="missionTabs"></div>
-      <div class="mission-list" id="missionList"></div>
-    </div>
-  </section>
-
-  <div class="footer-space"></div>
+    <nav class="nav" id="bottomNav"></nav>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
-<div class="modal-backdrop" id="modalBackdrop"><div class="modal" id="modalBox"></div></div>
+<div class="modal-bg" id="modalBg"><div class="modal" id="modalBox"></div></div>
 
 <script>
-const GRID_W=7, GRID_H=8, GRID_SIZE=GRID_W*GRID_H;
-const MAX_ENERGY=40, ENERGY_MS=90000, PASSIVE_MS=60000;
-const SAVE_KEY='santa_merge_story_v4';
+const GRID_W=7, GRID_H=8, GRID=GRID_W*GRID_H;
+const MAX_ENERGY=40, ENERGY_MS=90000, PASSIVE_MS=60000, SAVE_KEY='santa_merge_story_v5';
 const TABS=[
-  {id:'merge',label:'🎁 머지'},
-  {id:'village',label:'🏘️ 마을'},
-  {id:'style',label:'👗 꾸미기'},
-  {id:'book',label:'📚 도감'},
-  {id:'missions',label:'⭐ 미션'}
+  {id:'merge',label:'머지',icon:'🎁'},
+  {id:'village',label:'마을',icon:'🏘️'},
+  {id:'style',label:'꾸미기',icon:'👗'},
+  {id:'book',label:'도감',icon:'📚'},
+  {id:'missions',label:'미션',icon:'⭐'}
 ];
 const CHAINS={
-  gift:{id:'gift',name:'선물 공방',klass:'chain-gift',generator:'giftbox',levels:[
-    {name:'선물 태그',icon:'🏷️',desc:'선물 포장의 시작.'},
-    {name:'리본',icon:'🎀',desc:'작은 선물을 장식해요.'},
-    {name:'작은 선물상자',icon:'🎁',desc:'손바닥 크기의 선물.'},
-    {name:'반짝 선물가방',icon:'🛍️',desc:'조금 더 좋은 선물.'},
-    {name:'깜짝 선물세트',icon:'🎊',desc:'손님들이 좋아하는 구성.'},
-    {name:'프리미엄 선물함',icon:'🎁',desc:'럭셔리한 특별 선물.'},
-    {name:'산타의 대형 꾸러미',icon:'🧳',desc:'굵직한 보상을 담아요.'},
-    {name:'황금 썰매 선물',icon:'🛷',desc:'공방 최고 단계 선물.'}
+  gift:{id:'gift',name:'선물 공방',klass:'gGift',generator:'giftbox',levels:[
+    {name:'선물 태그',desc:'선물 포장의 시작.'},
+    {name:'리본',desc:'작은 선물을 장식해요.'},
+    {name:'작은 선물상자',desc:'손바닥 크기의 선물.'},
+    {name:'반짝 선물가방',desc:'조금 더 좋은 선물.'},
+    {name:'깜짝 선물세트',desc:'손님들이 좋아하는 구성.'},
+    {name:'프리미엄 선물함',desc:'럭셔리한 특별 선물.'},
+    {name:'산타 꾸러미',desc:'굵직한 보상이 담겨요.'},
+    {name:'황금 썰매 선물',desc:'공방 최고 단계 선물.'}
   ]},
-  feast:{id:'feast',name:'겨울 다과 바구니',klass:'chain-feast',generator:'feastbox',levels:[
-    {name:'겨울 양초',icon:'🕯️',desc:'포근한 향이 번져요.'},
-    {name:'열매 꽃병',icon:'🍒',desc:'테이블 장식 재료.'},
-    {name:'베리 볼',icon:'🥣',desc:'상큼한 겨울 간식.'},
-    {name:'빵 바구니',icon:'🥖',desc:'파티용 다과.'},
-    {name:'사과 티',icon:'☕',desc:'따뜻한 음료.'},
-    {name:'축제 트레이',icon:'🍱',desc:'손님용 간식 세트.'},
-    {name:'겨울 스튜',icon:'🍲',desc:'메인 요리 준비 완료.'},
-    {name:'따뜻한 축제 식탁',icon:'🍽️',desc:'다과 라인의 최고 단계.'}
+  feast:{id:'feast',name:'겨울 다과 바구니',klass:'gFeast',generator:'feastbox',levels:[
+    {name:'겨울 양초',desc:'포근한 향이 번져요.'},
+    {name:'열매 장식',desc:'테이블 장식 재료.'},
+    {name:'베리 볼',desc:'상큼한 겨울 간식.'},
+    {name:'빵 바구니',desc:'파티용 다과.'},
+    {name:'사과 티',desc:'따뜻한 음료.'},
+    {name:'축제 트레이',desc:'손님용 간식 세트.'},
+    {name:'겨울 스튜',desc:'메인 요리 준비 완료.'},
+    {name:'따뜻한 축제 식탁',desc:'다과 라인의 최고 단계.'}
   ]},
-  studio:{id:'studio',name:'포토 스튜디오',klass:'chain-studio',generator:'studiobox',levels:[
-    {name:'마이크 캡',icon:'🎤',desc:'소품 준비 중.'},
-    {name:'확성기',icon:'📣',desc:'촬영 스탭 장비.'},
-    {name:'슬레이트',icon:'🎬',desc:'촬영 시작!' },
-    {name:'핸드캠',icon:'📹',desc:'기본 촬영 장비.'},
-    {name:'필름 릴',icon:'🎞️',desc:'스튜디오 편집 재료.'},
-    {name:'조명 카메라',icon:'📽️',desc:'고급 촬영 장비.'},
-    {name:'감독 의자',icon:'🪑',desc:'현장을 총괄하는 자리.'},
-    {name:'레드카펫 쇼',icon:'🌟',desc:'스튜디오 라인 최고 단계.'}
+  studio:{id:'studio',name:'포토 스튜디오',klass:'gStudio',generator:'studiobox',levels:[
+    {name:'마이크 캡',desc:'소품 준비 중.'},
+    {name:'확성기',desc:'촬영 스탭 장비.'},
+    {name:'슬레이트',desc:'촬영 시작!' },
+    {name:'핸드캠',desc:'기본 촬영 장비.'},
+    {name:'필름 릴',desc:'스튜디오 편집 재료.'},
+    {name:'조명 카메라',desc:'고급 촬영 장비.'},
+    {name:'감독 의자',desc:'현장을 총괄하는 자리.'},
+    {name:'레드카펫 쇼',desc:'스튜디오 최고 단계.'}
   ]},
-  jewel:{id:'jewel',name:'주얼리 박스',klass:'chain-jewel',generator:'jewelbox',levels:[
-    {name:'쿠션',icon:'🧵',desc:'주얼리 받침대 천.'},
-    {name:'귀걸이 스탠드',icon:'🪞',desc:'귀걸이 진열 준비.'},
-    {name:'주얼리 목대',icon:'📿',desc:'목걸이 디스플레이.'},
-    {name:'귀걸이 세트',icon:'👂',desc:'예쁜 포인트 악세서리.'},
-    {name:'반지',icon:'💍',desc:'반짝이는 보석 반지.'},
-    {name:'손목시계',icon:'⌚',desc:'품격 있는 선물.'},
-    {name:'보석 케이스',icon:'💎',desc:'고급 제품이 담겨요.'},
-    {name:'로열 크라운',icon:'👑',desc:'주얼리 라인의 최고 단계.'}
+  jewel:{id:'jewel',name:'주얼리 박스',klass:'gJewel',generator:'jewelbox',levels:[
+    {name:'쿠션',desc:'주얼리 받침대 천.'},
+    {name:'귀걸이 스탠드',desc:'귀걸이 진열 준비.'},
+    {name:'주얼리 목대',desc:'목걸이 디스플레이.'},
+    {name:'귀걸이 세트',desc:'예쁜 포인트 악세서리.'},
+    {name:'반지',desc:'반짝이는 보석 반지.'},
+    {name:'손목시계',desc:'품격 있는 선물.'},
+    {name:'보석 케이스',desc:'고급 제품이 담겨요.'},
+    {name:'로열 크라운',desc:'주얼리 최고 단계.'}
   ]},
-  closet:{id:'closet',name:'겨울 옷장',klass:'chain-closet',generator:'closetbox',levels:[
-    {name:'복슬 폼폼',icon:'🧶',desc:'귀여운 겨울 장식.'},
-    {name:'양말',icon:'🧦',desc:'포근한 겨울 필수품.'},
-    {name:'장갑',icon:'🧤',desc:'손을 따뜻하게.'},
-    {name:'모자',icon:'🧢',desc:'외출 준비 완료.'},
-    {name:'목도리',icon:'🧣',desc:'포근한 스타일 포인트.'},
-    {name:'코트',icon:'🧥',desc:'주인공이 좋아하는 아우터.'},
-    {name:'겨울 드레스',icon:'👗',desc:'꾸미기에도 사용돼요.'},
-    {name:'쇼윈도 코디',icon:'👠',desc:'옷장 라인의 최고 단계.'}
+  closet:{id:'closet',name:'겨울 옷장',klass:'gCloset',generator:'closetbox',levels:[
+    {name:'복슬 폼폼',desc:'귀여운 겨울 장식.'},
+    {name:'양말',desc:'포근한 겨울 필수품.'},
+    {name:'장갑',desc:'손을 따뜻하게.'},
+    {name:'모자',desc:'외출 준비 완료.'},
+    {name:'목도리',desc:'포근한 스타일 포인트.'},
+    {name:'코트',desc:'주인공이 좋아하는 아우터.'},
+    {name:'겨울 드레스',desc:'꾸미기에도 사용돼요.'},
+    {name:'쇼윈도 코디',desc:'옷장 최고 단계.'}
   ]}
 };
 const GENERATORS=[
-  {id:'giftbox',chain:'gift',name:'서프라이즈 선물 상자',icon:'🎁',unlockStars:0,cost:1,outputs:[0,0,1]},
-  {id:'feastbox',chain:'feast',name:'따뜻한 다과 바구니',icon:'🧺',unlockStars:6,cost:1,outputs:[0,0,1]},
-  {id:'studiobox',chain:'studio',name:'포토 스튜디오',icon:'📷',unlockStars:12,cost:1,outputs:[0,1]},
-  {id:'jewelbox',chain:'jewel',name:'고급 주얼리 박스',icon:'💍',unlockStars:18,cost:1,outputs:[0,1]},
-  {id:'closetbox',chain:'closet',name:'겨울 패션 옷장',icon:'🧥',unlockStars:26,cost:1,outputs:[0,0,1]}
+  {id:'giftbox',chain:'gift',name:'서프라이즈 선물 상자',unlockStars:0,cost:1,outputs:[0,0,1]},
+  {id:'feastbox',chain:'feast',name:'따뜻한 다과 바구니',unlockStars:6,cost:1,outputs:[0,0,1]},
+  {id:'studiobox',chain:'studio',name:'포토 스튜디오',unlockStars:12,cost:1,outputs:[0,1]},
+  {id:'jewelbox',chain:'jewel',name:'고급 주얼리 박스',unlockStars:18,cost:1,outputs:[0,1]},
+  {id:'closetbox',chain:'closet',name:'겨울 패션 옷장',unlockStars:26,cost:1,outputs:[0,0,1]}
 ];
-const CLIENTS=[
-  ['👧🏻','한나','선물 준비가 급해요!'],['👩🏻','소피','예쁜 겨울 소품이 필요해요.'],['🧑🏻','민준','친구에게 줄 선물을 찾고 있어요.'],['👵🏻','할머니','따뜻한 겨울 파티를 준비해 주세요.'],['👨🏻','엘리엇','축제 촬영에 쓸 소품이 필요해요.'],['👩🏻‍🍳','요리사 루나','겨울 축제 테이블을 완성해 주세요.']
+const CUSTOMERS=[
+  {id:'hana',name:'한나',role:'파티 플래너',line:'선물 준비가 급해요!',skin:'#f6d1c0',hair:'#52353a',top:'#c96d7c'},
+  {id:'sophie',name:'소피',role:'스타일리스트',line:'예쁜 겨울 소품이 필요해요.',skin:'#f5d3bf',hair:'#7a523b',top:'#f0a36d'},
+  {id:'elliot',name:'엘리엇',role:'영상팀',line:'촬영 소품을 구하고 있어요.',skin:'#7b553f',hair:'#231c20',top:'#4e6fa8'},
+  {id:'yuna',name:'유나',role:'베이커',line:'축제 테이블을 꾸며 주세요.',skin:'#f5d8c8',hair:'#5b4236',top:'#b55c54'},
+  {id:'mina',name:'미나',role:'손님',line:'친구에게 줄 선물을 찾고 있어요.',skin:'#efc4ae',hair:'#2a2b33',top:'#7f7bd1'},
+  {id:'ron',name:'론',role:'마을 주민',line:'겨울 파티를 도와주세요.',skin:'#d7a47b',hair:'#4a332c',top:'#698a5b'}
 ];
 const VILLAGE_SHOP=[
-  {id:'cafe',name:'눈꽃 카페',icon:'☕',price:120,currency:'coin',income:2,unlockStars:3,desc:'포근한 코코아 가게'},
-  {id:'tree',name:'반짝 트리',icon:'🎄',price:80,currency:'coin',income:0,unlockStars:0,desc:'마을 중심 장식'},
-  {id:'ginger',name:'진저브레드 집',icon:'🏠',price:160,currency:'coin',income:3,unlockStars:8,desc:'마을 대표 집'},
-  {id:'snowman',name:'눈사람',icon:'⛄',price:70,currency:'coin',income:0,unlockStars:0,desc:'귀여운 포토존'},
-  {id:'market',name:'선물 마켓',icon:'🏪',price:210,currency:'coin',income:4,unlockStars:14,desc:'쇼핑 명소'},
-  {id:'chapel',name:'눈꽃 예배당',icon:'⛪',price:280,currency:'coin',income:5,unlockStars:20,desc:'고요한 예배당'},
-  {id:'carousel',name:'겨울 회전목마',icon:'🎠',price:360,currency:'coin',income:6,unlockStars:28,desc:'아이들의 인기 장소'},
-  {id:'castle',name:'산타 성',icon:'🏰',price:520,currency:'coin',income:8,unlockStars:40,desc:'축제의 랜드마크'}
+  {id:'cafe',name:'눈꽃 카페',price:120,currency:'coin',income:2,unlockStars:3,desc:'포근한 코코아 가게'},
+  {id:'tree',name:'반짝 트리',price:80,currency:'coin',income:0,unlockStars:0,desc:'마을 중심 장식'},
+  {id:'house',name:'진저브레드 집',price:160,currency:'coin',income:3,unlockStars:8,desc:'마을 대표 집'},
+  {id:'snowman',name:'눈사람',price:70,currency:'coin',income:0,unlockStars:0,desc:'귀여운 포토존'},
+  {id:'market',name:'선물 마켓',price:210,currency:'coin',income:4,unlockStars:14,desc:'쇼핑 명소'},
+  {id:'chapel',name:'눈꽃 예배당',price:280,currency:'coin',income:5,unlockStars:20,desc:'고요한 예배당'},
+  {id:'carousel',name:'겨울 회전목마',price:360,currency:'coin',income:6,unlockStars:28,desc:'아이들의 인기 장소'},
+  {id:'castle',name:'산타 성',price:520,currency:'coin',income:8,unlockStars:40,desc:'축제의 랜드마크'}
 ];
 const STYLE_GROUPS=[
   {key:'hair',title:'헤어',items:[
-    {id:'short',name:'단정 단발',emoji:'💇🏻‍♀️',unlockStars:0},
-    {id:'ponytail',name:'리본 포니테일',emoji:'🎀',unlockStars:10},
-    {id:'braid',name:'겨울 브레이드',emoji:'❄️',unlockStars:24}
+    {id:'short',name:'단정 단발',unlockStars:0},
+    {id:'ponytail',name:'리본 포니테일',unlockStars:10},
+    {id:'braid',name:'겨울 브레이드',unlockStars:24}
   ]},
   {key:'outfit',title:'의상',items:[
-    {id:'knit',name:'포근 니트',emoji:'🧶',unlockStars:0},
-    {id:'dress',name:'축제 드레스',emoji:'👗',unlockStars:14},
-    {id:'coat',name:'윈터 코트',emoji:'🧥',unlockStars:22},
-    {id:'santa',name:'산타 룩',emoji:'🎅',unlockMission:'event_help_santa'}
+    {id:'knit',name:'포근 니트',unlockStars:0},
+    {id:'dress',name:'축제 드레스',unlockStars:14},
+    {id:'coat',name:'윈터 코트',unlockStars:22},
+    {id:'santa',name:'산타 룩',unlockMission:'event_help_santa'}
   ]},
   {key:'acc',title:'소품',items:[
-    {id:'none',name:'없음',emoji:'✨',unlockStars:0},
-    {id:'bag',name:'별빛 가방',emoji:'👜',unlockStars:12},
-    {id:'muff',name:'귀마개',emoji:'🎧',unlockStars:18},
-    {id:'wand',name:'별 마법봉',emoji:'🪄',unlockMission:'achieve_merge_80'}
+    {id:'none',name:'없음',unlockStars:0},
+    {id:'bag',name:'별빛 가방',unlockStars:12},
+    {id:'muff',name:'귀마개',unlockStars:18},
+    {id:'wand',name:'별 마법봉',unlockMission:'achieve_merge_80'}
   ]}
 ];
 const STORIES=[
   {id:'ep1',title:'에피소드 1 · 사라진 축제 준비물',need:{deliveries:0},lines:[['주인공','눈꽃 마을의 크리스마스 축제가 멈춰 버렸어. 준비물을 다시 모아야 해!'],['산타','머지 보드에서 아이템을 만들고 손님 주문을 들어주면 마을이 다시 살아날 거란다.'],['주인공','좋아! 먼저 선물과 다과를 준비하자.']]},
-  {id:'ep2',title:'에피소드 2 · 손님들의 부탁',need:{deliveries:4},lines:[['손님 소피','주얼리와 예쁜 겨울 소품이 필요해요. 파티에 꼭 써야 하거든요.'],['주인공','새 작업대들을 열고 더 높은 단계 아이템을 만들어 볼게!'],['산타','별을 모아 마을도 꾸며 주렴. 사람들의 마음이 다시 따뜻해질 거야.']]},
+  {id:'ep2',title:'에피소드 2 · 손님들의 부탁',need:{deliveries:4},lines:[['소피','주얼리와 예쁜 겨울 소품이 필요해요. 파티에 꼭 써야 하거든요.'],['주인공','새 작업대들을 열고 더 높은 단계 아이템을 만들어 볼게!'],['산타','별을 모아 마을도 꾸며 주렴. 사람들의 마음이 다시 따뜻해질 거야.']]},
   {id:'ep3',title:'에피소드 3 · 산타 도와주기',need:{deliveries:10},lines:[['산타','썰매 선물과 따뜻한 식탁이 필요하단다. 이번 주 이벤트도 시작됐어!'],['주인공','이벤트 미션을 끝내면 특별한 산타 룩을 받을 수 있겠네.'],['마을 사람들','축제가 정말 다시 열릴 것 같아요!']]},
   {id:'ep4',title:'에피소드 4 · 눈꽃 축제의 밤',need:{deliveries:18},lines:[['주인공','마을 광장도 완성됐고, 꾸미기 아이템도 많이 모았어.'],['산타','마지막으로 최고의 선물과 촬영 소품을 만들어 축제를 마무리하자.'],['모두','메리 크리스마스!']]}
 ];
@@ -328,164 +237,170 @@ const MISSIONS={
   ]
 };
 const defaultState=()=>({
-  version:4,tab:'merge',energy:20,coins:180,rubies:3,stars:0,xp:0,deliveries:0,merges:0,generated:0,
-  nextEnergyAt:Date.now(),lastPassiveAt:Date.now(),sound:true,
-  board:Array(GRID_SIZE).fill(null),selected:-1,selectedChain:'gift',orders:[],orderSeed:0,
-  discovered:{gift:[true,false,false,false,false,false,false,false],feast:[false,false,false,false,false,false,false,false],studio:[false,false,false,false,false,false,false,false],jewel:[false,false,false,false,false,false,false,false],closet:[false,false,false,false,false,false,false,false]},
-  missionClaimed:[],placed:[{shopId:'tree',slot:2},{shopId:'snowman',slot:7}],pendingPlace:null,
+  version:5,tab:'merge',energy:20,coins:180,rubies:3,stars:0,xp:0,deliveries:0,merges:0,generated:0,
+  nextEnergyAt:Date.now()+ENERGY_MS,lastPassiveAt:Date.now(),sound:true,
+  board:Array(GRID).fill(null),selected:-1,orders:[],orderSeed:0,
+  discovered:Object.fromEntries(Object.keys(CHAINS).map(k=>[k,Array(CHAINS[k].levels.length).fill(false)])),
+  missionClaimed:[],placed:[{shopId:'tree',slot:2},{shopId:'snowman',slot:7}],pendingPlace:null,selectedVillageMove:null,
   avatar:{hair:'short',outfit:'knit',acc:'none'},stats:{highFeast:0},storySeen:['ep1']
 });
-let S=defaultState();
-let drag=null; let toastTimer=null; let audioCtx=null; let missionView='daily';
+let S=defaultState(), drag=null, toastTimer=null, audioCtx=null, missionView='daily';
 const $=id=>document.getElementById(id);
-function clone(v){return JSON.parse(JSON.stringify(v))}
 function save(){localStorage.setItem(SAVE_KEY,JSON.stringify(S))}
-function load(){
-  try{const saved=JSON.parse(localStorage.getItem(SAVE_KEY)||'null'); if(saved&&saved.version===4){S={...defaultState(),...saved}}}catch(e){}
-  if(!Array.isArray(S.board)||S.board.length!==GRID_SIZE)S.board=Array(GRID_SIZE).fill(null);
-  if(!S.orders||!S.orders.length){seedBoard(); fillOrders()}
-  normalizeState();
-}
-function normalizeState(){
-  S.energy=Math.max(0,Math.min(MAX_ENERGY,Number(S.energy)||0));
-  S.coins=Math.max(0,Number(S.coins)||0); S.rubies=Math.max(0,Number(S.rubies)||0); S.stars=Math.max(0,Number(S.stars)||0);
-  S.xp=Math.max(0,Number(S.xp)||0); S.deliveries=Number(S.deliveries)||0; S.merges=Number(S.merges)||0; S.generated=Number(S.generated)||0;
-  if(!S.discovered)S.discovered=defaultState().discovered; for(const key of Object.keys(CHAINS)){if(!Array.isArray(S.discovered[key]))S.discovered[key]=Array(CHAINS[key].levels.length).fill(false)}
-  if(!Array.isArray(S.placed))S.placed=[]; if(!Array.isArray(S.missionClaimed))S.missionClaimed=[]; if(!S.avatar)S.avatar=defaultState().avatar; if(!S.stats)S.stats={highFeast:0};
-  if(!Array.isArray(S.storySeen))S.storySeen=['ep1'];
-}
-function seedBoard(){
-  const starters=[['gift',0],['gift',0],['feast',0],['feast',0],['studio',0],['closet',0],['gift',1],['gift',1],['feast',1]];
-  S.board=Array(GRID_SIZE).fill(null);
-  starters.forEach((it,i)=>S.board[i]={chain:it[0],lvl:it[1]});
-  starters.forEach(it=>markDiscovered(it[0],it[1]));
-}
-function levelOf(){return 1+Math.floor(S.xp/80)}
-function unlockedGenerators(){return GENERATORS.filter(g=>S.stars>=g.unlockStars)}
-function unlockedChains(){return unlockedGenerators().map(g=>g.chain)}
-function chainOfItem(item){return CHAINS[item.chain]}
-function getLevelData(chainId,lvl){return CHAINS[chainId].levels[lvl]}
-function itemName(item){const lv=getLevelData(item.chain,item.lvl); return lv.name}
-function itemIcon(item){return getLevelData(item.chain,item.lvl).icon}
-function markDiscovered(chainId,lvl){if(!S.discovered[chainId][lvl]) S.discovered[chainId][lvl]=true}
-function discoveredCount(){return Object.values(S.discovered).flat().filter(Boolean).length}
-function incomePerMinute(){return S.placed.reduce((sum,p)=>sum+((VILLAGE_SHOP.find(v=>v.id===p.shopId)||{}).income||0),0)}
-function fmt(n){return Math.floor(n).toLocaleString('ko-KR')}
-function timerString(ms){const sec=Math.max(0,Math.ceil(ms/1000)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,'0')}`}
-function syncTime(){
-  const now=Date.now(); let dirty=false;
-  if(S.energy<MAX_ENERGY){ const passed=Math.floor((now-(S.nextEnergyAt||now))/ENERGY_MS); if(now>=S.nextEnergyAt){ const gained=1+Math.max(0,passed); S.energy=Math.min(MAX_ENERGY,S.energy+gained); S.nextEnergyAt=now+ENERGY_MS; dirty=true } }
-  else S.nextEnergyAt=now+ENERGY_MS;
-  const rate=incomePerMinute(); if(rate>0 && now-(S.lastPassiveAt||now)>=PASSIVE_MS){ const steps=Math.floor((now-S.lastPassiveAt)/PASSIVE_MS); S.coins+=steps*rate; S.lastPassiveAt += steps*PASSIVE_MS; dirty=true } else if(!S.lastPassiveAt) S.lastPassiveAt=now;
-  if(dirty)save();
-}
-function spendEnergy(cost=1){syncTime(); if(S.energy<cost){toast('⚡ 번개가 부족해요. 시간이 지나면 자동 충전됩니다.'); beep(190); return false} S.energy-=cost; S.nextEnergyAt=Date.now()+ENERGY_MS; save(); return true}
-function reward(obj={}){if(obj.coin)S.coins+=obj.coin; if(obj.ruby)S.rubies+=obj.ruby; if(obj.star)S.stars+=obj.star; if(obj.energy)S.energy=Math.min(MAX_ENERGY,S.energy+obj.energy); if(obj.xp)S.xp+=obj.xp}
-function beep(freq=660,duration=.12,type='sine',vol=.06){if(!S.sound)return; try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)(); const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type=type; o.frequency.value=freq; g.gain.setValueAtTime(vol,audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+duration); o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+duration);}catch(e){}}
-function toast(msg){const el=$('toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'),1800)}
-function emptyCells(){return S.board.map((v,i)=>v?null:i).filter(v=>v!==null)}
-function spawnFromGenerator(genId){const gen=GENERATORS.find(g=>g.id===genId); if(!gen)return; if(S.stars<gen.unlockStars){toast(`⭐ ${gen.unlockStars}개 이상 모으면 열려요.`); return} if(!spendEnergy(gen.cost))return; const empty=emptyCells(); if(!empty.length){toast('보드가 가득 찼어요. 머지하거나 판매해 보세요.'); return}
-  const lvl=gen.outputs[Math.floor(Math.random()*gen.outputs.length)]; const idx=empty[Math.floor(Math.random()*empty.length)]; S.board[idx]={chain:gen.chain,lvl}; S.generated++; S.selected=idx; markDiscovered(gen.chain,lvl); beep(700,.1,'triangle'); render(); save();}
-function canMerge(a,b){return a&&b&&a.chain===b.chain&&a.lvl===b.lvl&&a.lvl<CHAINS[a.chain].levels.length-1}
-function moveItem(from,to){const a=S.board[from], b=S.board[to]; if(!a)return; if(from===to)return; if(!b){S.board[to]=a; S.board[from]=null; S.selected=to; }
-  else if(canMerge(a,b)){ S.board[from]=null; S.board[to]={chain:b.chain,lvl:b.lvl+1}; S.merges++; S.xp+=10+b.lvl*2; markDiscovered(b.chain,b.lvl+1); if(b.chain==='feast' && b.lvl+1>=5) S.stats.highFeast=(S.stats.highFeast||0)+1; if(b.lvl+1===CHAINS[b.chain].levels.length-1) reward({coin:40,ruby:1}); S.selected=to; beep(820,.14,'triangle'); }
+function load(){try{const saved=JSON.parse(localStorage.getItem(SAVE_KEY)||'null'); if(saved&&saved.version===5)S={...defaultState(),...saved}}catch(e){} normalizeState(); if(!S.orders.length){seedBoard(); fillOrders()} }
+function normalizeState(){ if(!Array.isArray(S.board)||S.board.length!==GRID)S.board=Array(GRID).fill(null); if(!S.discovered)S.discovered=defaultState().discovered; for(const k of Object.keys(CHAINS)){ if(!Array.isArray(S.discovered[k]))S.discovered[k]=Array(CHAINS[k].levels.length).fill(false);} if(!Array.isArray(S.orders))S.orders=[]; if(!Array.isArray(S.placed))S.placed=[]; if(!Array.isArray(S.missionClaimed))S.missionClaimed=[]; if(!S.avatar)S.avatar=defaultState().avatar; if(!S.stats)S.stats={highFeast:0}; if(!S.storySeen)S.storySeen=['ep1']; S.energy=Math.max(0,Math.min(MAX_ENERGY,Number(S.energy)||0)); }
+function seedBoard(){ const starters=[['gift',0],['gift',0],['feast',0],['feast',0],['studio',0],['closet',0],['gift',1],['gift',1],['feast',1]]; S.board=Array(GRID).fill(null); starters.forEach((it,i)=>{S.board[i]={chain:it[0],lvl:it[1]}; markDiscovered(it[0],it[1]);}); }
+function fmt(n){return Math.floor(n).toLocaleString('ko-KR')} function timerString(ms){const sec=Math.max(0,Math.ceil(ms/1000)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,'0')}`}
+function beep(freq=660,dur=.12,type='sine',vol=.06){ if(!S.sound)return; try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)(); const o=audioCtx.createOscillator(),g=audioCtx.createGain(); o.type=type; o.frequency.value=freq; g.gain.setValueAtTime(vol,audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+dur); o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+dur);}catch(e){} }
+function toast(msg){ const el=$('toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'),1800); }
+function syncTime(){ const now=Date.now(); let dirty=false; if(S.energy<MAX_ENERGY && now>=S.nextEnergyAt){ const gain=1+Math.floor((now-S.nextEnergyAt)/ENERGY_MS); S.energy=Math.min(MAX_ENERGY,S.energy+gain); S.nextEnergyAt=now+ENERGY_MS; dirty=true; } else if(S.energy>=MAX_ENERGY){ S.nextEnergyAt=now+ENERGY_MS; }
+  const rate=incomePerMinute(); if(rate>0 && now-S.lastPassiveAt>=PASSIVE_MS){ const step=Math.floor((now-S.lastPassiveAt)/PASSIVE_MS); S.coins+=rate*step; S.lastPassiveAt+=step*PASSIVE_MS; dirty=true; } if(dirty)save(); }
+function spendEnergy(cost=1){ syncTime(); if(S.energy<cost){ toast('⚡ 번개가 부족해요. 시간이 지나면 자동 충전됩니다.'); beep(180,.12,'square'); return false } S.energy-=cost; S.nextEnergyAt=Date.now()+ENERGY_MS; save(); return true; }
+function reward(obj={}){ if(obj.coin)S.coins+=obj.coin; if(obj.ruby)S.rubies+=obj.ruby; if(obj.star)S.stars+=obj.star; if(obj.energy)S.energy=Math.min(MAX_ENERGY,S.energy+obj.energy); if(obj.xp)S.xp+=obj.xp; }
+function levelOf(){return 1+Math.floor(S.xp/80)} function incomePerMinute(){ return S.placed.reduce((s,p)=>s+((VILLAGE_SHOP.find(v=>v.id===p.shopId)||{}).income||0),0)}
+function markDiscovered(chain,lvl){ if(!S.discovered[chain][lvl])S.discovered[chain][lvl]=true; }
+function discoveredCount(){ return Object.values(S.discovered).flat().filter(Boolean).length; }
+function getChain(id){ return CHAINS[id]; }
+function getLevel(chain,lvl){ return CHAINS[chain].levels[lvl]; }
+function itemName(item){ return getLevel(item.chain,item.lvl).name; }
+function emptyCells(){ return S.board.map((v,i)=>v?null:i).filter(v=>v!==null); }
+function unlockedChains(){ return GENERATORS.filter(g=>S.stars>=g.unlockStars).map(g=>g.chain); }
+function fillOrders(){ while(S.orders.length<3)S.orders.push(createOrder()); }
+function createOrder(){ const chains=unlockedChains(); const diff=Math.min(4,Math.floor(S.deliveries/4)); const needCount=S.deliveries>=5 && Math.random()>.55?2:1; const needs=[]; for(let k=0;k<needCount;k++){ const chain=chains[(S.orderSeed+k)%chains.length]; const maxLvl=Math.min(2+diff, CHAINS[chain].levels.length-2); const lvl=Math.max(1,Math.floor(Math.random()*(maxLvl+1))); needs.push({chain,lvl}); }
+  const client=CUSTOMERS[S.orderSeed%CUSTOMERS.length]; S.orderSeed++; const coin=needs.reduce((s,n)=>s+24+n.lvl*18,0)+(needCount>1?28:0); const star=needs.reduce((s,n)=>s+1+Math.floor(n.lvl/2),0); const xp=needs.reduce((s,n)=>s+10+n.lvl*3,0); const ruby=(Math.random()<.18?1:0); return {id:'o'+Date.now()+Math.random(), client:client.id, needs, reward:{coin,star,xp,ruby}}; }
+function orderReady(order){ return findInventoryMatches(order).every(i=>i>=0); }
+function findInventoryMatches(order){ const used=new Set(); return order.needs.map(n=>{ const idx=S.board.findIndex((item,i)=>!used.has(i)&&item&&item.chain===n.chain&&item.lvl===n.lvl); if(idx>=0)used.add(idx); return idx; }); }
+function completeOrder(i){ const order=S.orders[i], matches=findInventoryMatches(order); if(matches.some(v=>v<0)){ toast('아직 필요한 아이템이 부족해요.'); return; } matches.forEach(idx=>S.board[idx]=null); reward(order.reward); S.deliveries++; S.orders.splice(i,1); fillOrders(); beep(520,.1,'triangle'); setTimeout(()=>beep(720,.1,'triangle'),90); setTimeout(()=>beep(920,.12,'triangle'),180); toast(`주문 완료! +🪙${order.reward.coin} +⭐${order.reward.star}${order.reward.ruby?` +💎${order.reward.ruby}`:''}`); save(); render(); }
+function spawnFromGenerator(id){ const gen=GENERATORS.find(g=>g.id===id); if(!gen)return; if(S.stars<gen.unlockStars){ toast(`⭐ ${gen.unlockStars}개 이상 모으면 열려요.`); return; } if(!spendEnergy(gen.cost))return; const empty=emptyCells(); if(!empty.length){ toast('보드가 가득 찼어요. 머지하거나 판매해 보세요.'); return; } const lvl=gen.outputs[Math.floor(Math.random()*gen.outputs.length)], idx=empty[Math.floor(Math.random()*empty.length)]; S.board[idx]={chain:gen.chain,lvl}; S.selected=idx; S.generated++; markDiscovered(gen.chain,lvl); beep(700,.1,'triangle'); save(); render(); }
+function canMerge(a,b){ return a&&b&&a.chain===b.chain&&a.lvl===b.lvl&&a.lvl<CHAINS[a.chain].levels.length-1; }
+function moveItem(from,to){ const a=S.board[from], b=S.board[to]; if(!a || from===to)return; if(!b){ S.board[to]=a; S.board[from]=null; S.selected=to; }
+  else if(canMerge(a,b)){ S.board[from]=null; S.board[to]={chain:b.chain,lvl:b.lvl+1}; S.merges++; S.xp+=10+b.lvl*2; markDiscovered(b.chain,b.lvl+1); if(b.chain==='feast' && b.lvl+1>=5)S.stats.highFeast=(S.stats.highFeast||0)+1; if(b.lvl+1===CHAINS[b.chain].levels.length-1)reward({coin:40,ruby:1}); S.selected=to; beep(820,.14,'triangle'); }
   else { S.board[to]=a; S.board[from]=b; S.selected=to; beep(430,.07,'square',.045); }
   save(); render(); }
-function selectCell(i){const item=S.board[i]; if(!item){ if(S.selected>=0){ moveItem(S.selected,i); } return } if(S.selected<0){S.selected=i; render(); return} if(S.selected===i){S.selected=-1; render(); return} moveItem(S.selected,i)}
-function sellSelected(){const i=S.selected; const item=S.board[i]; if(!item)return; const value=12+item.lvl*8; S.board[i]=null; S.coins+=value; S.selected=-1; toast(`🪙 ${value} 코인을 얻었어요.`); beep(560,.1); save(); render();}
-function createOrder(){
-  const chains=unlockedChains(); const diff=Math.min(4,Math.floor(S.deliveries/4)); const needCount=S.deliveries>=5 && Math.random()>.55?2:1; const needs=[];
-  for(let k=0;k<needCount;k++){ const chain=chains[(S.orderSeed+k)%chains.length]; const maxLvl=Math.min(2+diff, CHAINS[chain].levels.length-2); const lvl=Math.max(1,Math.floor(Math.random()*(maxLvl+1))); needs.push({chain,lvl}) }
-  const client=CLIENTS[S.orderSeed%CLIENTS.length]; S.orderSeed++;
-  const coin=needs.reduce((sum,n)=>sum+24+n.lvl*18,0)+(needCount>1?28:0); const star=needs.reduce((sum,n)=>sum+1+Math.floor(n.lvl/2),0); const xp=needs.reduce((sum,n)=>sum+10+n.lvl*3,0); const ruby=(Math.random()<.18?1:0);
-  return {id:'o'+Date.now()+Math.random(),client,needs,reward:{coin,star,xp,ruby}};
+function selectCell(i){ const item=S.board[i]; if(!item){ if(S.selected>=0)moveItem(S.selected,i); return; } if(S.selected<0){ S.selected=i; render(); return; } if(S.selected===i){ S.selected=-1; render(); return; } moveItem(S.selected,i); }
+function sellSelected(){ const i=S.selected, item=S.board[i]; if(!item)return; const value=12+item.lvl*8; S.board[i]=null; S.coins+=value; S.selected=-1; toast(`🪙 ${value} 코인을 얻었어요.`); beep(560,.1); save(); render(); }
+function storyUnlocked(story){ return Object.entries(story.need).every(([k,v])=>k==='deliveries'?S.deliveries>=v:false); }
+function metricValue(metric){ switch(metric){ case 'merges':return S.merges; case 'deliveries':return S.deliveries; case 'generated':return S.generated; case 'highFeast':return S.stats.highFeast||0; case 'placed':return S.placed.length; case 'discovered':return discoveredCount(); case 'income':return incomePerMinute(); default:return 0; } }
+function missionProgress(m){ return {value:metricValue(m.metric),target:m.target}; }
+function isMissionClaimed(id){ return S.missionClaimed.includes(id); }
+function styleUnlocked(groupKey,item){ if(item.unlockMission)return isMissionClaimed(item.unlockMission); return S.stars>=item.unlockStars; }
+function claimMission(id){ const mission=[...MISSIONS.daily,...MISSIONS.event,...MISSIONS.achievement].find(m=>m.id===id); if(!mission)return; if(isMissionClaimed(id))return; const p=missionProgress(mission); if(p.value<mission.target){ toast('아직 완료되지 않았어요.'); return; } reward(mission.reward); S.missionClaimed.push(id); toast('보상을 받았어요!'); save(); render(); }
+function setTab(tab){ S.tab=tab; save(); renderPages(); renderNav(); if(tab!=='merge') renderSidePages(); }
+function customer(id){ return CUSTOMERS.find(c=>c.id===id)||CUSTOMERS[0]; }
+function demandKeys(){ const m={}; S.orders.forEach(o=>o.needs.forEach(n=>{ const k=n.chain+':'+n.lvl; m[k]=(m[k]||0)+1; })); return m; }
+
+function esc(s){ return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function svgWrap(inner){ return `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`; }
+function itemArt(chain,lvl){
+  const fill=(...a)=>a.join('');
+  const gifts=[
+    fill('<rect x="16" y="18" width="28" height="26" rx="6" fill="#ffeab0" stroke="#d1a24d" stroke-width="2"/>','<circle cx="30" cy="18" r="4" fill="#fff"/>'),
+    fill('<rect x="18" y="26" width="28" height="12" rx="6" fill="#ff8db3"/>','<path d="M32 16c5 0 7 5 4 8-3 2-4 4-4 4s-1-2-4-4c-3-3-1-8 4-8Z" fill="#ff5c92"/>','<path d="M32 18v24" stroke="#fff" stroke-width="4" stroke-linecap="round"/>'),
+    fill('<rect x="14" y="20" width="36" height="26" rx="7" fill="#ffcd54"/>','<path d="M14 30h36" stroke="#fff" stroke-width="4"/><path d="M32 20v26" stroke="#fff" stroke-width="4"/>','<path d="M26 18c0-5 8-7 10-2 2-4 10-2 10 3 0 4-5 7-14 7-3 0-6-2-6-8Z" fill="#ff6f85" transform="translate(-8 -1)"/>'),
+    fill('<path d="M18 18h18l10 9v19a4 4 0 0 1-4 4H18a4 4 0 0 1-4-4V22a4 4 0 0 1 4-4Z" fill="#f5c85a"/>','<path d="M36 18v9h10" fill="#ffd97c"/>','<path d="M25 27h10v18H25z" fill="#fff2c1"/><path d="M30 20v26" stroke="#d88b28" stroke-width="3"/>'),
+    fill('<rect x="12" y="22" width="40" height="24" rx="8" fill="#ffcf76"/>','<rect x="16" y="18" width="32" height="10" rx="5" fill="#ff8aa8"/>','<circle cx="22" cy="18" r="5" fill="#6fd8ff"/><circle cx="42" cy="18" r="5" fill="#8fdc7f"/><circle cx="32" cy="14" r="4" fill="#fff"/>'),
+    fill('<rect x="13" y="18" width="38" height="30" rx="8" fill="#c27bff"/>','<rect x="18" y="22" width="28" height="18" rx="5" fill="#fff0b9"/>','<circle cx="32" cy="31" r="7" fill="#ffcb4e"/><circle cx="32" cy="31" r="3" fill="#fff"/>'),
+    fill('<path d="M18 22h28l8 10-8 10H18c-4 0-8-4-8-10s4-10 8-10Z" fill="#f1b85d"/>','<rect x="20" y="18" width="18" height="8" rx="4" fill="#ff8aa8"/>','<circle cx="20" cy="32" r="4" fill="#fff1c5"/><circle cx="44" cy="32" r="4" fill="#fff1c5"/>'),
+    fill('<path d="M16 34c0-8 6-14 14-14h18v14c0 6-5 12-12 12H18c-1 0-2-1-2-2V34Z" fill="#e5b03d"/>','<path d="M20 38h18c4 0 7 2 9 6H28c-4 0-8-2-8-6Z" fill="#fff1bf"/>','<path d="M24 20l-8 14h7" stroke="#b36c16" stroke-width="4" stroke-linecap="round"/><circle cx="41" cy="22" r="5" fill="#ff6f86"/>')
+  ];
+  const feast=[
+    fill('<rect x="28" y="16" width="8" height="26" rx="4" fill="#ff7f61"/>','<path d="M32 12c4 3 5 7 0 10-5-3-4-7 0-10Z" fill="#ffd86c"/>','<ellipse cx="32" cy="46" rx="14" ry="6" fill="#f3c09a"/>'),
+    fill('<rect x="22" y="34" width="20" height="10" rx="4" fill="#f3c2b0"/>','<circle cx="24" cy="30" r="5" fill="#d64545"/><circle cx="32" cy="26" r="5" fill="#da5d5d"/><circle cx="40" cy="30" r="5" fill="#c9425f"/><path d="M32 22c0-4 2-7 6-9" stroke="#b58c58" stroke-width="3" stroke-linecap="round"/>'),
+    fill('<path d="M18 28h28l-2 14H20l-2-14Z" fill="#f8d6ad"/>','<circle cx="24" cy="28" r="5" fill="#d94c59"/><circle cx="32" cy="24" r="5" fill="#f55"/><circle cx="40" cy="28" r="5" fill="#d94c59"/>'),
+    fill('<ellipse cx="32" cy="40" rx="18" ry="8" fill="#d6945a"/>','<rect x="18" y="22" width="28" height="12" rx="6" fill="#f3d59c"/>','<path d="M20 26h24" stroke="#fff1cb" stroke-width="3" stroke-linecap="round"/>'),
+    fill('<path d="M19 22h20a7 7 0 0 1 7 7v9a8 8 0 0 1-8 8H24a9 9 0 0 1-9-9V26a4 4 0 0 1 4-4Z" fill="#d87a4c"/>','<path d="M42 28h5a5 5 0 0 1 0 10h-5" stroke="#d87a4c" stroke-width="4" fill="none"/>','<path d="M25 18c5 0 7 5 4 8" stroke="#fff5d4" stroke-width="3" stroke-linecap="round"/>'),
+    fill('<rect x="16" y="22" width="32" height="22" rx="6" fill="#f2c39a"/>','<circle cx="24" cy="28" r="4" fill="#ff9b54"/><circle cx="32" cy="32" r="4" fill="#79c56b"/><circle cx="40" cy="28" r="4" fill="#ff6f6f"/><circle cx="28" cy="38" r="4" fill="#5db4ff"/><circle cx="39" cy="37" r="4" fill="#f7d158"/>'),
+    fill('<rect x="14" y="20" width="36" height="26" rx="9" fill="#d56c47"/>','<circle cx="23" cy="30" r="5" fill="#f3b04e"/><circle cx="32" cy="34" r="5" fill="#7ac66f"/><circle cx="41" cy="30" r="5" fill="#f48157"/><path d="M21 20h22" stroke="#9d4a2f" stroke-width="4" stroke-linecap="round"/>'),
+    fill('<ellipse cx="32" cy="44" rx="20" ry="8" fill="#c87b59"/>','<path d="M16 26h32a8 8 0 0 1 8 8v4H8v-4a8 8 0 0 1 8-8Z" fill="#e7c27e"/>','<path d="M18 23a14 14 0 0 1 28 0" fill="#f6ddad"/>')
+  ];
+  const studio=[
+    fill('<rect x="26" y="18" width="12" height="25" rx="6" fill="#cad4df" stroke="#7c95aa" stroke-width="2"/>','<rect x="23" y="42" width="18" height="6" rx="3" fill="#5e8dc5"/>'),
+    fill('<path d="M18 26l24-10v32L18 38Z" fill="#6daaf5"/>','<rect x="14" y="30" width="12" height="8" rx="4" fill="#466da3"/>','<path d="M38 18l10 7v14l-10 7Z" fill="#ffd56a"/>'),
+    fill('<rect x="14" y="18" width="36" height="28" rx="6" fill="#8ab8ff"/>','<path d="M14 18h36v8H14Z" fill="#5f88d1"/>','<path d="M22 32l14-8v16Z" fill="#fff"/>'),
+    fill('<rect x="16" y="22" width="32" height="22" rx="6" fill="#5f88d1"/>','<circle cx="28" cy="33" r="6" fill="#9cdcff"/><rect x="40" y="28" width="8" height="10" rx="2" fill="#1f3f61"/>'),
+    fill('<circle cx="23" cy="25" r="7" fill="#76889a"/><circle cx="41" cy="25" r="7" fill="#76889a"/><circle cx="32" cy="39" r="7" fill="#76889a"/><circle cx="23" cy="25" r="3" fill="#d9e4ee"/><circle cx="41" cy="25" r="3" fill="#d9e4ee"/><circle cx="32" cy="39" r="3" fill="#d9e4ee"/>'),
+    fill('<rect x="14" y="26" width="26" height="18" rx="5" fill="#6d8eb9"/>','<circle cx="27" cy="35" r="7" fill="#9fdcff"/><path d="M40 28l10-5v24l-10-5Z" fill="#1d3557"/>','<rect x="18" y="18" width="8" height="8" rx="2" fill="#ffd86a"/>'),
+    fill('<path d="M18 22h10v18H18a4 4 0 0 1-4-4V26a4 4 0 0 1 4-4Z" fill="#6e5969"/>','<path d="M28 22h20v18H28Z" fill="#d25555"/>','<path d="M32 18h12v6H32Z" fill="#8ab8ff"/>','<path d="M18 40l-6 10M22 40l-2 10M44 40l6 10M40 40l2 10" stroke="#6e5969" stroke-width="4" stroke-linecap="round"/>'),
+    fill('<path d="M17 42l12-6V20l-12 6v16Z" fill="#8ab8ff"/>','<path d="M29 18l18 10-18 10-18-10 18-10Z" fill="#ffd86a"/>','<circle cx="47" cy="28" r="7" fill="#ff6484"/>')
+  ];
+  const jewel=[
+    fill('<rect x="17" y="22" width="30" height="20" rx="5" fill="#67d0e7"/>','<rect x="14" y="20" width="36" height="6" rx="3" fill="#59b8cb"/>'),
+    fill('<rect x="28" y="18" width="8" height="22" rx="4" fill="#c89e58"/>','<rect x="18" y="18" width="28" height="6" rx="3" fill="#f0d090"/>'),
+    fill('<path d="M20 40c0-10 6-18 12-18s12 8 12 18Z" fill="#4db9d7"/>','<ellipse cx="32" cy="42" rx="12" ry="4" fill="#d6b06f"/>'),
+    fill('<circle cx="22" cy="26" r="5" fill="#ffeef4" stroke="#d0a66d" stroke-width="2"/><circle cx="42" cy="26" r="5" fill="#ffeef4" stroke="#d0a66d" stroke-width="2"/><path d="M22 31v8M42 31v8" stroke="#d0a66d" stroke-width="3" stroke-linecap="round"/>'),
+    fill('<circle cx="28" cy="34" r="10" fill="#f2c642"/>','<circle cx="28" cy="34" r="5" fill="#fff2ca"/>','<circle cx="40" cy="25" r="8" fill="#59b5ff"/>'),
+    fill('<circle cx="32" cy="32" r="10" fill="#f6efef" stroke="#d8a88a" stroke-width="3"/>','<path d="M32 32V24M32 32l6 4" stroke="#b48d79" stroke-width="3" stroke-linecap="round"/>','<path d="M18 20c4-2 6-5 14-5" stroke="#d8a88a" stroke-width="4" stroke-linecap="round" fill="none"/>'),
+    fill('<rect x="16" y="20" width="32" height="24" rx="7" fill="#6ba5de"/>','<rect x="20" y="25" width="24" height="12" rx="4" fill="#fff0cc"/>','<path d="M28 31l4-6 4 6 6 1-5 4 1 6-6-3-6 3 1-6-5-4 6-1Z" fill="#ffd454"/>'),
+    fill('<path d="M18 42h28l-3-8-7 4-4-6-4 6-7-4-3 8Z" fill="#f6c744"/>','<path d="M22 28l4 4 6-8 6 8 4-4" stroke="#9b6b18" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>')
+  ];
+  const closet=[
+    fill('<circle cx="28" cy="28" r="12" fill="#ffe6f0"/><circle cx="38" cy="30" r="8" fill="#ffe6f0"/><circle cx="22" cy="36" r="8" fill="#ffe6f0"/>'),
+    fill('<path d="M22 18h10v28c0 2-2 4-4 4h-2c-2 0-4-2-4-4Z" fill="#f7e0b4"/>','<path d="M32 18h10v28c0 2-2 4-4 4h-2c-2 0-4-2-4-4Z" fill="#f7e0b4"/><path d="M27 30c2 3 3 5 3 7M37 30c2 3 3 5 3 7" stroke="#d79b53" stroke-width="3" stroke-linecap="round"/>'),
+    fill('<path d="M18 24c0-4 3-7 7-7h4v18H18Z" fill="#f7d49b"/><path d="M46 24c0-4-3-7-7-7h-4v18h11Z" fill="#f7d49b"/><path d="M23 28l4 4M41 28l-4 4" stroke="#fff5df" stroke-width="3" stroke-linecap="round"/>'),
+    fill('<path d="M20 32a12 12 0 0 1 24 0v5H20Z" fill="#d9a05a"/>','<rect x="24" y="19" width="16" height="8" rx="4" fill="#f4d59a"/>','<circle cx="32" cy="37" r="3" fill="#fff1d1"/>'),
+    fill('<path d="M12 30c8-1 13-6 20-6s12 5 20 6c-1 7-7 14-20 14S13 37 12 30Z" fill="#ef7c8f"/>','<path d="M16 30h32" stroke="#fff2d6" stroke-width="4" stroke-linecap="round"/>'),
+    fill('<path d="M18 22h28v8c0 4-3 8-7 8h-1v12H26V38h-1c-4 0-7-4-7-8Z" fill="#7aa0d7"/>','<circle cx="32" cy="29" r="4" fill="#fff2cf"/>'),
+    fill('<path d="M20 18h24v8l-4 5v18H24V31l-4-5Z" fill="#f06f82"/>','<path d="M20 26h24" stroke="#ffe7c1" stroke-width="4"/>'),
+    fill('<path d="M18 38c0-8 6-14 14-14h0c8 0 14 6 14 14" fill="#ff8eb1"/>','<path d="M18 38c0 6 4 10 10 10h8c6 0 10-4 10-10" fill="#f06f82"/><path d="M24 30l6 6 10-10" stroke="#fff2d6" stroke-width="4" stroke-linecap="round" fill="none"/>')
+  ];
+  const map={gift:gifts,feast:feast,studio:studio,jewel:jewel,closet:closet};
+  return svgWrap(map[chain][lvl]);
 }
-function fillOrders(){while(S.orders.length<3)S.orders.push(createOrder())}
-function findInventoryMatches(order){const used=new Set(); return order.needs.map(n=>{const idx=S.board.findIndex((item,i)=>!used.has(i)&&item&&item.chain===n.chain&&item.lvl===n.lvl); if(idx>=0)used.add(idx); return idx;})}
-function completeOrder(index){const order=S.orders[index]; const matches=findInventoryMatches(order); if(matches.some(i=>i<0)){toast('아직 필요한 아이템이 부족해요.'); return} matches.forEach(i=>S.board[i]=null); reward(order.reward); S.deliveries++; S.orders.splice(index,1); fillOrders(); beep(520,.1,'triangle'); setTimeout(()=>beep(700,.1,'triangle'),90); setTimeout(()=>beep(920,.12,'triangle'),170); toast(`주문 완료! +🪙${order.reward.coin} +⭐${order.reward.star}${order.reward.ruby?` +💎${order.reward.ruby}`:''}`); save(); render();}
-function orderReady(order){return findInventoryMatches(order).every(i=>i>=0)}
-function demandKeys(){const m={}; S.orders.forEach(o=>o.needs.forEach(n=>{const k=n.chain+':'+n.lvl; m[k]=(m[k]||0)+1;})); return m}
-function claimMission(id){const mission=[...MISSIONS.daily,...MISSIONS.event,...MISSIONS.achievement].find(m=>m.id===id); if(!mission)return; if(S.missionClaimed.includes(id))return; const p=missionProgress(mission); if(p.value<mission.target){toast('아직 완료되지 않았어요.'); return} reward(mission.reward); if(mission.reward && mission.reward.styleUnlock){unlockStyleByMission(mission.reward.styleUnlock)} S.missionClaimed.push(id); toast('보상을 받았어요!'); save(); render();}
-function unlockStyleByMission(styleId){ if(styleId==='santa' && !S.missionClaimed.includes('event_help_santa')){} }
-function metricValue(metric){switch(metric){case 'merges': return S.merges; case 'deliveries': return S.deliveries; case 'generated': return S.generated; case 'highFeast': return S.stats.highFeast||0; case 'placed': return S.placed.length; case 'discovered': return discoveredCount(); case 'income': return incomePerMinute(); default:return 0}}
-function missionProgress(m){return {value:metricValue(m.metric), target:m.target}}
-function isMissionClaimed(id){return S.missionClaimed.includes(id)}
-function storyUnlocked(story){return Object.entries(story.need).every(([k,v])=>{if(k==='deliveries')return S.deliveries>=v; return false})}
-function styleUnlocked(groupKey,item){ if(item.unlockMission) return isMissionClaimed(item.unlockMission); return S.stars>=item.unlockStars }
-function selectStyle(groupKey,id){ const group=STYLE_GROUPS.find(g=>g.key===groupKey); const item=group.items.find(it=>it.id===id); if(!styleUnlocked(groupKey,item)){toast('아직 잠겨 있어요. 별이나 미션으로 해금하세요!'); return} S.avatar[groupKey]=id; save(); renderStyle(); }
-function shopUnlocked(shop){return S.stars>=shop.unlockStars}
-function buyPlace(shopId){ const shop=VILLAGE_SHOP.find(v=>v.id===shopId); if(!shopUnlocked(shop)){toast(`⭐ ${shop.unlockStars}개 이상 모으면 열려요.`); return} if(S.coins<shop.price){toast('코인이 부족해요.'); return} S.pendingPlace=shopId; renderVillage(); toast(`${shop.name}을(를) 어디에 둘까요? 빈 부지를 선택하세요.`)}
-function placeAt(slot){
-  if(S.pendingPlace){
-    if(S.placed.some(p=>p.slot===slot)){toast('이미 배치된 자리예요.'); return}
-    const shop=VILLAGE_SHOP.find(v=>v.id===S.pendingPlace);
-    S.coins-=shop.price; S.placed.push({shopId:shop.id,slot}); S.pendingPlace=null;
-    toast(shop.name+' 배치 완료!'); save(); render(); return;
-  }
-  if(S.selectedVillageMove!=null && !S.placed.some(p=>p.slot===slot)){
-    const moveIdx=S.placed.findIndex(p=>p.slot===S.selectedVillageMove);
-    if(moveIdx>=0){ S.placed[moveIdx].slot=slot; S.selectedVillageMove=null; save(); renderVillage(); toast('위치를 바꿨어요.'); return }
-  }
-  const idx=S.placed.findIndex(p=>p.slot===slot); if(idx<0)return;
-  if(S.selectedVillageMove===slot){ S.selectedVillageMove=null; renderVillage(); return }
-  S.selectedVillageMove=slot; renderVillage(); toast('다른 빈 부지를 눌러 이동하세요.');
-}
-function renderTop(){
-  syncTime(); $('energyText').textContent=`${S.energy} / ${MAX_ENERGY}`; $('energyTimer').textContent=S.energy>=MAX_ENERGY?'충전 완료':`+1 ${timerString(S.nextEnergyAt-Date.now())}`; $('coinText').textContent=fmt(S.coins); $('rubyText').textContent=fmt(S.rubies); $('starText').textContent=fmt(S.stars); $('deliverySummary').textContent=`납품 ${S.deliveries}회`; $('levelBadge').textContent=levelOf();
-  const currentStory=[...STORIES].reverse().find(storyUnlocked)||STORIES[0]; $('headerStory').textContent=currentStory.title;
-}
-function renderEvents(){
-  const items=[
-    {tag:'진행 중',title:'산타 도와주기',desc:'이벤트 미션을 완료하고 산타 룩을 해금하세요.',p:Math.min(100,metricValue('deliveries')/8*100)},
-    {tag:'이번 주',title:'눈꽃 마을 패스',desc:'마을 수입과 도감 수집도를 올려 보세요.',p:Math.min(100,discoveredCount()/20*100)},
-    {tag:'한정',title:'주인공 꾸미기',desc:'별을 모아 새로운 헤어와 의상을 열어 보세요.',p:Math.min(100,S.stars/24*100)}
-  ]; $('eventStrip').innerHTML=items.map(v=>`<button class="event-card" data-openmissions="1"><span class="tag">${v.tag}</span><strong>${v.title}</strong><p>${v.desc}</p><div class="mini-progress"><span style="width:${v.p}%"></span></div></button>`).join('');
-}
-function renderTabs(){ $('tabs').innerHTML=TABS.map(t=>`<button class="tab ${S.tab===t.id?'active':''}" data-tab="${t.id}">${t.label}</button>`).join('') }
-function renderOrders(){ $('orderList').innerHTML=S.orders.map((o,i)=>{const ready=orderReady(o); const wants=o.needs.map(n=>{const cls=CHAINS[n.chain].klass; const ico=CHAINS[n.chain].levels[n.lvl].icon; return `<div class="want-item ${ready?'ok':''}"><div class="piece ${cls}"><span class="icon">${ico}</span></div><em>${n.lvl+1}</em></div>`}).join(''); return `<div class="order ${ready?'ready':''}"><div class="order-head"><div class="avatar-chip">${o.client[0]}</div><div><div class="name">${o.client[1]}</div><div class="line">${o.client[2]}</div></div></div><div class="want-row">${wants}</div><div class="order-reward">🪙${o.reward.coin} · ⭐${o.reward.star}${o.reward.ruby?` · 💎${o.reward.ruby}`:''}</div><button data-order="${i}" ${ready?'':'disabled'}>${ready?'주문 완료하기':'아이템 준비 중'}</button></div>`}).join('') }
-function renderBoard(){ const demand=demandKeys(); let used=0; $('board').innerHTML=S.board.map((item,i)=>{const selected=S.selected===i; const classes=['cell']; if(!item)classes.push('empty'); if(selected)classes.push('selected'); if(item&&demand[item.chain+':'+item.lvl])classes.push('match'); const inner=item?`<div class="piece ${CHAINS[item.chain].klass}"><span class="badge">${item.lvl+1}</span><span class="icon">${itemIcon(item)}</span></div>`:''; if(item)used++; return `<button class="${classes.join(' ')}" data-cell="${i}" aria-label="${item?itemName(item):'빈 칸'}">${inner}</button>`}).join(''); $('boardMeta').textContent=`${used} / ${GRID_SIZE} 칸 사용 중`; renderInfoBar() }
-function renderInfoBar(){ const item=S.board[S.selected]; if(!item){ $('infoBar').innerHTML=`<div class="info-icon">👆</div><div class="info-copy"><strong>아이템을 선택해 보세요</strong><small>같은 아이템끼리 머지하면 한 단계 올라가고, 손님 주문에 필요한 아이템은 초록빛으로 표시돼요.</small></div><div class="info-actions"><button class="small-btn" id="openTips">설명</button></div>`; $('openTips').onclick=()=>openHelp(); return }
-  const data=getLevelData(item.chain,item.lvl); $('infoBar').innerHTML=`<div class="info-icon"><div class="piece ${CHAINS[item.chain].klass}" style="width:42px;height:42px;border-radius:14px"><span class="icon">${data.icon}</span></div></div><div class="info-copy"><strong>${data.name} · ${item.lvl+1}단계</strong><small>${data.desc} · ${CHAINS[item.chain].name} 라인</small></div><div class="info-actions"><button class="small-btn" id="sellBtn">판매</button><button class="small-btn" id="bookBtn">느낌표</button></div>`; $('sellBtn').onclick=sellSelected; $('bookBtn').onclick=()=>openChainModal(item.chain,item.lvl) }
-function renderGenerators(){ $('generatorRow').innerHTML=GENERATORS.map(g=>{const locked=S.stars<g.unlockStars; const chain=CHAINS[g.chain]; return `<button class="generator ${locked?'locked':''}" data-generator="${g.id}"><div class="gen-top"><div class="gen-icon">${g.icon}</div><div><strong>${g.name}</strong><small>${chain.name} 아이템 생성</small></div></div><div class="gen-foot"><span class="gen-tag">${locked?`⭐ ${g.unlockStars} 필요`:'생성 가능'}</span><span class="gen-cost">⚡ ${g.cost}</span></div></button>`}).join('') }
-function renderMergeStory(){ const story=[...STORIES].reverse().find(storyUnlocked)||STORIES[0]; $('mergeStoryTitle').textContent=story.title; const preview=story.lines[0][1]||''; $('mergeStoryCopy').textContent=preview }
-function renderVillage(){ const income=incomePerMinute(); $('villageStatus').textContent=`마을 수입 +${income} / 1분 · 배치 ${S.placed.length}개`; $('placeHint').textContent=S.pendingPlace?'빈 부지를 눌러 배치하세요. 배치 후에는 항목을 눌러 이동할 수 있어요.':'상점에서 아이템을 선택하면 빈 부지에 배치할 수 있어요.'; const slots=Array.from({length:15},(_,i)=>i); $('plotGrid').innerHTML=slots.map(slot=>{const placed=S.placed.find(p=>p.slot===slot); const moving=S.selectedVillageMove===slot; if(!placed){ return `<button class="plot empty ${S.pendingPlace?'place-select':''}" data-plot="${slot}">${S.pendingPlace?'＋':'·'}</button>` } const def=VILLAGE_SHOP.find(v=>v.id===placed.shopId) || {icon:'🏠',name:'건물'}; return `<button class="plot ${moving?'place-select':''}" data-plot="${slot}">${def.icon}<span class="mini-label">${def.name}</span></button>`}).join(''); $('shopRow').innerHTML=VILLAGE_SHOP.map(shop=>{const locked=!shopUnlocked(shop); const ownedCount=S.placed.filter(p=>p.shopId===shop.id).length; return `<div class="shop-item"><div class="top"><div class="bico">${shop.icon}</div><div><strong>${shop.name}</strong><small>${shop.desc}</small></div></div><button class="buy ${locked?'owned':''}" data-buy="${shop.id}">${locked?`⭐ ${shop.unlockStars} 필요`:ownedCount?`배치 ${ownedCount}개 · 구매`: `구매 🪙${shop.price}`}</button></div>`}).join('') }
-function renderStyle(){ const av=$('avatarPreview'); av.className=`avatar outfit-${S.avatar.outfit}`; av.querySelector('.hair').className=`hair hair-${S.avatar.hair}`; av.querySelector('.acc').textContent=S.avatar.acc==='none'?'':STYLE_GROUPS.find(g=>g.key==='acc').items.find(v=>v.id===S.avatar.acc).emoji; $('styleOptions').innerHTML=STYLE_GROUPS.map(group=>`<div class="option-group"><h4>${group.title}</h4><div class="option-grid">${group.items.map(it=>{const unlocked=styleUnlocked(group.key,it); const active=S.avatar[group.key]===it.id; return `<button class="style-opt ${unlocked?'':'locked'} ${active?'active':''}" data-stylegroup="${group.key}" data-style="${it.id}"><div class="preview">${it.emoji}</div><strong>${it.name}</strong><small>${unlocked?'사용 가능':it.unlockMission?'미션 보상':`⭐ ${it.unlockStars}`}</small></button>`}).join('')}</div></div>`).join('') }
-function renderBook(){ const wrap=$('bookWrap'); wrap.innerHTML=Object.values(CHAINS).map(chain=>`<div class="book-group"><div class="section-top"><h3>${chain.name}</h3><button class="small-btn" data-chaininfo="${chain.id}">느낌표</button></div><div class="book-chain">${chain.levels.map((lv,i)=>{const known=S.discovered[chain.id][i]; return `<div class="book-item"><div class="bicon ${known?chain.klass:'q'}">${known?lv.icon:'?'}</div><strong>${known?lv.name:'미발견'}</strong><small>${known?`${i+1}단계`:'?'}</small></div>`}).join('')}</div></div>`).join('') }
-function renderMissionTabs(){ const arr=[['daily','일일 미션'],['event','이벤트'],['achievement','업적']]; $('missionTabs').innerHTML=arr.map(([id,label])=>`<button class="mission-tab ${missionView===id?'active':''}" data-missiontab="${id}">${label}</button>`).join('') }
-function renderMissions(){ renderMissionTabs(); const list=MISSIONS[missionView]; $('missionList').innerHTML=list.map(m=>{const prog=missionProgress(m); const pct=Math.min(100,prog.value/prog.target*100); const claimed=isMissionClaimed(m.id); const rewardText=[m.reward.coin?`🪙${m.reward.coin}`:'',m.reward.star?`⭐${m.reward.star}`:'',m.reward.ruby?`💎${m.reward.ruby}`:'',m.reward.energy?`⚡${m.reward.energy}`:'',m.reward.styleUnlock?'👗 스타일':''].filter(Boolean).join(' · '); return `<div class="mission"><div class="head"><strong>${m.title}</strong><span>${Math.min(prog.value,m.target)} / ${m.target}</span></div><p>${m.desc}</p><div class="progress"><span style="width:${pct}%"></span></div><div class="foot"><div class="reward-chip">보상 ${rewardText}</div><button class="claim ${!claimed && prog.value>=m.target?'ready':''}" data-claim="${m.id}" ${claimed?'disabled':''}>${claimed?'수령 완료':prog.value>=m.target?'보상 받기':'진행 중'}</button></div></div>`}).join('') }
-function renderPages(){ document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===`page-${S.tab}`)); }
-function renderAll(){ renderTop(); renderEvents(); renderTabs(); renderMergeStory(); renderOrders(); renderBoard(); renderGenerators(); renderVillage(); renderStyle(); renderBook(); renderMissions(); renderPages(); }
+function generatorIcon(chain){ return itemArt(chain,Math.min(2,CHAINS[chain].levels.length-1)); }
+function portraitArt(c){ return `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="bg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#fff8f5"/><stop offset="1" stop-color="#ffeadd"/></linearGradient></defs><rect width="100" height="100" rx="24" fill="url(#bg)"/><ellipse cx="50" cy="92" rx="34" ry="20" fill="${c.top}" opacity=".18"/><path d="M22 90c3-18 15-28 28-28s25 10 28 28" fill="${c.top}"/><ellipse cx="50" cy="44" rx="23" ry="26" fill="${c.skin}"/><path d="M26 45c0-17 10-28 24-28 12 0 24 8 24 25v5c-2-5-8-8-12-9-7-2-14-2-26 0-4 1-7 3-10 7Z" fill="${c.hair}"/><path d="M36 47c2 0 4 2 4 4 0 1-1 1-2 1h-4c-1 0-2 0-2-1 0-2 2-4 4-4Zm24 0c2 0 4 2 4 4 0 1-1 1-2 1h-4c-1 0-2 0-2-1 0-2 2-4 4-4Z" fill="#3d2d31"/><path d="M43 59c2 3 12 3 14 0" stroke="#c07d7a" stroke-width="3" stroke-linecap="round" fill="none"/><circle cx="42" cy="46" r="2" fill="#2f2429"/><circle cx="58" cy="46" r="2" fill="#2f2429"/></svg>`; }
+function protagonistArt(){ const hair=S.avatar.hair, outfit=S.avatar.outfit, acc=S.avatar.acc; const hairColor={short:'#52353a',ponytail:'#6d4a43',braid:'#2e2f36'}[hair]||'#52353a'; const dress={knit:['#f6d7d2','#d97889'],dress:['#f06f82','#ff8aa0'],coat:['#7ba3d9','#6a86bf'],santa:['#c63949','#de5565']}[outfit]||['#f6d7d2','#d97889']; const accMarkup={none:'',bag:'<rect x="130" y="150" width="26" height="22" rx="5" fill="#c07b59"/><path d="M137 150c0-8 12-8 12 0" stroke="#8f5e44" stroke-width="3" fill="none"/>',muff:'<circle cx="55" cy="70" r="13" fill="#f5d7db"/><circle cx="125" cy="70" r="13" fill="#f5d7db"/><path d="M55 70c13-10 57-10 70 0" stroke="#d48fa0" stroke-width="4" fill="none"/>',wand:'<path d="M138 130l20 22" stroke="#c79e49" stroke-width="4"/><path d="M160 154l-4-8 8 3 6-7 1 8 8 3-7 4 1 8-7-5-7 4 2-8Z" fill="#ffd454"/>'}[acc]; const hairExtra=hair==='ponytail'?'<path d="M122 58c18 8 20 34 8 48" fill="none" stroke="#6d4a43" stroke-width="14" stroke-linecap="round"/>':hair==='braid'?'<path d="M46 70c-6 20-5 37 5 52" fill="none" stroke="#2e2f36" stroke-width="10" stroke-linecap="round"/><path d="M134 70c6 20 5 37-5 52" fill="none" stroke="#2e2f36" stroke-width="10" stroke-linecap="round"/>':''; return `<svg viewBox="0 0 180 250" xmlns="http://www.w3.org/2000/svg"><ellipse cx="90" cy="228" rx="52" ry="10" fill="#f2cad3" opacity=".45"/><path d="M90 14c28 0 48 20 48 48v12c0 9-4 16-9 22l-8-7V59H59v30l-8 7c-5-6-9-13-9-22V62c0-28 20-48 48-48Z" fill="${hairColor}"/>${hairExtra}<ellipse cx="90" cy="67" rx="34" ry="39" fill="#ffd8c6"/><circle cx="78" cy="65" r="3" fill="#31262b"/><circle cx="102" cy="65" r="3" fill="#31262b"/><path d="M80 82c4 5 16 5 20 0" stroke="#c07d7a" stroke-width="3" stroke-linecap="round" fill="none"/><path d="M58 110c4-8 11-12 18-12h28c7 0 14 4 18 12l5 26c3 14-7 28-22 28H75c-15 0-25-14-22-28Z" fill="${dress[0]}"/><path d="M56 137h68l16 73H40Z" fill="${dress[1]}"/><path d="M72 109l-18 28M108 109l18 28" stroke="#ffd8c6" stroke-width="12" stroke-linecap="round"/><path d="M78 210v26M102 210v26" stroke="#ffd8c6" stroke-width="13" stroke-linecap="round"/><path d="M68 236h22M90 236h22" stroke="#5d4450" stroke-width="10" stroke-linecap="round"/>${accMarkup}</svg>`; }
+function villageArt(id){
+  const map={
+    cafe:svgWrap('<rect x="16" y="26" width="32" height="22" rx="4" fill="#d88f5e"/><path d="M18 26h28V16H18Z" fill="#5db4d5"/><path d="M18 26V16M32 26V16M46 26V16" stroke="#fff7ea" stroke-width="4"/><path d="M20 48h8V34h-8Zm16 0h8V34h-8Z" fill="#fff4d4"/>'),
+    tree:svgWrap('<path d="M32 12l14 14H38l10 12H36l8 12H20l8-12H16l10-12H18Z" fill="#49b776"/><rect x="28" y="50" width="8" height="8" rx="2" fill="#8c603f"/>'),
+    house:svgWrap('<path d="M16 30l16-14 16 14v18H16Z" fill="#d78c62"/><path d="M24 48V36h16v12" fill="#fff2cc"/><path d="M18 30l14-10 14 10" stroke="#8e5b45" stroke-width="4" stroke-linecap="round"/>'),
+    snowman:svgWrap('<circle cx="32" cy="24" r="10" fill="#fff"/><circle cx="32" cy="42" r="14" fill="#fff"/><circle cx="28" cy="22" r="1.5" fill="#303030"/><circle cx="36" cy="22" r="1.5" fill="#303030"/><path d="M32 26l6 2-6 2" fill="#f29d4b"/><path d="M22 22l-6-6M42 22l6-6" stroke="#8d6c4c" stroke-width="3" stroke-linecap="round"/>'),
+    market:svgWrap('<rect x="14" y="26" width="36" height="22" rx="4" fill="#f2b35a"/><path d="M16 26h32V16H16Z" fill="#f47487"/><path d="M16 26V16M26 26V16M36 26V16M46 26V16" stroke="#fff7ea" stroke-width="4"/><rect x="22" y="34" width="8" height="8" fill="#fff2cc"/><rect x="34" y="34" width="10" height="14" fill="#8a5f45"/>'),
+    chapel:svgWrap('<path d="M18 50V26l14-12 14 12v24Z" fill="#d6e6f5"/><path d="M26 50V34h12v16" fill="#fff4cc"/><path d="M32 12v10M27 17h10" stroke="#9a8175" stroke-width="4" stroke-linecap="round"/>'),
+    carousel:svgWrap('<path d="M18 24h28v6H18Z" fill="#f39db1"/><path d="M20 24l12-8 12 8" fill="#ffd35e"/><path d="M32 24v24" stroke="#b67a45" stroke-width="4"/><circle cx="22" cy="38" r="5" fill="#8ad0f5"/><circle cx="42" cy="38" r="5" fill="#ffb572"/>'),
+    castle:svgWrap('<path d="M16 24h32v26H16Z" fill="#cab9f5"/><path d="M22 24v-8h8v8M34 24v-8h8v8" fill="#9b8be5"/><path d="M26 50V36h12v14" fill="#fff4cc"/><path d="M20 30h24" stroke="#fff" stroke-width="4" opacity=".6"/>')
+  }; return map[id]||svgWrap('<rect x="16" y="16" width="32" height="32" rx="10" fill="#ddd"/>'); }
+
+function renderTop(){ syncTime(); $('soundBtn').textContent=S.sound?'🔊':'🔇'; $('energyText').textContent=`${S.energy} / ${MAX_ENERGY}`; $('energyTimer').textContent=S.energy>=MAX_ENERGY?'충전 완료':`+1 ${timerString(S.nextEnergyAt-Date.now())}`; $('coinText').textContent=fmt(S.coins); $('rubyText').textContent=fmt(S.rubies); $('starText').textContent=fmt(S.stars); $('deliveryText').textContent=`납품 ${S.deliveries}회`; $('levelBadge').textContent=levelOf(); const story=[...STORIES].reverse().find(storyUnlocked)||STORIES[0]; $('storySummary').textContent=story.title; $('mergeStoryTitle').textContent=story.title; $('mergeStoryCopy').textContent=story.lines[0][1]; $('storyPortrait').innerHTML=portraitArt(CUSTOMERS[0]); }
+function renderNav(){ $('bottomNav').innerHTML=TABS.map(t=>`<button class="${S.tab===t.id?'active':''}" data-tab="${t.id}"><span class="ico">${t.icon}</span><span>${t.label}</span></button>`).join(''); }
+function renderPages(){ document.querySelectorAll('.page').forEach(p=>{ p.classList.toggle('active', p.id===`page-${S.tab}`); }); }
+function renderOrders(){ $('orderRail').innerHTML=S.orders.map((o,i)=>{ const c=customer(o.client), ready=orderReady(o); const wants=o.needs.map(n=>`<div class="want ${ready?'ok':''}"><div class="piece ${getChain(n.chain).klass}"><span class="art">${itemArt(n.chain,n.lvl)}</span></div><span class="n">${n.lvl+1}</span></div>`).join(''); return `<div class="order-card ${ready?'ready':''}"><div class="person-row"><div class="portrait">${portraitArt(c)}</div><div class="pmeta"><strong>${esc(c.name)}</strong><small>${esc(c.role)}</small></div></div><div class="want-list">${wants}</div><div class="order-reward">🪙${o.reward.coin} · ⭐${o.reward.star}${o.reward.ruby?` · 💎${o.reward.ruby}`:''}</div><button class="go" data-order="${i}" ${ready?'':'disabled'}>${ready?'주문 완료하기':'아이템 준비 중'}</button></div>`; }).join(''); }
+function renderBoard(){ const need=demandKeys(); let used=0; $('board').innerHTML=S.board.map((item,i)=>{ const classes=['cell']; if(!item)classes.push('empty'); if(S.selected===i)classes.push('selected'); if(item&&need[item.chain+':'+item.lvl])classes.push('need'); const inner=item?`<div class="piece ${getChain(item.chain).klass}"><span class="badge">${item.lvl+1}</span><span class="art">${itemArt(item.chain,item.lvl)}</span></div>`:''; if(item)used++; return `<button class="${classes.join(' ')}" data-cell="${i}">${inner}</button>`; }).join(''); $('boardMeta').textContent=`${used} / ${GRID} 칸`; renderInfo(); }
+function renderInfo(){ const item=S.board[S.selected]; if(!item){ $('infoDock').innerHTML=`<div class="info-icon">👆</div><div class="info-copy"><strong>아이템을 선택해 보세요</strong><small>같은 아이템끼리 머지하면 한 단계 올라가고, 손님 주문에 필요한 아이템은 초록빛으로 표시돼요.</small></div><div class="info-actions"><button class="mini" id="tipsBtn">설명</button></div>`; $('tipsBtn').onclick=openHelp; return; } const lv=getLevel(item.chain,item.lvl); $('infoDock').innerHTML=`<div class="info-icon"><div class="piece ${getChain(item.chain).klass}" style="width:40px;height:40px;border-radius:14px"><span class="art">${itemArt(item.chain,item.lvl)}</span></div></div><div class="info-copy"><strong>${lv.name} · ${item.lvl+1}단계</strong><small>${lv.desc} · ${getChain(item.chain).name}</small></div><div class="info-actions"><button class="mini" id="sellBtn">판매</button><button class="mini" id="bookBtn">느낌표</button></div>`; $('sellBtn').onclick=sellSelected; $('bookBtn').onclick=()=>openChainModal(item.chain); }
+function renderGenerators(){ $('genRow').innerHTML=GENERATORS.map(g=>{ const locked=S.stars<g.unlockStars; return `<button class="gen ${locked?'locked':''}" data-gen="${g.id}"><div class="gtop"><div class="gico">${generatorIcon(g.chain)}</div><div><strong>${g.name}</strong><small>${getChain(g.chain).name}</small></div></div><div class="gfoot"><span class="tag">${locked?`⭐ ${g.unlockStars}`:'생성 가능'}</span><span>⚡ ${g.cost}</span></div></button>`; }).join(''); }
+function renderVillage(){ const page=$('page-village'); page.innerHTML=`<div class="panel"><div class="panel-top"><h3>눈꽃 마을</h3><div class="sub">별로 해금 · 코인으로 구매 · 탭해서 이동</div></div><div class="village-hero"><div class="sky-status"><div class="cloud">☁️ ❄️ ☁️</div><div class="badge">수입 +${incomePerMinute()} / 1분 · 배치 ${S.placed.length}개</div></div><div class="plots" id="plotGrid"></div></div><div class="vShop" id="vShop"></div></div>`;
+  const slots=Array.from({length:15},(_,i)=>i); $('plotGrid').innerHTML=slots.map(slot=>{ const placed=S.placed.find(p=>p.slot===slot); if(!placed){ return `<button class="plot empty ${S.pendingPlace||S.selectedVillageMove!==null?'sel':''}" data-plot="${slot}">${S.pendingPlace?'＋':'·'}</button>`; } const def=VILLAGE_SHOP.find(v=>v.id===placed.shopId)||VILLAGE_SHOP[0]; return `<button class="plot ${S.selectedVillageMove===slot?'sel':''}" data-plot="${slot}">${villageArt(def.id)}<span class="label">${def.name}</span></button>`; }).join('');
+  $('vShop').innerHTML=VILLAGE_SHOP.map(shop=>{ const locked=S.stars<shop.unlockStars; const owned=S.placed.filter(p=>p.shopId===shop.id).length; return `<div class="buy-card"><div class="t"><div class="bico">${villageArt(shop.id)}</div><div><strong>${shop.name}</strong><small>${shop.desc}</small></div></div><button class="buy ${locked?'locked':''}" data-buy="${shop.id}">${locked?`⭐ ${shop.unlockStars} 필요`:owned?`배치 ${owned}개 · 구매`: `구매 🪙${shop.price}`}</button></div>`; }).join(''); }
+function renderStyle(){ const page=$('page-style'); page.innerHTML=`<div class="panel style-stage"><div class="panel-top"><h3>주인공 꾸미기</h3><div class="sub">별과 미션 보상으로 해금</div></div><div class="doll-stage"><div class="avatarBox">${protagonistArt()}</div></div><div id="styleWrap"></div></div>`; $('styleWrap').innerHTML=STYLE_GROUPS.map(group=>`<div class="styleGroup"><h4>${group.title}</h4><div class="styleGrid">${group.items.map(it=>{ const unlocked=styleUnlocked(group.key,it), active=S.avatar[group.key]===it.id; const label=group.key==='hair'?'💇🏻':group.key==='outfit'?'👗':'✨'; return `<button class="styleOpt ${unlocked?'':'locked'} ${active?'active':''}" data-stylegroup="${group.key}" data-style="${it.id}"><div class="pv">${label}</div><strong>${it.name}</strong><small>${unlocked?'사용 가능':it.unlockMission?'미션 보상':`⭐ ${it.unlockStars}`}</small></button>`; }).join('')}</div></div>`).join(''); }
+function renderBook(){ const page=$('page-book'); page.innerHTML=`<div class="panel"><div class="panel-top"><h3>머지 도감</h3><div class="sub">미발견 항목은 ? 로 표시</div></div><div id="bookWrap"></div></div>`; $('bookWrap').innerHTML=Object.values(CHAINS).map(chain=>`<div class="bookGroup"><div class="panel-top"><h3 style="font-size:14px;margin:0">${chain.name}</h3><button class="mini" data-chaininfo="${chain.id}">느낌표</button></div><div class="bookRow">${chain.levels.map((lv,i)=>{ const known=S.discovered[chain.id][i]; return `<div class="bookItem"><div class="ic ${known?'':'q'}">${known?itemArt(chain.id,i):'?'}</div><strong>${known?lv.name:'미발견'}</strong><small>${known?`${i+1}단계`:'?'}</small></div>`; }).join('')}</div></div>`).join(''); }
+function renderMissions(){ const page=$('page-missions'); page.innerHTML=`<div class="panel"><div class="panel-top"><h3>이벤트 · 미션 · 업적</h3><div class="sub">완료 후 보상 수령</div></div><div class="missionTabs" id="missionTabs"></div><div class="mList" id="missionList"></div></div>`; $('missionTabs').innerHTML=[['daily','일일 미션'],['event','이벤트'],['achievement','업적']].map(([id,label])=>`<button class="${missionView===id?'active':''}" data-mtab="${id}">${label}</button>`).join(''); $('missionList').innerHTML=MISSIONS[missionView].map(m=>{ const prog=missionProgress(m), pct=Math.min(100,prog.value/prog.target*100), claimed=isMissionClaimed(m.id); const rewardTxt=[m.reward.coin?`🪙${m.reward.coin}`:'',m.reward.star?`⭐${m.reward.star}`:'',m.reward.ruby?`💎${m.reward.ruby}`:'',m.reward.energy?`⚡${m.reward.energy}`:'',m.reward.styleUnlock?'👗 스타일':''].filter(Boolean).join(' · '); return `<div class="mission"><div class="hd"><strong>${m.title}</strong><span>${Math.min(prog.value,m.target)} / ${m.target}</span></div><p>${m.desc}</p><div class="bar"><span style="width:${pct}%"></span></div><div class="ft"><div class="reward">보상 ${rewardTxt}</div><button class="claim ${!claimed&&prog.value>=m.target?'ready':''}" data-claim="${m.id}" ${claimed?'disabled':''}>${claimed?'수령 완료':prog.value>=m.target?'보상 받기':'진행 중'}</button></div></div>`; }).join(''); }
+function renderSidePages(){ renderVillage(); renderStyle(); renderBook(); renderMissions(); }
+function renderAll(){ renderTop(); renderNav(); renderOrders(); renderBoard(); renderGenerators(); renderPages(); if(S.tab!=='merge')renderSidePages(); }
 function render(){ fillOrders(); renderAll(); }
-function setTab(tab){ S.tab=tab; save(); renderPages(); renderTabs(); }
-function openModal(head,body,alt=false){ $('modalBox').innerHTML=`<div class="modal-head ${alt?'alt':''}"><strong>${head}</strong><button class="close-btn" id="closeModal">✕</button></div><div class="modal-body">${body}</div>`; $('modalBackdrop').classList.add('show'); document.body.classList.add('modal-open'); $('closeModal').onclick=closeModal }
-function closeModal(){ $('modalBackdrop').classList.remove('show'); document.body.classList.remove('modal-open') }
-function openChainModal(chainId,focusLvl=0){ const chain=CHAINS[chainId]; const body=`<div class="dialogue"><div class="linebox"><strong>${chain.name} 족보</strong><p>같은 아이템 2개를 머지하면 다음 단계로 올라갑니다. 미발견 단계는 ? 로 가려집니다.</p></div></div><div style="height:12px"></div><div class="chain-flow">${chain.levels.map((lv,i)=>{const known=S.discovered[chain.id][i]; return `<div class="flow-item"><div class="bicon ${known?chain.klass:'locked-q'}">${known?lv.icon:'?'}</div><strong>${known?lv.name:'미발견'}</strong><small>${i+1}단계</small></div>`}).join('')}</div><div style="height:14px"></div><div class="linebox"><strong>생성 작업대</strong><p>${GENERATORS.find(g=>g.chain===chain.id).name} 에서 시작 아이템이 나옵니다.</p></div>`; openModal(chain.name,body) }
-function openStoryModal(){ const unlocked=STORIES.filter(storyUnlocked); const latest=unlocked[unlocked.length-1]||STORIES[0]; const body=`<div class="dialogue">${latest.lines.map(([who,line])=>`<div class="linebox"><strong>${who}</strong><p>${line}</p></div>`).join('')}</div>`; openModal(latest.title,body,true) }
-function openHelp(){ openModal('플레이 방법',`<div class="dialogue"><div class="linebox"><strong>1. 작업대를 눌러 아이템 생성</strong><p>선물상자, 다과 바구니, 포토 스튜디오 등 여러 생성기를 눌러 라인별 아이템을 뽑아 보세요.</p></div><div class="linebox"><strong>2. 같은 아이템을 머지</strong><p>드래그하거나 한 칸을 선택한 뒤 다른 칸을 눌러 머지할 수 있어요.</p></div><div class="linebox"><strong>3. 손님 주문 완료</strong><p>손님이 요구하는 아이템을 만들면 코인과 별, 경험치를 얻어요. 별이 많아질수록 더 많은 작업대와 꾸미기 요소가 열립니다.</p></div><div class="linebox"><strong>4. 마을/주인공 꾸미기</strong><p>별로 해금한 건물과 의상을 코인과 미션 보상으로 꾸며 보세요.</p></div></div>`) }
-function startDrag(e,idx){ const item=S.board[idx]; if(!item)return; drag={from:idx}; const ghost=document.createElement('div'); ghost.className='drag-ghost'; ghost.innerHTML=`<div class="piece ${CHAINS[item.chain].klass}" style="width:58px;height:58px"><span class="icon">${itemIcon(item)}</span></div>`; document.body.appendChild(ghost); drag.ghost=ghost; moveGhost(e); document.body.style.overflow='hidden'; const cell=document.querySelector(`[data-cell="${idx}"]`); if(cell)cell.classList.add('dragging') }
-function moveGhost(e){ if(!drag)return; const p=getPoint(e); drag.ghost.style.left=p.x+'px'; drag.ghost.style.top=p.y+'px'; document.querySelectorAll('.cell.target').forEach(el=>el.classList.remove('target')); const target=document.elementFromPoint(p.x,p.y)?.closest('.cell'); if(target)target.classList.add('target') }
-function endDrag(e){ if(!drag)return; const p=getPoint(e); const target=document.elementFromPoint(p.x,p.y)?.closest('.cell'); document.querySelectorAll('.cell.target,.cell.dragging').forEach(el=>el.classList.remove('target','dragging')); drag.ghost.remove(); document.body.style.overflow=''; if(target){ const to=Number(target.dataset.cell); S.selected=drag.from; moveItem(drag.from,to) } drag=null }
-function getPoint(e){ if(e.touches&&e.touches[0])return {x:e.touches[0].clientX,y:e.touches[0].clientY}; if(e.changedTouches&&e.changedTouches[0])return {x:e.changedTouches[0].clientX,y:e.changedTouches[0].clientY}; return {x:e.clientX,y:e.clientY} }
-function bindEvents(){
-  $('tabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]'); if(b)setTab(b.dataset.tab)});
-  $('eventStrip').addEventListener('click',e=>{if(e.target.closest('[data-openmissions]')) setTab('missions')});
-  $('orderList').addEventListener('click',e=>{const b=e.target.closest('[data-order]'); if(b)completeOrder(Number(b.dataset.order))});
-  $('board').addEventListener('click',e=>{const cell=e.target.closest('[data-cell]'); if(cell)selectCell(Number(cell.dataset.cell))});
-  $('board').addEventListener('pointerdown',e=>{const cell=e.target.closest('[data-cell]'); if(!cell)return; const idx=Number(cell.dataset.cell); if(!S.board[idx])return; e.preventDefault(); startDrag(e,idx)});
-  window.addEventListener('pointermove',e=>{ if(drag){ e.preventDefault(); moveGhost(e) } },{passive:false});
-  window.addEventListener('pointerup',e=>{ if(drag){ e.preventDefault(); endDrag(e) } },{passive:false});
-  $('generatorRow').addEventListener('click',e=>{const b=e.target.closest('[data-generator]'); if(b)spawnFromGenerator(b.dataset.generator)});
-  $('shopRow').addEventListener('click',e=>{const b=e.target.closest('[data-buy]'); if(b)buyPlace(b.dataset.buy)});
-  $('plotGrid').addEventListener('click',e=>{const b=e.target.closest('[data-plot]'); if(b)placeAt(Number(b.dataset.plot))});
-  $('styleOptions').addEventListener('click',e=>{const b=e.target.closest('[data-style]'); if(b)selectStyle(b.dataset.stylegroup,b.dataset.style)});
-  $('bookWrap').addEventListener('click',e=>{const b=e.target.closest('[data-chaininfo]'); if(b)openChainModal(b.dataset.chaininfo)});
-  $('missionTabs').addEventListener('click',e=>{const b=e.target.closest('[data-missiontab]'); if(b){missionView=b.dataset.missiontab; renderMissions()}});
-  $('missionList').addEventListener('click',e=>{const b=e.target.closest('[data-claim]'); if(b)claimMission(b.dataset.claim)});
-  $('storyBtn').onclick=openStoryModal; $('helpBtn').onclick=openHelp; $('soundBtn').onclick=()=>{S.sound=!S.sound; $('soundBtn').textContent=S.sound?'🔊':'🔇'; save()};
-  $('modalBackdrop').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});
+
+function openModal(title, body, alt=false){ $('modalBox').innerHTML=`<div class="mhead ${alt?'alt':''}"><strong>${title}</strong><button class="close" id="closeModal">✕</button></div><div class="mbody">${body}</div>`; $('modalBg').classList.add('show'); document.body.style.overflow='hidden'; $('closeModal').onclick=closeModal; }
+function closeModal(){ $('modalBg').classList.remove('show'); document.body.style.overflow=''; }
+function openChainModal(chainId){ const chain=getChain(chainId); openModal(chain.name, `<div class="bubble"><strong>${chain.name} 족보</strong><p>같은 아이템 2개를 머지하면 다음 단계로 올라갑니다. 미발견 단계는 ? 로 가려집니다.</p></div><div style="height:12px"></div><div class="chainGrid">${chain.levels.map((lv,i)=>{ const known=S.discovered[chain.id][i]; return `<div class="chainCell"><div class="x">${known?itemArt(chain.id,i):'?'}</div><strong>${known?lv.name:'미발견'}</strong><small>${i+1}단계</small></div>`; }).join('')}</div>`); }
+function openStoryModal(){ const unlocked=STORIES.filter(storyUnlocked); const latest=unlocked[unlocked.length-1]||STORIES[0]; openModal(latest.title, `<div class="dialogue">${latest.lines.map(([who,line])=>`<div class="bubble"><strong>${who}</strong><p>${line}</p></div>`).join('')}</div>`, true); }
+function openHelp(){ openModal('플레이 방법', `<div class="dialogue"><div class="bubble"><strong>1. 생성기 사용</strong><p>선물상자, 다과 바구니, 포토 스튜디오 등 여러 생성기를 눌러 라인별 아이템을 만드세요.</p></div><div class="bubble"><strong>2. 머지하기</strong><p>같은 아이템을 드래그하거나, 먼저 선택한 뒤 다른 칸을 눌러 합칠 수 있어요.</p></div><div class="bubble"><strong>3. 손님 주문 납품</strong><p>손님 카드를 보면 필요한 아이템이 표시됩니다. 완료하면 코인, 별, 경험치를 얻어요.</p></div><div class="bubble"><strong>4. 마을/주인공 꾸미기</strong><p>별과 미션 보상으로 새로운 생성기, 건물, 의상, 소품이 열립니다.</p></div></div>`); }
+
+function buyPlace(id){ const shop=VILLAGE_SHOP.find(v=>v.id===id); if(S.stars<shop.unlockStars){ toast(`⭐ ${shop.unlockStars}개 이상 모으면 열려요.`); return; } if(S.coins<shop.price){ toast('코인이 부족해요.'); return; } S.pendingPlace=id; S.selectedVillageMove=null; renderVillage(); toast(`${shop.name}을(를) 둘 빈 부지를 눌러 주세요.`); }
+function placeAt(slot){ if(S.pendingPlace){ if(S.placed.some(p=>p.slot===slot)){ toast('이미 배치된 자리예요.'); return; } const shop=VILLAGE_SHOP.find(v=>v.id===S.pendingPlace); S.coins-=shop.price; S.placed.push({shopId:shop.id,slot}); S.pendingPlace=null; save(); renderVillage(); renderTop(); toast(shop.name+' 배치 완료!'); return; }
+  if(S.selectedVillageMove!==null && !S.placed.some(p=>p.slot===slot)){ const idx=S.placed.findIndex(p=>p.slot===S.selectedVillageMove); if(idx>=0){ S.placed[idx].slot=slot; S.selectedVillageMove=null; save(); renderVillage(); toast('위치를 바꿨어요.'); return; } }
+  const idx=S.placed.findIndex(p=>p.slot===slot); if(idx<0)return; if(S.selectedVillageMove===slot){ S.selectedVillageMove=null; renderVillage(); return; } S.selectedVillageMove=slot; renderVillage(); toast('이동할 다른 빈 부지를 눌러 주세요.'); }
+function selectStyle(groupKey,id){ const group=STYLE_GROUPS.find(g=>g.key===groupKey), item=group.items.find(it=>it.id===id); if(!styleUnlocked(groupKey,item)){ toast('아직 잠겨 있어요. 별이나 미션으로 해금하세요!'); return; } S.avatar[groupKey]=id; save(); renderStyle(); }
+
+function startDrag(e, idx){ const item=S.board[idx]; if(!item)return; drag={from:idx}; const ghost=document.createElement('div'); ghost.className='dragGhost'; ghost.innerHTML=`<div class="piece ${getChain(item.chain).klass}" style="width:64px;height:64px"><span class="badge">${item.lvl+1}</span><span class="art">${itemArt(item.chain,item.lvl)}</span></div>`; document.body.appendChild(ghost); drag.ghost=ghost; moveGhost(e); const cell=document.querySelector(`[data-cell="${idx}"]`); if(cell)cell.classList.add('dragging'); }
+function pt(e){ if(e.touches&&e.touches[0])return {x:e.touches[0].clientX,y:e.touches[0].clientY}; if(e.changedTouches&&e.changedTouches[0])return {x:e.changedTouches[0].clientX,y:e.changedTouches[0].clientY}; return {x:e.clientX,y:e.clientY}; }
+function moveGhost(e){ if(!drag)return; const p=pt(e); drag.ghost.style.left=p.x+'px'; drag.ghost.style.top=p.y+'px'; document.querySelectorAll('.cell.target').forEach(el=>el.classList.remove('target')); const target=document.elementFromPoint(p.x,p.y)?.closest('.cell'); if(target)target.classList.add('target'); }
+function endDrag(e){ if(!drag)return; const p=pt(e); const target=document.elementFromPoint(p.x,p.y)?.closest('.cell'); document.querySelectorAll('.cell.target,.cell.dragging').forEach(el=>el.classList.remove('target','dragging')); drag.ghost.remove(); if(target){ const to=Number(target.dataset.cell); S.selected=drag.from; moveItem(drag.from,to); } drag=null; }
+
+function bind(){ $('bottomNav').addEventListener('click',e=>{ const b=e.target.closest('[data-tab]'); if(b)setTab(b.dataset.tab); }); $('orderRail').addEventListener('click',e=>{ const b=e.target.closest('[data-order]'); if(b)completeOrder(Number(b.dataset.order)); }); $('board').addEventListener('click',e=>{ const b=e.target.closest('[data-cell]'); if(b)selectCell(Number(b.dataset.cell)); }); $('board').addEventListener('pointerdown',e=>{ const b=e.target.closest('[data-cell]'); if(!b)return; const idx=Number(b.dataset.cell); if(!S.board[idx])return; e.preventDefault(); startDrag(e,idx); }); window.addEventListener('pointermove',e=>{ if(drag){ e.preventDefault(); moveGhost(e); } }, {passive:false}); window.addEventListener('pointerup',e=>{ if(drag){ e.preventDefault(); endDrag(e); } }, {passive:false}); window.addEventListener('pointercancel',e=>{ if(drag)endDrag(e); }, {passive:false}); $('genRow').addEventListener('click',e=>{ const b=e.target.closest('[data-gen]'); if(b)spawnFromGenerator(b.dataset.gen); }); $('storyBtn').onclick=openStoryModal; $('helpBtn').onclick=openHelp; $('soundBtn').onclick=()=>{ S.sound=!S.sound; $('soundBtn').textContent=S.sound?'🔊':'🔇'; save(); };
+  $('modalBg').addEventListener('click',e=>{ if(e.target===e.currentTarget)closeModal(); });
+  $('content').addEventListener('click',e=>{ const p=e.target.closest('[data-buy]'); if(p)buyPlace(p.dataset.buy); const q=e.target.closest('[data-plot]'); if(q)placeAt(Number(q.dataset.plot)); const s=e.target.closest('[data-style]'); if(s)selectStyle(s.dataset.stylegroup,s.dataset.style); const c=e.target.closest('[data-chaininfo]'); if(c)openChainModal(c.dataset.chaininfo); const mt=e.target.closest('[data-mtab]'); if(mt){ missionView=mt.dataset.mtab; renderMissions(); } const cl=e.target.closest('[data-claim]'); if(cl)claimMission(cl.dataset.claim); });
 }
-function startTicker(){ setInterval(()=>{syncTime(); renderTop(); if(S.tab==='missions')renderMissions(); if(S.tab==='village')renderVillage(); },1000) }
-load(); fillOrders(); bindEvents(); render(); startTicker();
+function ticker(){ setInterval(()=>{ syncTime(); renderTop(); if(S.tab==='missions')renderMissions(); if(S.tab==='village')renderVillage(); },1000); }
+load(); bind(); render(); ticker();
 </script>
 </body>
 </html>
