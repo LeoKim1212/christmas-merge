@@ -1,394 +1,491 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#7e2244">
-<title>🎄 산타의 눈꽃 마을 머지</title>
+<meta name="theme-color" content="#df6f78">
+<title>산타의 머지 스토리</title>
 <style>
-:root{--wine:#8f2c4c;--wine2:#bd3e5c;--pink:#fff0f2;--cream:#fff9e9;--gold:#ffbd52;--pine:#34745c;--pine2:#205e4e;--ink:#563c4a;--muted:#917a86;--sky:#dcefff;--line:#ead7cf}
+:root{
+  --bg:#fff7f3;--paper:#fffdfb;--line:#ead7d1;--text:#644d57;--muted:#a28990;
+  --rose:#e86e7b;--rose-dark:#c85467;--peach:#fff0e3;--gold:#ffcb5b;--green:#4bb585;--green-dark:#2f8f66;
+  --sky:#bfe7ff;--sky2:#e9f8ff;--board:#f5ecd7;--board2:#ecdab7;--snow:#f3fbff;--shadow:0 8px 24px rgba(121,79,92,.12);
+}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{height:100%;background:#ecf4ff}body{margin:0;min-height:100%;font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:var(--ink);background:radial-gradient(ellipse at 50% -8%,#ffe7e4 0,#e1efff 41%,#d3e7f7 75%,#eaf5ff);}
-button{font:inherit;cursor:pointer;touch-action:manipulation}button:focus-visible,.cell:focus-visible,.plot:focus-visible{outline:3px solid #f5b23b;outline-offset:2px}button:disabled{cursor:default;opacity:.55}button:active:not(:disabled){transform:translateY(1px)}
-#app{position:relative;max-width:790px;min-height:100dvh;margin:auto;background:linear-gradient(180deg,#fff9f3 0,#fff5f2 290px,#fffefa 100%);box-shadow:0 10px 65px #4e6d8740;overflow:hidden}
-header{position:relative;padding:16px 16px 12px;background:linear-gradient(127deg,#742340 0%,#a42e4b 60%,#bd4555 100%);color:white;overflow:hidden;border-bottom:4px solid #f4c876}
-header:before{content:'✦　·　❄　✧　·　❄　✦　·　✧';font-size:24px;color:#fff7;white-space:nowrap;position:absolute;right:-40px;top:3px;letter-spacing:12px;transform:rotate(-6deg);pointer-events:none}header:after{content:'';position:absolute;bottom:-17px;left:-10%;width:120%;height:28px;border-radius:50%;background:#fffdf7;opacity:.98}
-.brand-row{display:flex;align-items:center;justify-content:space-between;gap:10px;position:relative;z-index:1}.brand{display:flex;gap:10px;align-items:center;min-width:0}.brand-icon{width:47px;height:47px;border:2px solid #ffdb8c;background:#fff9ef;border-radius:15px;display:grid;place-items:center;font-size:30px;box-shadow:0 3px #611b35}.brand h1{font-size:19px;margin:0;line-height:1.25;letter-spacing:-.7px}.brand p{font-size:11px;margin:3px 0 0;opacity:.84}.iconbtn{background:#ffffff24;border:1px solid #ffffff55;border-radius:12px;color:white;min-width:36px;height:37px;font-size:20px}
-.resource-row{position:relative;z-index:1;display:flex;gap:8px;margin-top:13px}.resource{flex:1;min-width:0;border-radius:14px;background:#fffdf1;color:var(--ink);padding:8px 9px;box-shadow:0 3px #661e37aa;display:flex;align-items:center;gap:6px;border:2px solid #f7d4c0}.resource .emoji{font-size:22px;flex:none}.resource strong{display:block;font-size:15px;line-height:1.1;white-space:nowrap;font-variant-numeric:tabular-nums}.resource small{display:block;font-size:10px;color:#9a7785;margin-top:2px;white-space:nowrap}.resource.energy{border-color:#ffca6d}.resource.energy small{color:#a26822}
-.tabs{position:relative;z-index:2;display:flex;padding:13px 14px 0;gap:8px;background:#fffdf7}.tab{flex:1;border:2px solid #efded9;padding:11px 8px;border-radius:16px 16px 8px 8px;background:#fff1eb;color:#98757a;font-weight:850;letter-spacing:-.4px;font-size:14px}.tab.active{background:linear-gradient(180deg,#e75e6b,#bb3a57);color:white;border-color:#bb3a57;box-shadow:0 3px #972946}
-.page{padding:13px 14px 26px;display:none}.page.active{display:block}.panel{background:#fff;border:2px solid #f0ddce;border-radius:20px;box-shadow:0 5px 0 #d9c9b854;overflow:hidden}.section-title{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:4px 0 10px;font-size:16px;font-weight:900;letter-spacing:-.6px}.section-title small{font-size:11px;font-weight:600;color:var(--muted)}
-.story{display:flex;align-items:center;gap:10px;background:linear-gradient(105deg,#fff1dd,#fff8f2);border:2px solid #ffe5c0;border-radius:16px;padding:10px 12px;margin-bottom:13px}.story-portrait{font-size:33px;filter:drop-shadow(0 2px #ab7d5f50)}.story-copy{flex:1;min-width:0}.story-title{font-size:12px;font-weight:900;color:#9a5361}.story-sub{font-size:11px;color:#a47b71;margin-top:3px}.level-track{height:5px;border-radius:30px;background:#ead5c0;margin-top:6px;overflow:hidden}.level-fill{height:100%;background:linear-gradient(90deg,#ffa64c,#ff6379);width:10%;transition:width .25s}
-.orders{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.order{min-width:0;background:#fffdf4;border:2px solid #eedfc8;border-radius:17px;padding:9px 8px 8px;text-align:center;position:relative;box-shadow:0 3px 0 #e9d4b8}.order.ready{border-color:#51b583;background:linear-gradient(#eefff2,#fffef2);box-shadow:0 4px 0 #75bf87}.order .who{display:flex;justify-content:center;align-items:center;gap:3px;font-size:22px}.order .name{font-size:10px;font-weight:900;white-space:nowrap;color:#855a5a;overflow:hidden;text-overflow:ellipsis}.order .saying{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#bd7793;margin:4px 0}.wants{display:flex;justify-content:center;gap:4px;min-height:38px}.want{background:#fff6e9;border:1px solid #ebddc7;border-radius:10px;width:38px;padding:1px 0;position:relative;font-size:23px}.want.have{background:#e5fff2;border-color:#8ad2a7}.want em{font-size:10px;position:absolute;right:-3px;bottom:-6px;font-style:normal;background:#fff;border-radius:50%;width:15px;height:15px;line-height:15px;border:1px solid #e0d6c8}.reward{font-size:10px;color:#9c6471;margin:8px 0 5px;font-weight:900;white-space:nowrap}.ship{width:100%;border:0;background:#d7c5ba;color:white;padding:7px 0;border-radius:9px;font-size:11px;font-weight:850}.ready .ship{background:linear-gradient(#48ba84,#268a64);box-shadow:0 2px #146d4f}
-.board-head{display:flex;align-items:center;justify-content:space-between;margin:17px 2px 7px;gap:4px}.board-head strong{font-size:16px}.board-head span{font-size:11px;color:#9b7d84}.board-frame{padding:9px;border:4px solid #ca925f;background:linear-gradient(150deg,#c9e5cd,#e4f1d4);border-radius:21px;box-shadow:0 5px 0 #9b684a,0 8px 17px #70513e28;position:relative}.board-frame:before{content:'❄';position:absolute;right:5px;top:0;font-size:30px;color:#ffffff80;pointer-events:none}.board{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px;touch-action:none;user-select:none;-webkit-user-select:none;overscroll-behavior:contain}.cell{position:relative;aspect-ratio:1;min-width:0;background:linear-gradient(130deg,#f8fff3e6,#fffdf3c9);border:1px solid #9fbd9566;border-radius:12px;display:grid;place-items:center;touch-action:none;user-select:none;-webkit-user-select:none;cursor:pointer;box-shadow:inset 0 2px #fff9}.cell:after{content:'✧';position:absolute;top:2px;left:4px;color:#a8d0a3;font-size:8px}.cell .item{font-size:clamp(22px,5.4vw,40px);line-height:1;pointer-events:none;filter:drop-shadow(0 3px 1px #745b3d35)}.cell .level{position:absolute;right:3px;bottom:2px;border-radius:6px;background:#966945cf;color:white;font-size:9px;font-weight:800;padding:1px 4px;pointer-events:none}.cell.selected{outline:3px solid #ffb341;background:#fff6d9}.cell.target{outline:3px dashed #f29250;background:#ffefce}.cell.dragging .item{opacity:.3}.cell.match{background:linear-gradient(#e0ffe2,#fffad9);box-shadow:inset 0 0 0 2px #89bf83}.cell.special{background:linear-gradient(140deg,#d3eaff,#fff)}.cell.pop{animation:bounce .26s ease}@keyframes bounce{50%{transform:scale(1.09)}}
-.drag-ghost{position:fixed;z-index:999;pointer-events:none;font-size:51px;line-height:1;transform:translate(-50%,-70%) scale(1.12);filter:drop-shadow(0 5px 4px #755c6b7a)}
-.item-info{margin-top:10px;border-radius:14px;border:1px solid #e6dccd;background:#fffdf6;padding:10px 12px;display:flex;align-items:center;gap:10px;min-height:58px}.selected-icon{font-size:31px;min-width:38px;text-align:center}.item-copy{flex:1;min-width:0}.item-copy strong{font-size:12px}.item-copy small{display:block;font-size:10px;color:#95838a;margin-top:3px}.mini-btn{font-size:11px;font-weight:900;border:0;padding:9px 10px;border-radius:10px;color:#8b5960;background:#fce6e1;white-space:nowrap}
-.generator-title{font-weight:900;font-size:14px;margin:17px 3px 9px}.generators{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.generator{position:relative;border:2px solid #e4cfb8;background:linear-gradient(155deg,#fff,#fff4df);padding:10px 4px;border-radius:16px;box-shadow:0 3px #debf9e;text-align:center;color:#70524b}.generator .gicon{display:block;font-size:30px;filter:drop-shadow(0 2px #cfae7a);margin-bottom:3px}.generator strong{display:block;font-size:12px;white-space:nowrap;letter-spacing:-.8px}.generator small{display:block;font-size:10px;margin-top:4px;color:#ae6a67}.generator:disabled{filter:grayscale(.5)}.bottom-help{text-align:center;color:#aa8e90;font-size:11px;margin-top:13px;line-height:1.5}.hint{font-size:11px;color:#8c6d71;padding:4px 2px 0}
-/* 실제 마을 지도 */
-.village-scene{position:relative;overflow:hidden;border-radius:24px;border:4px solid white;box-shadow:0 7px 0 #9ac9d5,0 10px 26px #779cbd4d;background:linear-gradient(180deg,#8ac4eb 0%,#c9e9ff 32%,#edfaff 33%,#e4f4e2 100%);padding:12px 10px 20px;min-height:320px}.scene-sky{height:83px;position:relative;display:flex;align-items:flex-start;justify-content:center}.scene-sky:after{content:'☁️　　　 ☁️';position:absolute;left:10%;top:10px;font-size:24px;opacity:.7}.scene-moon{position:absolute;right:7%;top:0;font-size:43px;filter:drop-shadow(0 0 8px white)}.scene-title{position:absolute;top:19px;left:10px;color:#fff;text-shadow:0 2px 4px #3678ad;font-size:18px;font-weight:1000}.scene-caption{position:absolute;left:11px;top:43px;color:#fff;text-shadow:0 1px 4px #447da2;font-size:10px;font-weight:800}.mountains{position:absolute;left:0;right:0;bottom:-9px;height:38px;background:linear-gradient(135deg,transparent 16%,#d5eafa 16% 26%,transparent 26% 38%,#b5d8ef 38% 52%,transparent 52% 62%,#e8f3ff 62% 83%,transparent 83%);opacity:.85}
-.town-vista{margin:0 auto 11px;max-width:580px;height:122px;border-radius:15px;overflow:hidden;background:linear-gradient(#c9e9fb,#f4ffff);border:2px solid #ffffffdd;box-shadow:0 4px 0 #9dced4;position:relative}.town-vista svg{display:block;width:100%;height:100%}.village-grid{position:relative;display:grid;grid-template-columns:repeat(7, minmax(0,1fr));gap:2px;aspect-ratio:1;max-width:580px;margin:0 auto;border-radius:16px;border:4px solid #ffffffbe;padding:6px;background:radial-gradient(ellipse at center,#dbf0db,#bbdfd0);box-shadow:0 8px 8px #5288714a;overflow:hidden}.plot{aspect-ratio:1;border:1px solid #ffffffa0;border-radius:8px;position:relative;background:radial-gradient(ellipse at 65% 25%,#f9fff8a8 0,#e6f5e4 60%,#ceeac9 100%);display:flex;align-items:center;justify-content:center;padding:0;touch-action:manipulation;min-width:0;color:inherit}.plot:before{content:'·';position:absolute;top:2px;left:5px;color:#fff;font-size:13px;pointer-events:none}.plot.road{border-color:transparent;background:linear-gradient(145deg,#f4e4c4,#d7c8aa);box-shadow:inset 0 1px 2px #b09e7c30}.plot.road:before{content:'';height:2px;width:40%;background:#fff6d3;left:30%;top:48%;transform:rotate(0deg)}.plot.road.vertical:before{width:2px;height:35%;top:32%;left:49%}.plot.road.cross:before{width:38%;height:2px;left:31%;top:49%;transform:rotate(45deg)}.plot.lake{background:linear-gradient(135deg,#bee9f3,#88c7e4);border-color:#fff}.plot.lake:before{content:'≈';color:#e4fcff;font-size:19px;top:15%;left:35%}.plot .town-icon{font-size:clamp(26px,8vw,49px);line-height:1;filter:drop-shadow(0 5px 2px #6c9a817e);transform:translateY(-3px);pointer-events:none;transition:transform .16s}.plot:hover .town-icon{transform:translateY(-6px) scale(1.08)}.plot .mini-income{position:absolute;bottom:2px;right:0;font-size:9px;background:#fff8d9dc;border-radius:6px;color:#b78822}.plot .place-name{position:absolute;bottom:1px;left:2px;right:2px;text-align:center;background:#fffffff0;color:#895e6e;border-radius:4px;font-weight:900;font-size:8px;line-height:1.1;white-space:nowrap;overflow:hidden}.plot.move-from{outline:3px solid #ffae4b;z-index:2;animation:bounce 1s infinite}.plot.just-built{animation:shine 1.15s 2}.plot.empty-hint:active{background:#fff8c7}.plot .ambient{font-size:clamp(8px,2vw,17px);opacity:.8;pointer-events:none}.plot .town-icon.starter{font-size:clamp(27px,8vw,50px)}@keyframes shine{50%{background:#fff6b5;box-shadow:0 0 18px 6px #ffe69d;transform:scale(1.05)}}
-.village-status{margin:10px 0 12px;background:#fff5df;border:2px solid #f2dcba;border-radius:14px;padding:10px;display:flex;justify-content:space-around;gap:8px;text-align:center}.village-status strong{display:block;color:#8e5061;font-size:18px}.village-status small{font-size:10px;color:#a07b80}.scene-instruction{border:1px solid #d8c8e2;background:#fdf6ff;padding:9px 10px;border-radius:12px;font-size:11px;margin:12px 0;color:#846b94;text-align:center}.shop-title{font-size:16px;font-weight:900;margin:18px 0 8px}.shop-sub{font-size:11px;margin:-3px 0 10px;color:#947f81}.shop-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.shop-card{display:flex;gap:8px;align-items:center;background:#fff;border:2px solid #edddca;border-radius:15px;padding:9px;min-width:0}.shop-icon{font-size:31px;flex:none}.shop-text{flex:1;min-width:0}.shop-text strong{display:block;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.shop-text small{display:block;font-size:9px;color:#a5848c;line-height:1.3;min-height:22px;margin:3px 0}.shop-card button{border:0;border-radius:8px;background:#348e6b;color:white;padding:7px 5px;font-weight:900;font-size:10px;width:100%;white-space:nowrap}.shop-card button:disabled{background:#e6d5c8;color:#8c807c}
-#toast{position:fixed;z-index:1200;top:20%;left:50%;transform:translateX(-50%) translateY(-8px);background:#6d2949ee;color:white;border:2px solid #ffe2b6;padding:12px 17px;border-radius:15px;font-size:13px;font-weight:800;max-width:min(90vw,420px);text-align:center;pointer-events:none;opacity:0;transition:opacity .15s,transform .15s;box-shadow:0 8px 24px #6e254351}#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-#overlay{display:none;position:fixed;inset:0;background:#27182aa1;z-index:1500;align-items:center;justify-content:center;padding:20px}#overlay.show{display:flex}.dialog{background:#fffdf6;border:4px solid #f3d4ab;border-radius:23px;padding:19px;max-width:380px;width:100%;box-shadow:0 10px 30px #281b285b}.dialog h2{font-size:20px;margin:0 0 12px;color:#942f50}.dialog p{font-size:13px;line-height:1.9;margin:8px 0}.dialog .actions{display:flex;gap:8px;margin-top:17px}.dialog button{flex:1;border:0;background:#ba4460;color:white;padding:11px;border-radius:11px;font-size:12px;font-weight:900}.dialog button.alt{background:#eee0d4;color:#755d62}
-@media (max-width:410px){header{padding:12px 11px 12px}.brand h1{font-size:17px}.resource-row{gap:5px}.resource{padding:7px 5px;gap:4px}.resource .emoji{font-size:18px}.resource strong{font-size:13px}.resource small{font-size:9px}.page{padding:11px 9px 25px}.tabs{padding:13px 9px 0}.orders{gap:5px}.order{padding:7px 3px}.order .who{font-size:19px}.order .name{font-size:9px}.want{width:34px;font-size:20px}.board{gap:4px}.board-frame{padding:6px}.shop-card{padding:7px;gap:5px}.shop-icon{font-size:27px}}
-@media(min-width:650px){#app{padding-bottom:30px}.page{padding-left:30px;padding-right:30px}.resource{max-width:190px}.board-frame{max-width:610px;margin:auto}.cell .item{font-size:43px}.generators{max-width:590px;margin:auto}.item-info{max-width:610px;margin:12px auto}.scene-sky{height:100px}.village-grid{aspect-ratio:1.18}.shop-list{grid-template-columns:repeat(3,1fr)}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+html,body{margin:0;min-height:100%;background:linear-gradient(180deg,#fef4ee,#f7fbff 65%,#eef8fb);font-family:system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:var(--text)}
+body.modal-open{overflow:hidden}
+button{font:inherit;border:0;cursor:pointer}button:disabled{opacity:.5;cursor:default}button:active:not(:disabled){transform:translateY(1px)}
+#app{max-width:520px;margin:0 auto;min-height:100dvh;background:linear-gradient(180deg,#fff9f7 0,#fffdfa 180px,#fbfffe 100%);box-shadow:0 0 0 1px #fff inset,0 12px 36px rgba(103,92,105,.12);overflow:hidden;position:relative}
+.header{position:relative;padding:14px 14px 12px;background:linear-gradient(180deg,#f39aa0 0,#e96d79 60%,#db5f76 100%);color:#fff;overflow:hidden}
+.header:before,.header:after{content:'';position:absolute;border-radius:50%;background:rgba(255,255,255,.15)}
+.header:before{width:180px;height:180px;left:-60px;top:-110px}.header:after{width:180px;height:180px;right:-50px;top:-70px}
+.profile-row{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.profile{display:flex;align-items:center;gap:10px;min-width:0}
+.avatar-badge{width:54px;height:54px;border-radius:18px;background:linear-gradient(180deg,#fff7d8,#ffefbf);box-shadow:0 4px 0 rgba(160,86,101,.35),inset 0 0 0 2px rgba(255,255,255,.75);display:grid;place-items:center;font-size:32px;position:relative}
+.avatar-badge .lv{position:absolute;left:-2px;bottom:-4px;background:#8151c8;color:#fff;border:2px solid #fff;padding:1px 7px;border-radius:999px;font-weight:900;font-size:12px}
+.brand-copy{min-width:0}.brand-copy strong{display:block;font-size:17px;letter-spacing:-.4px}.brand-copy small{display:block;opacity:.88;margin-top:2px;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:210px}
+.icon-stack{display:flex;gap:8px}.circle-btn{width:38px;height:38px;border-radius:14px;background:rgba(255,255,255,.2);color:#fff;font-size:18px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.28)}
+.resource-row{position:relative;z-index:2;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:12px}
+.resource{background:var(--paper);color:var(--text);border-radius:18px;padding:8px 8px;display:flex;align-items:center;gap:7px;box-shadow:0 4px 0 rgba(130,67,81,.26);min-width:0;border:1px solid #f2dfd4}
+.resource .ico{width:28px;height:28px;border-radius:12px;display:grid;place-items:center;font-size:18px;flex:none}
+.resource .txt{min-width:0}.resource strong{display:block;font-size:14px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.resource small{display:block;font-size:10px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.resource.energy .ico{background:#fff0ae}.resource.coin .ico{background:#ffefc8}.resource.ruby .ico{background:#ffe0f2}.resource.star .ico{background:#edf4ff}
+.event-strip{display:flex;gap:10px;overflow:auto;padding:12px 14px 0;scrollbar-width:none}.event-strip::-webkit-scrollbar{display:none}
+.event-card{min-width:150px;background:linear-gradient(180deg,#fffaf6,#fff3e8);border:1px solid #f4dfcb;border-radius:20px;padding:10px 12px;box-shadow:var(--shadow);position:relative}.event-card .tag{display:inline-flex;gap:4px;align-items:center;font-size:10px;font-weight:900;padding:5px 9px;border-radius:999px;background:#fff0f4;color:#cb6179}.event-card strong{display:block;margin-top:8px;font-size:14px;letter-spacing:-.4px}.event-card p{margin:4px 0 0;font-size:11px;color:var(--muted);line-height:1.4}.event-card .mini-progress{height:7px;border-radius:999px;background:#efe5dc;margin-top:9px;overflow:hidden}.event-card .mini-progress span{display:block;height:100%;background:linear-gradient(90deg,#ffb44e,#f57179)}
+.tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;padding:14px 14px 0}.tab{background:#fff2eb;border:1px solid #f0ddd4;border-bottom-width:3px;color:#a07b82;padding:10px 6px;border-radius:16px 16px 10px 10px;font-size:12px;font-weight:900;letter-spacing:-.4px}.tab.active{background:linear-gradient(180deg,#ed7885,#d95f79);color:#fff;border-color:#d95f79;box-shadow:0 4px 0 #bb4a62}
+.page{display:none;padding:14px}.page.active{display:block}
+.section{background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:13px;margin-bottom:14px}
+.section h3{margin:0 0 10px;font-size:16px;letter-spacing:-.4px}.section-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}.sub{font-size:11px;color:var(--muted)}
+.story-card{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#fff4e7,#fffdf5);border:1px solid #f3e0c4;border-radius:18px;padding:11px}.story-card .portrait{width:54px;height:54px;border-radius:18px;background:linear-gradient(180deg,#fff1f5,#fff);display:grid;place-items:center;font-size:30px;box-shadow:inset 0 0 0 1px #f7dce2}.story-card .copy{min-width:0;flex:1}.story-card strong{display:block;font-size:13px}.story-card p{margin:3px 0 0;font-size:11px;color:var(--muted);line-height:1.45}.story-card .story-btn{background:#fce7da;color:#a56761;border-radius:12px;padding:8px 10px;font-weight:900;font-size:11px}
+.order-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.order{background:linear-gradient(180deg,#fffdf7,#fff5ea);border:1px solid #f2e0ca;border-radius:18px;padding:10px;box-shadow:0 4px 0 #ead6bb;min-width:0;display:flex;flex-direction:column;gap:8px}.order.ready{background:linear-gradient(180deg,#effff6,#fffef8);border-color:#9fddbb;box-shadow:0 4px 0 #9fd3b2}.order-head{display:flex;align-items:center;gap:7px}.avatar-chip{width:34px;height:34px;border-radius:12px;background:#fff;display:grid;place-items:center;font-size:21px;box-shadow:inset 0 0 0 1px #f0e2d8}.order-head .name{font-size:11px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.order-head .line{font-size:10px;color:#b38188;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.want-row{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;min-height:46px}.want-item{width:40px;height:40px;border-radius:12px;background:linear-gradient(180deg,#fff,#f7f0ea);border:1px solid #eadad0;display:grid;place-items:center;font-size:21px;position:relative;box-shadow:inset 0 1px #fff}.want-item.ok{background:linear-gradient(180deg,#eefcf2,#f8fff9);border-color:#8ad0a8}.want-item em{position:absolute;right:-2px;bottom:-5px;min-width:16px;height:16px;border-radius:50%;padding:0 3px;background:#fff;border:1px solid #ebddd4;font-style:normal;font-size:9px;line-height:14px;text-align:center}
+.order-reward{font-size:10px;color:#96666d;font-weight:900;text-align:center}.order button{margin-top:auto;border-radius:12px;padding:9px 6px;background:#d8c9c0;color:#fff;font-size:11px;font-weight:900}.order.ready button{background:linear-gradient(180deg,#57c48d,#359f74)}
+.board-wrap{background:linear-gradient(180deg,#ffe1ac,#f2b86b);border-radius:24px;padding:12px;box-shadow:0 8px 0 #d48a4a,0 18px 28px rgba(162,101,53,.18)}
+.board-top{display:flex;justify-content:space-between;align-items:center;gap:8px;color:#7d4e41;margin-bottom:10px}.board-top strong{font-size:16px}.board-top .meta{font-size:11px;color:#8f6a5d}
+.board-panel{background:linear-gradient(180deg,#f8eedc,#f4e6cf);border-radius:20px;padding:10px;border:2px solid rgba(255,255,255,.55);position:relative;overflow:hidden}
+.board-panel:before{content:'';position:absolute;inset:0;background-image:linear-gradient(to right,rgba(255,255,255,.12) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,.12) 1px,transparent 1px);background-size:calc(100%/7) calc(100%/8);pointer-events:none}
+.board{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;position:relative;touch-action:none;user-select:none;-webkit-user-select:none}
+.cell{aspect-ratio:1;border-radius:14px;background:rgba(255,255,255,.34);border:1px solid rgba(219,197,164,.95);display:grid;place-items:center;position:relative;touch-action:none;user-select:none;overflow:hidden;box-shadow:inset 0 2px rgba(255,255,255,.6)}
+.cell.empty{background:rgba(255,255,255,.18)}.cell.selected{outline:3px solid #57b7ff}.cell.target{outline:3px dashed #ef9458}.cell.match{box-shadow:inset 0 0 0 2px #9ad5a4}.cell.dragging .piece{opacity:.25}
+.piece{width:86%;height:86%;border-radius:18px;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 6px 10px rgba(153,118,103,.18),inset 0 1px rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.75)}
+.piece .icon{font-size:24px;line-height:1}.piece .badge{position:absolute;left:4px;top:4px;width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.8);display:grid;place-items:center;font-size:10px;color:#7e6367;font-weight:900}
+.chain-gift{background:linear-gradient(180deg,#fff0b4,#ffd981)}.chain-feast{background:linear-gradient(180deg,#ffe2d7,#ffc6b5)}.chain-studio{background:linear-gradient(180deg,#d6efff,#a4d9ff)}.chain-jewel{background:linear-gradient(180deg,#e8dbff,#c8b3ff)}.chain-closet{background:linear-gradient(180deg,#ffdff0,#ffbad6)}.chain-token{background:linear-gradient(180deg,#fff,#f0f0f0)}
+.drag-ghost{position:fixed;z-index:1000;pointer-events:none;transform:translate(-50%,-65%) scale(1.08);filter:drop-shadow(0 10px 12px rgba(0,0,0,.22))}
+.info-bar{margin-top:10px;background:#fffdf8;border:1px solid #eaded3;border-radius:18px;padding:10px;display:flex;align-items:center;gap:10px}.info-icon{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;background:#fff;box-shadow:inset 0 0 0 1px #efe1d7;font-size:26px;flex:none}.info-copy{min-width:0;flex:1}.info-copy strong{display:block;font-size:13px}.info-copy small{display:block;margin-top:3px;color:var(--muted);font-size:11px;line-height:1.45}.info-actions{display:flex;gap:8px;flex:none}.small-btn{border-radius:12px;padding:9px 10px;background:#fcebe5;color:#985d68;font-size:11px;font-weight:900;white-space:nowrap}
+.generator-panel{margin-top:13px}.generator-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.generator{background:linear-gradient(180deg,#fffdf7,#fff3ea);border:1px solid #f0ddd1;border-radius:18px;padding:11px 10px;box-shadow:var(--shadow);text-align:left;position:relative}.generator.locked{filter:grayscale(.25);opacity:.74}.generator .gen-top{display:flex;align-items:center;gap:10px}.generator .gen-icon{width:42px;height:42px;border-radius:16px;display:grid;place-items:center;font-size:24px;background:linear-gradient(180deg,#fff,#fff6ef);box-shadow:inset 0 0 0 1px #f0dfd6}.generator strong{display:block;font-size:13px}.generator small{display:block;font-size:10px;color:var(--muted);margin-top:2px}.generator .gen-foot{display:flex;justify-content:space-between;align-items:center;margin-top:9px}.gen-tag{font-size:10px;font-weight:900;padding:5px 8px;border-radius:999px;background:#ffe8ef;color:#cf6980}.gen-cost{font-size:11px;font-weight:900;color:#9b6973}
+.scroll-note{text-align:center;color:#a28a90;font-size:11px;padding-top:10px;line-height:1.45}
+.village-hero{background:linear-gradient(180deg,#9fd8ff,#dff4ff 38%,#f5fdff 39%,#f2f5f7 100%);border-radius:24px;border:1px solid #ddeef8;padding:14px;box-shadow:var(--shadow)}
+.skyline{display:flex;justify-content:space-between;align-items:flex-start}.cloud{font-size:18px;opacity:.85}.village-status{font-size:12px;font-weight:900;color:#5d7fa4;background:rgba(255,255,255,.85);padding:8px 10px;border-radius:14px;box-shadow:0 4px 10px rgba(119,168,189,.18)}
+.plot-grid{margin-top:12px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.plot{aspect-ratio:1;border-radius:18px;background:linear-gradient(180deg,#ffffff,#eef6f7);border:1px solid #d6ebf4;position:relative;display:grid;place-items:center;font-size:26px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.55)}.plot.empty{background:linear-gradient(180deg,#ffffffaa,#eef6f766);border-style:dashed}.plot .mini-label{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);padding:2px 7px;border-radius:999px;background:rgba(255,255,255,.92);font-size:9px;font-weight:900;color:#638090;max-width:90%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.place-select{outline:3px dashed #f18c64}.shop-row{display:flex;gap:8px;overflow:auto;padding-top:10px;scrollbar-width:none}.shop-row::-webkit-scrollbar{display:none}.shop-item{min-width:120px;background:#fff;border:1px solid #e6ded4;border-radius:18px;padding:10px;box-shadow:var(--shadow)}.shop-item .top{display:flex;gap:10px;align-items:center}.shop-item .bico{width:36px;height:36px;border-radius:14px;background:#fff7ef;display:grid;place-items:center;font-size:22px}.shop-item strong{display:block;font-size:13px}.shop-item small{display:block;font-size:10px;color:var(--muted);margin-top:2px}.shop-item .buy{margin-top:8px;width:100%;padding:8px;border-radius:12px;background:linear-gradient(180deg,#56c48c,#349f74);color:#fff;font-weight:900;font-size:11px}.shop-item .owned{background:#ece7e0;color:#907f77}
+.style-scene{background:linear-gradient(180deg,#ffd9de,#ffeef2 40%,#fff8fb);border:1px solid #f0d8de;border-radius:24px;padding:14px;box-shadow:var(--shadow)}
+.avatar-stage{position:relative;height:280px;border-radius:20px;background:linear-gradient(180deg,#fff3f6,#fffafc 62%,#fdebe7);overflow:hidden;display:flex;align-items:flex-end;justify-content:center}
+.avatar-stage:before{content:'';position:absolute;left:50%;top:22px;transform:translateX(-50%);width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,#fff,#ffe7f0 65%,transparent 66%);opacity:.9}
+.avatar{position:relative;width:150px;height:250px;z-index:2}
+.avatar .head{position:absolute;left:50%;top:18px;transform:translateX(-50%);width:74px;height:82px;border-radius:40px;background:#ffd9c8;box-shadow:inset 0 -5px rgba(212,151,130,.15)}
+.avatar .hair{position:absolute;left:50%;top:10px;transform:translateX(-50%);width:90px;height:86px;border-radius:50px 50px 40px 40px;background:#6d4a43}.avatar .hair:after{content:'';position:absolute;left:10px;right:10px;bottom:-6px;height:30px;border-radius:0 0 24px 24px;background:inherit}
+.avatar .hair.hair-ponytail:before{content:'';position:absolute;right:-16px;top:18px;width:34px;height:52px;border-radius:0 26px 26px 20px;background:inherit;transform:rotate(10deg)}
+.avatar .hair.hair-braid:before{content:'';position:absolute;left:-6px;top:34px;width:20px;height:62px;border-radius:18px;background:inherit;box-shadow:76px 0 0 0 inherit}
+.avatar .face{position:absolute;left:50%;top:46px;transform:translateX(-50%);font-size:14px;color:#7e5560}.avatar .torso{position:absolute;left:50%;top:104px;transform:translateX(-50%);width:88px;height:70px;border-radius:28px 28px 24px 24px;background:#f6c0c8}.avatar .skirt{position:absolute;left:50%;top:162px;transform:translateX(-50%);width:112px;height:76px;border-radius:16px 16px 36px 36px;background:#ea6678;clip-path:polygon(18% 0,82% 0,100% 100%,0 100%)}
+.avatar .legs{position:absolute;left:50%;top:198px;transform:translateX(-50%);width:78px;height:46px;background:linear-gradient(90deg,#ffd8c5 0 42%,transparent 42% 58%,#ffd8c5 58% 100%);border-radius:0 0 16px 16px}.avatar .shoes{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:84px;height:16px;background:linear-gradient(90deg,#5d4450 0 40%,transparent 40% 60%,#5d4450 60% 100%);border-radius:20px}
+.avatar.outfit-knit .torso{background:#f4ddd4}.avatar.outfit-knit .skirt{background:#d67483}.avatar.outfit-dress .torso{background:#e95669}.avatar.outfit-dress .skirt{background:#ff8797}.avatar.outfit-coat .torso{background:#7ba3d9}.avatar.outfit-coat .skirt{background:#6c88c5}.avatar.outfit-santa .torso{background:#c63949}.avatar.outfit-santa .skirt{background:#de5565}.avatar .acc{position:absolute;left:50%;top:120px;transform:translateX(-50%);font-size:24px}.avatar.bg-shop .avatar-stage-bg,.avatar.bg-plaza .avatar-stage-bg,.avatar.bg-cabin .avatar-stage-bg{display:block}
+.style-row{display:grid;grid-template-columns:1fr;gap:10px;margin-top:12px}.option-group h4{margin:0 0 8px;font-size:13px}.option-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.style-opt{background:#fff;border:1px solid #ebdce1;border-radius:16px;padding:9px;text-align:center;position:relative}.style-opt.locked{opacity:.55}.style-opt.active{outline:3px solid #68bbff}.style-opt .preview{width:100%;aspect-ratio:1;border-radius:14px;background:linear-gradient(180deg,#fff7fb,#fff);display:grid;place-items:center;font-size:24px}.style-opt strong{display:block;font-size:11px;margin-top:6px}.style-opt small{display:block;font-size:9px;color:var(--muted);margin-top:2px}
+.book-group+.book-group{margin-top:14px}.book-chain{display:flex;gap:8px;overflow:auto;padding-bottom:4px;scrollbar-width:none}.book-chain::-webkit-scrollbar{display:none}.book-item{min-width:70px;background:#fff;border:1px solid #ebdfd6;border-radius:18px;padding:8px;text-align:center}.book-item .bicon{width:48px;height:48px;border-radius:16px;margin:0 auto 6px;display:grid;place-items:center;font-size:24px}.book-item .q{background:#f6f2ef;color:#c3b4ae}.book-item strong{display:block;font-size:10px}.book-item small{display:block;font-size:9px;color:var(--muted);margin-top:2px}
+.mission-tabs{display:flex;gap:8px;margin-bottom:10px}.mission-tab{padding:8px 12px;border-radius:999px;background:#fff0ec;color:#a0757f;font-size:11px;font-weight:900}.mission-tab.active{background:linear-gradient(180deg,#ef7d88,#dc6478);color:#fff}
+.mission-list{display:grid;gap:9px}.mission{background:linear-gradient(180deg,#fffdf8,#fff5ec);border:1px solid #efdfd3;border-radius:18px;padding:11px}.mission .head{display:flex;justify-content:space-between;align-items:center;gap:8px}.mission .head strong{font-size:13px}.mission .head span{font-size:10px;color:#b7837f}.mission p{margin:5px 0 8px;font-size:11px;color:var(--muted);line-height:1.45}.progress{height:10px;border-radius:999px;background:#efe5dd;overflow:hidden}.progress span{display:block;height:100%;background:linear-gradient(90deg,#77cc9c,#51ba84)}.mission .foot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:9px}.reward-chip{font-size:10px;font-weight:900;padding:6px 8px;border-radius:999px;background:#fff0e4;color:#af7a59}.claim{padding:8px 10px;border-radius:12px;background:#e6ddd6;color:#8e7f76;font-size:11px;font-weight:900}.claim.ready{background:linear-gradient(180deg,#58c58e,#35a074);color:#fff}
+.footer-space{height:8px}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:rgba(76,54,64,.92);color:#fff;padding:12px 16px;border-radius:16px;font-size:12px;z-index:1100;opacity:0;pointer-events:none;transition:.2s;box-shadow:0 8px 20px rgba(0,0,0,.18)}.toast.show{opacity:1;bottom:28px}
+.modal-backdrop{position:fixed;inset:0;background:rgba(57,41,50,.56);display:none;z-index:1050;padding:22px 16px;align-items:center;justify-content:center}.modal-backdrop.show{display:flex}.modal{width:min(100%,460px);max-height:min(85dvh,760px);background:#fff;border-radius:28px;overflow:hidden;box-shadow:0 26px 50px rgba(39,22,29,.35);display:flex;flex-direction:column}.modal-head{padding:14px 16px;background:linear-gradient(180deg,#79d7f0,#57c5e2);color:#fff;display:flex;justify-content:space-between;align-items:center}.modal-head.alt{background:linear-gradient(180deg,#f6b25f,#ef8f58)}.modal-head strong{font-size:18px;letter-spacing:-.5px}.close-btn{width:36px;height:36px;border-radius:14px;background:rgba(255,255,255,.22);color:#fff;font-size:22px}.modal-body{padding:16px;overflow:auto}
+.chain-flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.flow-item{background:#f7fbff;border:1px solid #d7edf6;border-radius:18px;padding:8px;text-align:center}.flow-item .bicon{width:50px;height:50px;margin:0 auto 6px;border-radius:18px;display:grid;place-items:center;font-size:26px}.flow-item strong{display:block;font-size:11px}.flow-item small{display:block;font-size:9px;color:var(--muted)}.locked-q{background:#f3f0ed!important;color:#b7a8a4!important}
+.dialogue{display:grid;gap:10px}.linebox{background:#fff8ef;border:1px solid #f1e0ca;border-radius:18px;padding:10px 12px}.linebox strong{display:block;font-size:12px}.linebox p{margin:4px 0 0;font-size:12px;line-height:1.55;color:#795a60}
+@media (max-width:420px){
+  .resource-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tabs{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .order-list{grid-template-columns:1fr}
+  .generator-row{grid-template-columns:1fr 1fr}
+  .profile .brand-copy small{max-width:150px}
+}
 </style>
 </head>
 <body>
 <div id="app">
-<header>
-  <div class="brand-row"><div class="brand"><div class="brand-icon">🎅</div><div><h1>산타의 눈꽃 마을</h1><p>손님 선물을 만들고, 마을을 빛내 주세요 ✨</p></div></div><button class="iconbtn" id="settings" aria-label="설정과 게임 도움말">☰</button></div>
-  <div class="resource-row">
-    <div class="resource energy"><span class="emoji">⚡</span><div><strong id="energyText">20 / 30</strong><small id="energyTimer">충전 중</small></div></div>
-    <div class="resource"><span class="emoji">🪙</span><div><strong id="coinText">0</strong><small>마을 꾸미기</small></div></div>
-    <div class="resource"><span class="emoji">⭐</span><div><strong id="starText">0</strong><small>건물 건설</small></div></div>
-    <div class="resource"><span class="emoji">🏅</span><div><strong id="levelText">Lv.1</strong><small id="deliveryText">납품 0회</small></div></div>
-  </div>
-</header>
-<nav class="tabs"><button class="tab active" id="tabMerge">🎁 머지 작업장</button><button class="tab" id="tabVillage">🏘️ 눈꽃 마을 꾸미기</button></nav>
-<section class="page active" id="mergePage">
-  <div class="story"><span class="story-portrait">🧑🏻‍🎄</span><div class="story-copy"><div class="story-title" id="storyTitle">산타의 겨울 마을 복구 작전!</div><div class="story-sub" id="storySub">손님 주문을 채우면 별과 코인을 받아요.</div><div class="level-track"><div class="level-fill" id="levelFill"></div></div></div></div>
-  <div class="section-title">💌 손님 주문서 <small>필요한 선물을 완성하고 납품!</small></div>
-  <div class="orders" id="orders"></div>
-  <div class="board-head"><strong>🧩 선물 머지 보드</strong><span id="boardCounter">0 / 36칸</span></div>
-  <div class="board-frame"><div class="board" id="board" role="grid" aria-label="같은 선물을 드래그하여 합치는 머지 보드"></div></div>
-  <div class="item-info" id="itemInfo"><div class="selected-icon">👆</div><div class="item-copy"><strong>같은 선물을 끌어 겹쳐 보세요!</strong><small>같은 아이템 2개 → 한 단계 높은 아이템</small></div></div>
-  <div class="generator-title">🎁 선물 제작소 <span style="font-size:10px;color:#b58e8e;font-weight:600">제작 1회 = ⚡1</span></div>
-  <div class="generators" id="generators"></div>
-  <div class="bottom-help">🎀 주문 완성 → 납품 → ⭐ 별 획득 → 🏘️ 마을에 건물 짓기<br>☃️ 눈사람은 다른 아이템에 올리면 한 단계 업그레이드!</div>
-</section>
-<section class="page" id="villagePage">
-  <div class="section-title">🏘️ 나만의 크리스마스 마을 <small>건물이 지도에 실제로 놓여요!</small></div>
-  <div class="village-scene"><div class="scene-sky"><div class="scene-title">❄️ SNOWY VILLAGE</div><div class="scene-caption">산타와 이웃들의 겨울 동네</div><div class="scene-moon">🌤️</div><div class="mountains"></div></div><div class="town-vista" id="townVista" aria-label="건물을 지으면 변하는 눈꽃 마을 풍경"></div><div class="village-grid" id="villageGrid" aria-label="직접 꾸밀 수 있는 마을 지도"></div></div>
-  <div class="village-status" id="villageStatus"></div>
-  <div class="scene-instruction" id="villageInstruction">🏗️ 아래 건물을 구매하면 마을에 자동 배치됩니다. 건물을 누르고 빈 땅을 누르면 위치를 옮길 수 있어요!</div>
-  <div class="shop-title">🏠 건물 짓기</div><p class="shop-sub">손님 주문을 납품해 얻은 ⭐ 별로 마을을 발전시켜 보세요.</p><div class="shop-list" id="buildingShop"></div>
-  <div class="shop-title">🎀 마을 장식하기</div><p class="shop-sub">장식은 여러 개 구매할 수 있어요. 🪙 코인으로 예쁘게 꾸며 보세요.</p><div class="shop-list" id="decorShop"></div>
-  <div class="bottom-help">마을 건물은 1분마다 코인을 생산합니다. 접속하지 않은 동안에도 일정 시간 적립돼요.</div>
-</section>
+  <header class="header">
+    <div class="profile-row">
+      <div class="profile">
+        <div class="avatar-badge">🎄<span class="lv" id="levelBadge">1</span></div>
+        <div class="brand-copy">
+          <strong>산타의 머지 스토리</strong>
+          <small id="headerStory">눈꽃 마을을 복구하고, 주인공을 꾸며 보세요.</small>
+        </div>
+      </div>
+      <div class="icon-stack">
+        <button class="circle-btn" id="soundBtn" aria-label="사운드">🔊</button>
+        <button class="circle-btn" id="helpBtn" aria-label="도움말">❔</button>
+      </div>
+    </div>
+    <div class="resource-row">
+      <div class="resource energy"><div class="ico">⚡</div><div class="txt"><strong id="energyText">0 / 40</strong><small id="energyTimer">충전중</small></div></div>
+      <div class="resource coin"><div class="ico">🪙</div><div class="txt"><strong id="coinText">0</strong><small>상점 · 건물 구매</small></div></div>
+      <div class="resource ruby"><div class="ico">💎</div><div class="txt"><strong id="rubyText">0</strong><small>희귀 보상</small></div></div>
+      <div class="resource star"><div class="ico">⭐</div><div class="txt"><strong id="starText">0</strong><small id="deliverySummary">납품 0회</small></div></div>
+    </div>
+  </header>
+
+  <div class="event-strip" id="eventStrip"></div>
+
+  <nav class="tabs" id="tabs"></nav>
+
+  <section class="page active" id="page-merge">
+    <div class="section">
+      <div class="story-card">
+        <div class="portrait">👩🏻</div>
+        <div class="copy">
+          <strong id="mergeStoryTitle">에피소드 1 · 사라진 축제 준비물</strong>
+          <p id="mergeStoryCopy">손님들의 부탁을 들어 주고, 별을 모아 크리스마스 축제를 다시 열어 주세요.</p>
+        </div>
+        <button class="story-btn" id="storyBtn">스토리</button>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-top"><h3>손님 주문</h3><div class="sub">완료 시 코인 · 별 · 경험치 획득</div></div>
+      <div class="order-list" id="orderList"></div>
+    </div>
+
+    <div class="board-wrap">
+      <div class="board-top"><strong>머지 보드</strong><div class="meta" id="boardMeta">0 / 56 칸 사용 중</div></div>
+      <div class="board-panel">
+        <div class="board" id="board"></div>
+      </div>
+      <div class="info-bar" id="infoBar"></div>
+    </div>
+
+    <div class="section generator-panel">
+      <div class="section-top"><h3>작업대 / 선물상자</h3><div class="sub">눌러서 해당 라인의 재료를 생성하세요</div></div>
+      <div class="generator-row" id="generatorRow"></div>
+      <div class="scroll-note">같은 아이템끼리 드래그하여 머지하세요 · 아이템이나 작업대를 누르면 아래 설명과 도감 정보를 볼 수 있어요.</div>
+    </div>
+  </section>
+
+  <section class="page" id="page-village">
+    <div class="section">
+      <div class="section-top"><h3>눈꽃 마을</h3><div class="sub">별로 건물을 해금하고 코인으로 장식하세요</div></div>
+      <div class="village-hero">
+        <div class="skyline"><div class="cloud">☁️ ❄️ ☁️</div><div class="village-status" id="villageStatus">마을 수입 +0 / 1분</div></div>
+        <div class="plot-grid" id="plotGrid"></div>
+      </div>
+      <div class="shop-row" id="shopRow"></div>
+      <div class="scroll-note" id="placeHint">상점에서 아이템을 선택하면 빈 부지에 배치할 수 있어요.</div>
+    </div>
+  </section>
+
+  <section class="page" id="page-style">
+    <div class="section style-scene">
+      <div class="section-top"><h3>주인공 꾸미기</h3><div class="sub">미션과 별 보상으로 꾸미기 아이템 해금</div></div>
+      <div class="avatar-stage" id="avatarStage">
+        <div class="avatar-stage-bg"></div>
+        <div class="avatar" id="avatarPreview">
+          <div class="hair"></div>
+          <div class="head"></div>
+          <div class="face">◕‿◕</div>
+          <div class="torso"></div>
+          <div class="skirt"></div>
+          <div class="legs"></div>
+          <div class="shoes"></div>
+          <div class="acc"></div>
+        </div>
+      </div>
+      <div class="style-row" id="styleOptions"></div>
+    </div>
+  </section>
+
+  <section class="page" id="page-book">
+    <div class="section">
+      <div class="section-top"><h3>머지 도감</h3><div class="sub">미발견 아이템은 ? 로 표시됩니다</div></div>
+      <div id="bookWrap"></div>
+    </div>
+  </section>
+
+  <section class="page" id="page-missions">
+    <div class="section">
+      <div class="section-top"><h3>이벤트 · 미션 · 업적</h3><div class="sub">완료 후 보상을 수령하세요</div></div>
+      <div class="mission-tabs" id="missionTabs"></div>
+      <div class="mission-list" id="missionList"></div>
+    </div>
+  </section>
+
+  <div class="footer-space"></div>
 </div>
-<div id="toast" role="status" aria-live="polite"></div>
-<div id="overlay" role="dialog" aria-modal="true" aria-labelledby="dialogTitle"><div class="dialog"><h2 id="dialogTitle">🎄 게임 안내</h2><div id="dialogContent"></div><div class="actions" id="dialogActions"></div></div></div>
+
+<div class="toast" id="toast"></div>
+<div class="modal-backdrop" id="modalBackdrop"><div class="modal" id="modalBox"></div></div>
+
 <script>
-'use strict';
-/* All-in-one offline-friendly GitHub Pages game. No external libraries or assets. */
+const GRID_W=7, GRID_H=8, GRID_SIZE=GRID_W*GRID_H;
+const MAX_ENERGY=40, ENERGY_MS=90000, PASSIVE_MS=60000;
+const SAVE_KEY='santa_merge_story_v4';
+const TABS=[
+  {id:'merge',label:'🎁 머지'},
+  {id:'village',label:'🏘️ 마을'},
+  {id:'style',label:'👗 꾸미기'},
+  {id:'book',label:'📚 도감'},
+  {id:'missions',label:'⭐ 미션'}
+];
+const CHAINS={
+  gift:{id:'gift',name:'선물 공방',klass:'chain-gift',generator:'giftbox',levels:[
+    {name:'선물 태그',icon:'🏷️',desc:'선물 포장의 시작.'},
+    {name:'리본',icon:'🎀',desc:'작은 선물을 장식해요.'},
+    {name:'작은 선물상자',icon:'🎁',desc:'손바닥 크기의 선물.'},
+    {name:'반짝 선물가방',icon:'🛍️',desc:'조금 더 좋은 선물.'},
+    {name:'깜짝 선물세트',icon:'🎊',desc:'손님들이 좋아하는 구성.'},
+    {name:'프리미엄 선물함',icon:'🎁',desc:'럭셔리한 특별 선물.'},
+    {name:'산타의 대형 꾸러미',icon:'🧳',desc:'굵직한 보상을 담아요.'},
+    {name:'황금 썰매 선물',icon:'🛷',desc:'공방 최고 단계 선물.'}
+  ]},
+  feast:{id:'feast',name:'겨울 다과 바구니',klass:'chain-feast',generator:'feastbox',levels:[
+    {name:'겨울 양초',icon:'🕯️',desc:'포근한 향이 번져요.'},
+    {name:'열매 꽃병',icon:'🍒',desc:'테이블 장식 재료.'},
+    {name:'베리 볼',icon:'🥣',desc:'상큼한 겨울 간식.'},
+    {name:'빵 바구니',icon:'🥖',desc:'파티용 다과.'},
+    {name:'사과 티',icon:'☕',desc:'따뜻한 음료.'},
+    {name:'축제 트레이',icon:'🍱',desc:'손님용 간식 세트.'},
+    {name:'겨울 스튜',icon:'🍲',desc:'메인 요리 준비 완료.'},
+    {name:'따뜻한 축제 식탁',icon:'🍽️',desc:'다과 라인의 최고 단계.'}
+  ]},
+  studio:{id:'studio',name:'포토 스튜디오',klass:'chain-studio',generator:'studiobox',levels:[
+    {name:'마이크 캡',icon:'🎤',desc:'소품 준비 중.'},
+    {name:'확성기',icon:'📣',desc:'촬영 스탭 장비.'},
+    {name:'슬레이트',icon:'🎬',desc:'촬영 시작!' },
+    {name:'핸드캠',icon:'📹',desc:'기본 촬영 장비.'},
+    {name:'필름 릴',icon:'🎞️',desc:'스튜디오 편집 재료.'},
+    {name:'조명 카메라',icon:'📽️',desc:'고급 촬영 장비.'},
+    {name:'감독 의자',icon:'🪑',desc:'현장을 총괄하는 자리.'},
+    {name:'레드카펫 쇼',icon:'🌟',desc:'스튜디오 라인 최고 단계.'}
+  ]},
+  jewel:{id:'jewel',name:'주얼리 박스',klass:'chain-jewel',generator:'jewelbox',levels:[
+    {name:'쿠션',icon:'🧵',desc:'주얼리 받침대 천.'},
+    {name:'귀걸이 스탠드',icon:'🪞',desc:'귀걸이 진열 준비.'},
+    {name:'주얼리 목대',icon:'📿',desc:'목걸이 디스플레이.'},
+    {name:'귀걸이 세트',icon:'👂',desc:'예쁜 포인트 악세서리.'},
+    {name:'반지',icon:'💍',desc:'반짝이는 보석 반지.'},
+    {name:'손목시계',icon:'⌚',desc:'품격 있는 선물.'},
+    {name:'보석 케이스',icon:'💎',desc:'고급 제품이 담겨요.'},
+    {name:'로열 크라운',icon:'👑',desc:'주얼리 라인의 최고 단계.'}
+  ]},
+  closet:{id:'closet',name:'겨울 옷장',klass:'chain-closet',generator:'closetbox',levels:[
+    {name:'복슬 폼폼',icon:'🧶',desc:'귀여운 겨울 장식.'},
+    {name:'양말',icon:'🧦',desc:'포근한 겨울 필수품.'},
+    {name:'장갑',icon:'🧤',desc:'손을 따뜻하게.'},
+    {name:'모자',icon:'🧢',desc:'외출 준비 완료.'},
+    {name:'목도리',icon:'🧣',desc:'포근한 스타일 포인트.'},
+    {name:'코트',icon:'🧥',desc:'주인공이 좋아하는 아우터.'},
+    {name:'겨울 드레스',icon:'👗',desc:'꾸미기에도 사용돼요.'},
+    {name:'쇼윈도 코디',icon:'👠',desc:'옷장 라인의 최고 단계.'}
+  ]}
+};
+const GENERATORS=[
+  {id:'giftbox',chain:'gift',name:'서프라이즈 선물 상자',icon:'🎁',unlockStars:0,cost:1,outputs:[0,0,1]},
+  {id:'feastbox',chain:'feast',name:'따뜻한 다과 바구니',icon:'🧺',unlockStars:6,cost:1,outputs:[0,0,1]},
+  {id:'studiobox',chain:'studio',name:'포토 스튜디오',icon:'📷',unlockStars:12,cost:1,outputs:[0,1]},
+  {id:'jewelbox',chain:'jewel',name:'고급 주얼리 박스',icon:'💍',unlockStars:18,cost:1,outputs:[0,1]},
+  {id:'closetbox',chain:'closet',name:'겨울 패션 옷장',icon:'🧥',unlockStars:26,cost:1,outputs:[0,0,1]}
+];
+const CLIENTS=[
+  ['👧🏻','한나','선물 준비가 급해요!'],['👩🏻','소피','예쁜 겨울 소품이 필요해요.'],['🧑🏻','민준','친구에게 줄 선물을 찾고 있어요.'],['👵🏻','할머니','따뜻한 겨울 파티를 준비해 주세요.'],['👨🏻','엘리엇','축제 촬영에 쓸 소품이 필요해요.'],['👩🏻‍🍳','요리사 루나','겨울 축제 테이블을 완성해 주세요.']
+];
+const VILLAGE_SHOP=[
+  {id:'cafe',name:'눈꽃 카페',icon:'☕',price:120,currency:'coin',income:2,unlockStars:3,desc:'포근한 코코아 가게'},
+  {id:'tree',name:'반짝 트리',icon:'🎄',price:80,currency:'coin',income:0,unlockStars:0,desc:'마을 중심 장식'},
+  {id:'ginger',name:'진저브레드 집',icon:'🏠',price:160,currency:'coin',income:3,unlockStars:8,desc:'마을 대표 집'},
+  {id:'snowman',name:'눈사람',icon:'⛄',price:70,currency:'coin',income:0,unlockStars:0,desc:'귀여운 포토존'},
+  {id:'market',name:'선물 마켓',icon:'🏪',price:210,currency:'coin',income:4,unlockStars:14,desc:'쇼핑 명소'},
+  {id:'chapel',name:'눈꽃 예배당',icon:'⛪',price:280,currency:'coin',income:5,unlockStars:20,desc:'고요한 예배당'},
+  {id:'carousel',name:'겨울 회전목마',icon:'🎠',price:360,currency:'coin',income:6,unlockStars:28,desc:'아이들의 인기 장소'},
+  {id:'castle',name:'산타 성',icon:'🏰',price:520,currency:'coin',income:8,unlockStars:40,desc:'축제의 랜드마크'}
+];
+const STYLE_GROUPS=[
+  {key:'hair',title:'헤어',items:[
+    {id:'short',name:'단정 단발',emoji:'💇🏻‍♀️',unlockStars:0},
+    {id:'ponytail',name:'리본 포니테일',emoji:'🎀',unlockStars:10},
+    {id:'braid',name:'겨울 브레이드',emoji:'❄️',unlockStars:24}
+  ]},
+  {key:'outfit',title:'의상',items:[
+    {id:'knit',name:'포근 니트',emoji:'🧶',unlockStars:0},
+    {id:'dress',name:'축제 드레스',emoji:'👗',unlockStars:14},
+    {id:'coat',name:'윈터 코트',emoji:'🧥',unlockStars:22},
+    {id:'santa',name:'산타 룩',emoji:'🎅',unlockMission:'event_help_santa'}
+  ]},
+  {key:'acc',title:'소품',items:[
+    {id:'none',name:'없음',emoji:'✨',unlockStars:0},
+    {id:'bag',name:'별빛 가방',emoji:'👜',unlockStars:12},
+    {id:'muff',name:'귀마개',emoji:'🎧',unlockStars:18},
+    {id:'wand',name:'별 마법봉',emoji:'🪄',unlockMission:'achieve_merge_80'}
+  ]}
+];
+const STORIES=[
+  {id:'ep1',title:'에피소드 1 · 사라진 축제 준비물',need:{deliveries:0},lines:[['주인공','눈꽃 마을의 크리스마스 축제가 멈춰 버렸어. 준비물을 다시 모아야 해!'],['산타','머지 보드에서 아이템을 만들고 손님 주문을 들어주면 마을이 다시 살아날 거란다.'],['주인공','좋아! 먼저 선물과 다과를 준비하자.']]},
+  {id:'ep2',title:'에피소드 2 · 손님들의 부탁',need:{deliveries:4},lines:[['손님 소피','주얼리와 예쁜 겨울 소품이 필요해요. 파티에 꼭 써야 하거든요.'],['주인공','새 작업대들을 열고 더 높은 단계 아이템을 만들어 볼게!'],['산타','별을 모아 마을도 꾸며 주렴. 사람들의 마음이 다시 따뜻해질 거야.']]},
+  {id:'ep3',title:'에피소드 3 · 산타 도와주기',need:{deliveries:10},lines:[['산타','썰매 선물과 따뜻한 식탁이 필요하단다. 이번 주 이벤트도 시작됐어!'],['주인공','이벤트 미션을 끝내면 특별한 산타 룩을 받을 수 있겠네.'],['마을 사람들','축제가 정말 다시 열릴 것 같아요!']]},
+  {id:'ep4',title:'에피소드 4 · 눈꽃 축제의 밤',need:{deliveries:18},lines:[['주인공','마을 광장도 완성됐고, 꾸미기 아이템도 많이 모았어.'],['산타','마지막으로 최고의 선물과 촬영 소품을 만들어 축제를 마무리하자.'],['모두','메리 크리스마스!']]}
+];
+const MISSIONS={
+  daily:[
+    {id:'daily_merge_15',title:'오늘의 머지',desc:'머지 15회를 달성하세요.',metric:'merges',target:15,reward:{coin:120,energy:4}},
+    {id:'daily_delivery_3',title:'손님 만족도',desc:'주문 3건을 완료하세요.',metric:'deliveries',target:3,reward:{star:3,coin:90}},
+    {id:'daily_generate_20',title:'작업대 가동',desc:'작업대를 20번 사용하세요.',metric:'generated',target:20,reward:{coin:100,ruby:1}},
+  ],
+  event:[
+    {id:'event_help_santa',title:'산타 도와주기',desc:'주문 8건을 완료해 산타의 준비를 도우세요.',metric:'deliveries',target:8,reward:{ruby:5,styleUnlock:'santa'}},
+    {id:'event_winter_table',title:'따뜻한 겨울 식탁',desc:'다과 라인 6단계 이상 아이템을 2번 만드세요.',metric:'highFeast',target:2,reward:{star:6,coin:180}},
+    {id:'event_village',title:'마을 꾸미기',desc:'마을에 건물/장식을 6개 이상 배치하세요.',metric:'placed',target:6,reward:{coin:220,ruby:2}}
+  ],
+  achievement:[
+    {id:'achieve_merge_80',title:'머지 장인',desc:'총 머지 80회를 달성하세요.',metric:'merges',target:80,reward:{ruby:8,styleUnlock:'wand'}},
+    {id:'achieve_discover_20',title:'수집가',desc:'도감 항목 20개를 발견하세요.',metric:'discovered',target:20,reward:{star:8,coin:260}},
+    {id:'achieve_income_20',title:'살기 좋은 마을',desc:'마을 분당 수입을 20 이상으로 올리세요.',metric:'income',target:20,reward:{coin:300,ruby:3}}
+  ]
+};
+const defaultState=()=>({
+  version:4,tab:'merge',energy:20,coins:180,rubies:3,stars:0,xp:0,deliveries:0,merges:0,generated:0,
+  nextEnergyAt:Date.now(),lastPassiveAt:Date.now(),sound:true,
+  board:Array(GRID_SIZE).fill(null),selected:-1,selectedChain:'gift',orders:[],orderSeed:0,
+  discovered:{gift:[true,false,false,false,false,false,false,false],feast:[false,false,false,false,false,false,false,false],studio:[false,false,false,false,false,false,false,false],jewel:[false,false,false,false,false,false,false,false],closet:[false,false,false,false,false,false,false,false]},
+  missionClaimed:[],placed:[{shopId:'tree',slot:2},{shopId:'snowman',slot:7}],pendingPlace:null,
+  avatar:{hair:'short',outfit:'knit',acc:'none'},stats:{highFeast:0},storySeen:['ep1']
+});
+let S=defaultState();
+let drag=null; let toastTimer=null; let audioCtx=null; let missionView='daily';
 const $=id=>document.getElementById(id);
-const KEY='christmas_merge_v3';
-const GRID=36,MAX_ENERGY=30,ENERGY_TIME=45000,INCOME_TIME=60000;
-const CHAINS=[
- {name:'달콤 베이커리',icon:'🍪',items:['🍬','🍭','🍪','🧁','🍰','🎂'],names:['사탕','막대사탕','쿠키','컵케이크','크리스마스 케이크','파티 케이크']},
- {name:'산타 선물 공방',icon:'🎁',items:['❄️','🔔','⭐','🎁','🎄','🎅'],names:['눈송이','종','반짝이는 별','선물 상자','크리스마스 트리','산타 선물']},
- {name:'포근한 겨울',icon:'🧣',items:['🧦','🧤','🧣','🧥','🦌','🛷'],names:['양말','장갑','목도리','겨울 외투','루돌프','산타 썰매']}
-];
-const CLIENTS=[['👧🏻','하나','크리스마스 선물 주세요!'],['👩🏻‍🦰','엘리','오늘 파티에 필요해요!'],['👨🏻‍🦳','루돌프 할아버지','멋진 선물이 기다려져요!'],['🧑🏻','민준','친구에게 줄 거예요!'],['👩🏻‍🍳','제과점 주인','축제 준비 중이에요!'],['👦🏻','도윤','산타 할아버지 부탁해요!'],['👵🏻','마을 할머니','따뜻한 겨울을 부탁해요!']];
-const BUILDINGS=[
- {id:'cafe',icon:'☕',name:'눈꽃 카페',price:4,currency:'star',income:1,desc:'따뜻한 코코아 가게'},
- {id:'house',icon:'🏡',name:'진저브레드 집',price:7,currency:'star',income:2,desc:'달콤한 크리스마스 집'},
- {id:'shop',icon:'🏪',name:'선물 가게',price:11,currency:'star',income:3,desc:'반짝이는 선물 상점'},
- {id:'chapel',icon:'⛪',name:'눈꽃 예배당',price:15,currency:'star',income:4,desc:'종소리가 울려 퍼져요'},
- {id:'carousel',icon:'🎠',name:'겨울 회전목마',price:21,currency:'star',income:6,desc:'친구들이 모이는 놀이터'},
- {id:'fountain',icon:'⛲',name:'겨울 분수 광장',price:25,currency:'star',income:7,desc:'마을 사람들이 모이는 광장'},
- {id:'castle',icon:'🏰',name:'산타의 성',price:30,currency:'star',income:9,desc:'마을의 꿈같은 랜드마크'},
- {id:'fair',icon:'🎡',name:'별빛 관람차',price:39,currency:'star',income:12,desc:'밤에 더 빛나는 명소'},
- {id:'circus',icon:'🎪',name:'크리스마스 서커스',price:43,currency:'star',income:13,desc:'축제의 하이라이트'},
- {id:'train',icon:'🚂',name:'북극 특급열차',price:50,currency:'star',income:15,desc:'선물 배달을 책임져요'}
-];
-const DECORS=[
- {id:'tree',icon:'🎄',name:'반짝이는 트리',price:35,currency:'coin',income:0,desc:'마을의 축제 분위기'},
- {id:'pine',icon:'🌲',name:'눈 덮인 전나무',price:15,currency:'coin',income:0,desc:'포근한 겨울 숲'},
- {id:'snowman',icon:'⛄',name:'눈사람',price:25,currency:'coin',income:0,desc:'아이들의 인기 친구'},
- {id:'light',icon:'💡',name:'크리스마스 가로등',price:20,currency:'coin',income:0,desc:'골목을 밝히는 등불'},
- {id:'bench',icon:'🪑',name:'산책 벤치',price:18,currency:'coin',income:0,desc:'잠깐 쉬어 가는 공간'},
- {id:'flower',icon:'🌷',name:'겨울 꽃밭',price:22,currency:'coin',income:0,desc:'눈 속에서도 꽃이 피어요'},
- {id:'gift',icon:'🎁',name:'선물 장식',price:18,currency:'coin',income:0,desc:'마을 곳곳의 선물'},
- {id:'deer',icon:'🦌',name:'루돌프 조형물',price:32,currency:'coin',income:0,desc:'산타의 단짝'}
-];
-const ALL_PLACES=[{id:'starter',icon:'🏠',name:'산타 우체국',income:1},...BUILDINGS,...DECORS];
-const ROADS=new Set([3,10,17,21,22,23,24,25,26,27,31,38,45]);
-const WATER=new Set([0,7]);
-const AUTO_SLOTS=[16,18,9,11,29,33,37,39,15,19,8,12,30,32,36,40,1,5,14,20,28,34,42,44,46,48,2,4,6,13,35,41,43,47];
-const rand=n=>Math.floor(Math.random()*n);
-const fmt=n=>Math.floor(n).toLocaleString('ko-KR');
-const blank=()=>({version:3,g:Array(GRID).fill(null),e:22,c:80,stars:0,xp:0,delivered:0,merges:0,orders:[],orderSerial:0,energyAt:Date.now(),incomeAt:Date.now(),places:[{id:'starter',pos:8},{id:'pine',pos:12},{id:'pine',pos:30},{id:'tree',pos:9},{id:'snowman',pos:33},{id:'light',pos:36}],sound:true});
-let S=blank(),selected=-1,moveFrom=null,justBuilt=-1,drag=null,tab='merge',audioCtx=null,toastHandle=null;
-function definition(id){return ALL_PLACES.find(b=>b.id===id)}
-function createOrder(){
- const index=S.orderSerial++;
- const client=CLIENTS[index%CLIENTS.length];
- const difficulty=Math.min(3,Math.floor(S.delivered/6));
- const count=S.delivered>=3 && (index%3===2)?2:1;
- const needs=[];
- for(let k=0;k<count;k++){
-   let level=1+(index+k+rand(3))%Math.min(3,2+difficulty);
-   if(S.delivered<2)level=1;
-   if(S.delivered<6)level=Math.min(level,2);
-   needs.push({c:(index+k+rand(3))%3,l:level});
- }
- const coins=needs.reduce((sum,n)=>sum+14*Math.pow(2,n.l),0)+(count>1?18:8);
- const stars=needs.reduce((sum,n)=>sum+Math.max(2,n.l),0)+(count>1?1:0);
- return {id:index,client:index%CLIENTS.length,needs,coins,stars};
-}
-function prepareOrders(){while(S.orders.length<3)S.orders.push(createOrder())}
-function mergeOldSave(){
- try{
-   const old=JSON.parse(localStorage.getItem('xmerge2')||'null');
-   if(!old||!Array.isArray(old.g))return;
-   if(old.g.length===30){
-     for(let i=0;i<30;i++)S.g[Math.floor(i/5)*6+(i%5)]=old.g[i];
-     S.e=Math.min(MAX_ENERGY,Math.max(0,+old.e||0));S.c=+old.c||0;S.xp=(+old.m||0)*2;S.merges=+old.m||0;
-     const legacy=['house','pine','chapel','fair','fountain','castle','circus','train'];
-     if(Array.isArray(old.b))old.b.forEach(i=>{const id=legacy[i];const pos=AUTO_SLOTS.find(p=>!S.places.some(v=>v.pos===p)&&!ROADS.has(p));if(id&&pos!==undefined)S.places.push({id,pos})});
-     S.energyAt=Date.now();S.incomeAt=Date.now();
-   }
- }catch(e){}
-}
+function clone(v){return JSON.parse(JSON.stringify(v))}
+function save(){localStorage.setItem(SAVE_KEY,JSON.stringify(S))}
 function load(){
- try{
-   const saved=JSON.parse(localStorage.getItem(KEY)||'null');
-   if(saved && saved.version===3 && Array.isArray(saved.g) && saved.g.length===GRID && Array.isArray(saved.places)){
-     S={...blank(),...saved};
-   }else mergeOldSave();
- }catch(e){S=blank()}
- S.e=Math.min(MAX_ENERGY,Math.max(0,Number(S.e)||0));
- if(!Array.isArray(S.orders))S.orders=[];
- if(!Array.isArray(S.places))S.places=[];
- if(!Array.isArray(S.g)||S.g.length!==GRID)S.g=Array(GRID).fill(null);
- if(!Number.isFinite(S.energyAt))S.energyAt=Date.now();
- if(!Number.isFinite(S.incomeAt))S.incomeAt=Date.now();
- if(!S.g.some(Boolean)){
-   [[0,0,0],[1,0,0],[6,1,0],[7,1,0],[12,2,0],[13,2,0],[19,0,1]].forEach(([i,c,l])=>S.g[i]={c,l});
- }
- prepareOrders();syncTime();save();
+  try{const saved=JSON.parse(localStorage.getItem(SAVE_KEY)||'null'); if(saved&&saved.version===4){S={...defaultState(),...saved}}}catch(e){}
+  if(!Array.isArray(S.board)||S.board.length!==GRID_SIZE)S.board=Array(GRID_SIZE).fill(null);
+  if(!S.orders||!S.orders.length){seedBoard(); fillOrders()}
+  normalizeState();
 }
-function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+function normalizeState(){
+  S.energy=Math.max(0,Math.min(MAX_ENERGY,Number(S.energy)||0));
+  S.coins=Math.max(0,Number(S.coins)||0); S.rubies=Math.max(0,Number(S.rubies)||0); S.stars=Math.max(0,Number(S.stars)||0);
+  S.xp=Math.max(0,Number(S.xp)||0); S.deliveries=Number(S.deliveries)||0; S.merges=Number(S.merges)||0; S.generated=Number(S.generated)||0;
+  if(!S.discovered)S.discovered=defaultState().discovered; for(const key of Object.keys(CHAINS)){if(!Array.isArray(S.discovered[key]))S.discovered[key]=Array(CHAINS[key].levels.length).fill(false)}
+  if(!Array.isArray(S.placed))S.placed=[]; if(!Array.isArray(S.missionClaimed))S.missionClaimed=[]; if(!S.avatar)S.avatar=defaultState().avatar; if(!S.stats)S.stats={highFeast:0};
+  if(!Array.isArray(S.storySeen))S.storySeen=['ep1'];
+}
+function seedBoard(){
+  const starters=[['gift',0],['gift',0],['feast',0],['feast',0],['studio',0],['closet',0],['gift',1],['gift',1],['feast',1]];
+  S.board=Array(GRID_SIZE).fill(null);
+  starters.forEach((it,i)=>S.board[i]={chain:it[0],lvl:it[1]});
+  starters.forEach(it=>markDiscovered(it[0],it[1]));
+}
+function levelOf(){return 1+Math.floor(S.xp/80)}
+function unlockedGenerators(){return GENERATORS.filter(g=>S.stars>=g.unlockStars)}
+function unlockedChains(){return unlockedGenerators().map(g=>g.chain)}
+function chainOfItem(item){return CHAINS[item.chain]}
+function getLevelData(chainId,lvl){return CHAINS[chainId].levels[lvl]}
+function itemName(item){const lv=getLevelData(item.chain,item.lvl); return lv.name}
+function itemIcon(item){return getLevelData(item.chain,item.lvl).icon}
+function markDiscovered(chainId,lvl){if(!S.discovered[chainId][lvl]) S.discovered[chainId][lvl]=true}
+function discoveredCount(){return Object.values(S.discovered).flat().filter(Boolean).length}
+function incomePerMinute(){return S.placed.reduce((sum,p)=>sum+((VILLAGE_SHOP.find(v=>v.id===p.shopId)||{}).income||0),0)}
+function fmt(n){return Math.floor(n).toLocaleString('ko-KR')}
+function timerString(ms){const sec=Math.max(0,Math.ceil(ms/1000)); const m=Math.floor(sec/60), s=sec%60; return `${m}:${String(s).padStart(2,'0')}`}
 function syncTime(){
- const now=Date.now();let dirty=false;
- if(S.e>=MAX_ENERGY){S.energyAt=now}
- else{const step=Math.max(0,Math.floor((now-S.energyAt)/ENERGY_TIME));if(step){S.e=Math.min(MAX_ENERGY,S.e+step);S.energyAt+=step*ENERGY_TIME;if(S.e>=MAX_ENERGY)S.energyAt=now;dirty=true}}
- const incomePerMinute=S.places.reduce((sum,p)=>sum+(definition(p.id)?.income||0),0);
- const paySteps=Math.min(180,Math.max(0,Math.floor((now-S.incomeAt)/INCOME_TIME)));
- if(paySteps>0){S.c+=paySteps*incomePerMinute;S.incomeAt=now;dirty=true}
- if(dirty)save();
- return dirty;
+  const now=Date.now(); let dirty=false;
+  if(S.energy<MAX_ENERGY){ const passed=Math.floor((now-(S.nextEnergyAt||now))/ENERGY_MS); if(now>=S.nextEnergyAt){ const gained=1+Math.max(0,passed); S.energy=Math.min(MAX_ENERGY,S.energy+gained); S.nextEnergyAt=now+ENERGY_MS; dirty=true } }
+  else S.nextEnergyAt=now+ENERGY_MS;
+  const rate=incomePerMinute(); if(rate>0 && now-(S.lastPassiveAt||now)>=PASSIVE_MS){ const steps=Math.floor((now-S.lastPassiveAt)/PASSIVE_MS); S.coins+=steps*rate; S.lastPassiveAt += steps*PASSIVE_MS; dirty=true } else if(!S.lastPassiveAt) S.lastPassiveAt=now;
+  if(dirty)save();
 }
-function spendEnergy(){syncTime();if(S.e<1){toast('⚡ 번개가 부족해요! 시간이 지나면 자동 충전됩니다.');beep(180);return false}if(S.e>=MAX_ENERGY)S.energyAt=Date.now();S.e--;return true}
-function beep(freq=640){if(!S.sound)return;try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();const o=audioCtx.createOscillator(),v=audioCtx.createGain();o.type='sine';o.frequency.value=freq;v.gain.setValueAtTime(.065,audioCtx.currentTime);v.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+.11);o.connect(v);v.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+.12)}catch(e){}}
-function toast(msg){const el=$('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastHandle);toastHandle=setTimeout(()=>el.classList.remove('show'),1950)}
-function face(v){if(v.w)return '⛄';return CHAINS[v.c]?.items[v.l]||'🎁'}
-function itemName(v){if(v.w)return '마법 눈사람';return CHAINS[v.c]?.names[v.l]||'선물'}
-function markDemand(){const needed=new Map();for(const o of S.orders)for(const n of o.needs){const k=n.c+':'+n.l;needed.set(k,(needed.get(k)||0)+1)}return needed}
-function renderTop(){
- $('energyText').textContent=`${Math.floor(S.e)} / ${MAX_ENERGY}`;
- const left=S.e>=MAX_ENERGY?0:Math.max(0,ENERGY_TIME-(Date.now()-S.energyAt));
- $('energyTimer').textContent=S.e>=MAX_ENERGY?'충전 완료':`+1 충전 ${Math.floor(Math.ceil(left/1000)/60)}:${String(Math.ceil(left/1000)%60).padStart(2,'0')}`;
- $('coinText').textContent=fmt(S.c);$('starText').textContent=fmt(S.stars);$('levelText').textContent='Lv.'+(1+Math.floor(S.xp/120));$('deliveryText').textContent=`납품 ${S.delivered}회`;
- const progress=S.xp%120;$('levelFill').style.width=(progress/120*100)+'%';
- $('storyTitle').textContent=S.delivered<3?'🎅 산타의 겨울 마을 복구 작전!':S.delivered<9?'🎄 크리스마스 축제를 준비해요!':'✨ 눈꽃 마을을 더욱 빛나게!';
- $('storySub').textContent=`다음 레벨까지 경험치 ${120-progress} · 주문 납품으로 건설 별 획득`;
+function spendEnergy(cost=1){syncTime(); if(S.energy<cost){toast('⚡ 번개가 부족해요. 시간이 지나면 자동 충전됩니다.'); beep(190); return false} S.energy-=cost; S.nextEnergyAt=Date.now()+ENERGY_MS; save(); return true}
+function reward(obj={}){if(obj.coin)S.coins+=obj.coin; if(obj.ruby)S.rubies+=obj.ruby; if(obj.star)S.stars+=obj.star; if(obj.energy)S.energy=Math.min(MAX_ENERGY,S.energy+obj.energy); if(obj.xp)S.xp+=obj.xp}
+function beep(freq=660,duration=.12,type='sine',vol=.06){if(!S.sound)return; try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)(); const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type=type; o.frequency.value=freq; g.gain.setValueAtTime(vol,audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+duration); o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+duration);}catch(e){}}
+function toast(msg){const el=$('toast'); el.textContent=msg; el.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'),1800)}
+function emptyCells(){return S.board.map((v,i)=>v?null:i).filter(v=>v!==null)}
+function spawnFromGenerator(genId){const gen=GENERATORS.find(g=>g.id===genId); if(!gen)return; if(S.stars<gen.unlockStars){toast(`⭐ ${gen.unlockStars}개 이상 모으면 열려요.`); return} if(!spendEnergy(gen.cost))return; const empty=emptyCells(); if(!empty.length){toast('보드가 가득 찼어요. 머지하거나 판매해 보세요.'); return}
+  const lvl=gen.outputs[Math.floor(Math.random()*gen.outputs.length)]; const idx=empty[Math.floor(Math.random()*empty.length)]; S.board[idx]={chain:gen.chain,lvl}; S.generated++; S.selected=idx; markDiscovered(gen.chain,lvl); beep(700,.1,'triangle'); render(); save();}
+function canMerge(a,b){return a&&b&&a.chain===b.chain&&a.lvl===b.lvl&&a.lvl<CHAINS[a.chain].levels.length-1}
+function moveItem(from,to){const a=S.board[from], b=S.board[to]; if(!a)return; if(from===to)return; if(!b){S.board[to]=a; S.board[from]=null; S.selected=to; }
+  else if(canMerge(a,b)){ S.board[from]=null; S.board[to]={chain:b.chain,lvl:b.lvl+1}; S.merges++; S.xp+=10+b.lvl*2; markDiscovered(b.chain,b.lvl+1); if(b.chain==='feast' && b.lvl+1>=5) S.stats.highFeast=(S.stats.highFeast||0)+1; if(b.lvl+1===CHAINS[b.chain].levels.length-1) reward({coin:40,ruby:1}); S.selected=to; beep(820,.14,'triangle'); }
+  else { S.board[to]=a; S.board[from]=b; S.selected=to; beep(430,.07,'square',.045); }
+  save(); render(); }
+function selectCell(i){const item=S.board[i]; if(!item){ if(S.selected>=0){ moveItem(S.selected,i); } return } if(S.selected<0){S.selected=i; render(); return} if(S.selected===i){S.selected=-1; render(); return} moveItem(S.selected,i)}
+function sellSelected(){const i=S.selected; const item=S.board[i]; if(!item)return; const value=12+item.lvl*8; S.board[i]=null; S.coins+=value; S.selected=-1; toast(`🪙 ${value} 코인을 얻었어요.`); beep(560,.1); save(); render();}
+function createOrder(){
+  const chains=unlockedChains(); const diff=Math.min(4,Math.floor(S.deliveries/4)); const needCount=S.deliveries>=5 && Math.random()>.55?2:1; const needs=[];
+  for(let k=0;k<needCount;k++){ const chain=chains[(S.orderSeed+k)%chains.length]; const maxLvl=Math.min(2+diff, CHAINS[chain].levels.length-2); const lvl=Math.max(1,Math.floor(Math.random()*(maxLvl+1))); needs.push({chain,lvl}) }
+  const client=CLIENTS[S.orderSeed%CLIENTS.length]; S.orderSeed++;
+  const coin=needs.reduce((sum,n)=>sum+24+n.lvl*18,0)+(needCount>1?28:0); const star=needs.reduce((sum,n)=>sum+1+Math.floor(n.lvl/2),0); const xp=needs.reduce((sum,n)=>sum+10+n.lvl*3,0); const ruby=(Math.random()<.18?1:0);
+  return {id:'o'+Date.now()+Math.random(),client,needs,reward:{coin,star,xp,ruby}};
 }
-function matchesFor(order){
- const used=new Set();let found=[];
- for(const need of order.needs){const idx=S.g.findIndex((v,i)=>!used.has(i)&&v&&!v.w&&v.c===need.c&&v.l===need.l);if(idx<0)found.push(-1);else{used.add(idx);found.push(idx)}}
- return found;
-}
-function renderOrders(){
- $('orders').innerHTML=S.orders.map((o,i)=>{
-   const client=CLIENTS[o.client],found=matchesFor(o),ready=found.every(p=>p>=0);
-   const needs=o.needs.map((n,j)=>`<div class="want ${found[j]>=0?'have':''}" title="${CHAINS[n.c].names[n.l]}">${CHAINS[n.c].items[n.l]}<em>${found[j]>=0?'✓':'0/1'}</em></div>`).join('');
-   return `<div class="order ${ready?'ready':''}"><div class="who"><span>${client[0]}</span><span class="name">${client[1]}</span></div><div class="saying">“${client[2]}”</div><div class="wants">${needs}</div><div class="reward">🪙${fmt(o.coins)} &nbsp; ⭐${o.stars}</div><button class="ship" data-order="${i}" ${ready?'':'disabled'}>${ready?'✔ 납품하기':'준비 중...'}</button></div>`;
- }).join('');
-}
-function renderBoard(){
- const targets=markDemand();let occupied=0;
- $('board').innerHTML=S.g.map((v,i)=>{
-   if(v)occupied++;
-   const match=v&&!v.w&&targets.has(v.c+':'+v.l);
-   const inner=v?`<span class="item">${face(v)}</span>${v.w?'':`<span class="level">${v.l+1}</span>`}`:'';
-   return `<button type="button" role="gridcell" aria-label="${v?itemName(v)+' '+(v.l+1)+'단계':'빈 칸'}" data-cell="${i}" class="cell ${v&&v.w?'special':''} ${i===selected?'selected':''} ${match?'match':''}">${inner}</button>`;
- }).join('');
- $('boardCounter').textContent=`${occupied} / ${GRID}칸`;
- renderSelected();
-}
-function renderSelected(){
- const v=S.g[selected],el=$('itemInfo');
- if(!v){el.innerHTML='<div class="selected-icon">👆</div><div class="item-copy"><strong>같은 선물을 끌어 겹쳐 보세요!</strong><small>같은 아이템 2개 → 한 단계 높은 아이템</small></div>';return}
- const money=v.w?5:Math.max(2,Math.pow(2,v.l+1));
- el.innerHTML=`<div class="selected-icon">${face(v)}</div><div class="item-copy"><strong>${itemName(v)} ${v.w?'':`· ${v.l+1}단계`}</strong><small>${v.w?'다른 아이템에 올리면 한 단계 상승':'똑같은 아이템과 머지하거나 주문에 납품하세요'}</small></div><button class="mini-btn" id="sellItem">판매 +${money}🪙</button>`;
- $('sellItem').onclick=()=>sellSelected();
-}
-function renderGenerators(){
- $('generators').innerHTML=CHAINS.map((g,i)=>`<button class="generator" type="button" data-gen="${i}" ${S.e<1?'disabled':''}><span class="gicon">${g.icon}</span><strong>${g.name}</strong><small>⚡ 1 사용 · 제작</small></button>`).join('');
-}
-function renderMerge(){renderTop();renderOrders();renderBoard();renderGenerators()}
-function produce(chain){
- const empty=S.g.findIndex(v=>!v);
- if(empty===-1)return toast('보드가 가득 찼어요! 머지하거나 납품하여 공간을 만들어 주세요.');
- if(!spendEnergy())return;
- const r=Math.random();S.g[empty]=r<.035?{w:1}:{c:chain,l:r<.16?1:0};
- selected=empty;beep(550);renderMerge();save();
-}
-function completeOrder(i){
- const o=S.orders[i];if(!o)return;
- const found=matchesFor(o);
- if(!found.every(k=>k>=0))return toast('아직 필요한 선물이 모두 준비되지 않았어요!');
- found.forEach(k=>S.g[k]=null);S.c+=o.coins;S.stars+=o.stars;S.xp+=20+o.needs.length*7;S.delivered++;
- selected=-1;S.orders.splice(i,1);prepareOrders();beep(840);
- renderMerge();save();toast(`🎉 주문 납품 성공! 🪙${fmt(o.coins)} + ⭐${o.stars} 획득`);
-}
-function sellSelected(){
- const i=selected,v=S.g[i];if(!v)return;
- const money=v.w?5:Math.max(2,Math.pow(2,v.l+1));
- // Selling is optional; requested customer orders remain the main source of rewards.
- S.c+=money;S.g[i]=null;selected=-1;beep(470);renderMerge();save();toast(`선물 판매 완료! 🪙 +${money}`);
-}
-function mergePieces(i,j){
- if(i===j){selected=i;return}
- const a=S.g[i],b=S.g[j];if(!a)return;
- if(b&&a.w&&b.w){toast('눈사람끼리는 합칠 수 없어요.');return}
- if(b&&(a.w||b.w)){
-   const normal=a.w?b:a;
-   if(normal.l>=5){toast('이미 최고 단계입니다!');return}
-   const target=a.w?j:j;
-   if(a.w){S.g[i]=null;normal.l++;S.g[j]=normal}
-   else{S.g[i]=null;S.g[j]=normal;normal.l++}
-   S.xp+=3;S.merges++;selected=target;beep(920);toast('⛄ 눈사람의 마법! 한 단계 UP!');return;
- }
- if(b&&!a.w&&!b.w&&a.c===b.c&&a.l===b.l){
-   if(a.l>=5){toast('최고 단계는 주문에 납품하거나 판매하세요!');return}
-   S.g[i]=null;b.l++;S.xp+=3;S.merges++;selected=j;beep(760);
-   if(b.l===5){S.stars++;toast('🌟 최고 단계 달성! ⭐ +1')}return;
- }
- S.g[i]=b||null;S.g[j]=a;selected=j;beep(400);
-}
-function endDrag(e,cancel=false){
- if(!drag)return;
- const d=drag;drag=null;if(d.ghost)d.ghost.remove();
- document.querySelectorAll('.cell.target,.cell.dragging').forEach(x=>x.classList.remove('target','dragging'));
- try{$('board').releasePointerCapture(e.pointerId)}catch(err){}
- if(cancel)return;
- const el=document.elementFromPoint(e.clientX,e.clientY)?.closest('[data-cell]');
- const j=el?Number(el.dataset.cell):d.i;
- if(d.moved && el)mergePieces(d.i,j);else selected=d.i;
- renderMerge();save();
-}
-function installDrag(){
- const board=$('board');
- board.addEventListener('pointerdown',e=>{
-   const el=e.target.closest('[data-cell]');if(!el)return;
-   const i=Number(el.dataset.cell),v=S.g[i];if(!v){selected=-1;renderSelected();return}
-   e.preventDefault();
-   try{board.setPointerCapture(e.pointerId)}catch(err){}
-   drag={i,pointerId:e.pointerId,x:e.clientX,y:e.clientY,moved:false,ghost:null};
-   selected=i;el.classList.add('dragging');
- });
- board.addEventListener('pointermove',e=>{
-   if(!drag||drag.pointerId!==e.pointerId)return;
-   e.preventDefault();
-   if(!drag.moved&&Math.hypot(e.clientX-drag.x,e.clientY-drag.y)>6){
-     drag.moved=true;drag.ghost=document.createElement('div');drag.ghost.className='drag-ghost';drag.ghost.textContent=face(S.g[drag.i]);document.body.appendChild(drag.ghost);
-   }
-   if(drag.ghost){drag.ghost.style.left=e.clientX+'px';drag.ghost.style.top=e.clientY+'px';}
-   document.querySelectorAll('.cell.target').forEach(el=>el.classList.remove('target'));
-   const el=document.elementFromPoint(e.clientX,e.clientY)?.closest('[data-cell]');if(el&&Number(el.dataset.cell)!==drag.i)el.classList.add('target');
- });
- board.addEventListener('pointerup',e=>{if(drag&&drag.pointerId===e.pointerId)endDrag(e)});
- board.addEventListener('pointercancel',e=>endDrag(e,true));
- window.addEventListener('touchmove',e=>{if(drag)e.preventDefault()},{passive:false});
-}
-function freeSlot(){return AUTO_SLOTS.find(p=>!ROADS.has(p)&&!WATER.has(p)&&!S.places.some(x=>x.pos===p))}
-function placeName(id){return definition(id)?.name||id}
-function townIncome(){return S.places.reduce((sum,p)=>sum+(definition(p.id)?.income||0),0)}
-function build(item){
- const def=definition(item);if(!def)return;
- if(BUILDINGS.some(b=>b.id===item)&&S.places.some(p=>p.id===item))return toast('이미 건설한 건물이에요!');
- const pos=freeSlot();if(pos===undefined)return toast('마을의 빈 땅이 없어요! 기존 장식의 위치를 조정해 주세요.');
- const field=def.currency==='star'?'stars':'c';
- if(S[field]<def.price)return toast(`${def.currency==='star'?'⭐ 별':'🪙 코인'}이 부족해요! 주문을 납품해서 모아 보세요.`);
- S[field]-=def.price;S.places.push({id:item,pos});moveFrom=null;justBuilt=pos;
- beep(740);renderTop();renderVillage();save();toast(`🎉 ${def.name} 완공! 마을 지도에 배치했어요.`);
-}
-function movePlot(pos){
- if(ROADS.has(pos)||WATER.has(pos))return toast('길이나 연못에는 건물을 놓을 수 없어요.');
- const entity=S.places.find(p=>p.pos===pos);
- if(moveFrom===null){
-   if(entity){moveFrom=pos;renderVillage();toast(`${placeName(entity.id)} 선택! 빈 땅을 누르면 옮겨져요.`)}
-   else toast('아래 건물이나 장식을 구매해 이 땅을 꾸며 보세요!');
-   return;
- }
- if(moveFrom===pos){moveFrom=null;renderVillage();return}
- const moving=S.places.find(p=>p.pos===moveFrom);if(!moving){moveFrom=null;return}
- if(entity){entity.pos=moveFrom;moving.pos=pos}else moving.pos=pos;
- moveFrom=null;justBuilt=pos;renderVillage();save();beep(640);toast('🏡 원하는 위치로 옮겼어요!');
-}
-function renderVista(){
- const hills=`<path d="M0 112 Q100 68 207 104 Q318 64 436 105 Q510 77 600 106 L600 185 L0 185 Z" fill="#e6f5ee"/><path d="M0 145 Q160 114 300 144 Q448 105 600 145 L600 185 L0 185Z" fill="#cfecdc"/><path d="M-10 153 Q180 132 310 168 Q460 194 610 155" fill="none" stroke="#fae4ba" stroke-width="24"/><path d="M-10 153 Q180 132 310 168 Q460 194 610 155" fill="none" stroke="#fff6df" stroke-width="3" stroke-dasharray="9 9"/>`;
- const stars=Array.from({length:16},(_,i)=>`<circle cx="${14+(i*67)%560}" cy="${10+(i*31)%65}" r="${i%3===0?2:1.2}" fill="#fff" opacity=".85"/>`).join('');
- const places=S.places.slice().sort((a,b)=>Math.floor(a.pos/7)-Math.floor(b.pos/7)).map(p=>{
-  const def=definition(p.id);if(!def)return '';
-  const col=p.pos%7,row=Math.floor(p.pos/7);const x=57+col*81+(row%2)*8,y=91+row*9;const building=p.id==='starter'||BUILDINGS.some(b=>b.id===p.id);
-  if(building){
-   const wall=p.id==='castle'?'#d9d5f5':p.id==='cafe'?'#ffdfad':p.id==='chapel'?'#fcefe1':'#f8d3c2';
-   const roof=p.id==='castle'?'#7468a1':p.id==='cafe'?'#bb566c':p.id==='chapel'?'#68899c':'#a64a60';
-   return `<g transform="translate(${x} ${y})"><ellipse cx="0" cy="10" rx="31" ry="7" fill="#578f8675"/><rect x="-25" y="-37" width="50" height="45" rx="3" fill="${wall}" stroke="#fdfaf1" stroke-width="3"/><path d="M-32 -37 L0 -63 L32 -37 Z" fill="${roof}" stroke="#fff4e5" stroke-width="4" stroke-linejoin="round"/><path d="M-27 -38 Q-13 -43 0 -41 T27 -38" fill="none" stroke="white" stroke-width="5"/><rect x="-8" y="-14" width="16" height="22" rx="5" fill="#986958"/><rect x="-21" y="-28" width="11" height="12" rx="2" fill="#ffe7a1" stroke="white" stroke-width="2"/><rect x="10" y="-28" width="11" height="12" rx="2" fill="#ffe7a1" stroke="white" stroke-width="2"/><text x="0" y="-45" font-size="17" text-anchor="middle">${def.icon}</text></g>`;
+function fillOrders(){while(S.orders.length<3)S.orders.push(createOrder())}
+function findInventoryMatches(order){const used=new Set(); return order.needs.map(n=>{const idx=S.board.findIndex((item,i)=>!used.has(i)&&item&&item.chain===n.chain&&item.lvl===n.lvl); if(idx>=0)used.add(idx); return idx;})}
+function completeOrder(index){const order=S.orders[index]; const matches=findInventoryMatches(order); if(matches.some(i=>i<0)){toast('아직 필요한 아이템이 부족해요.'); return} matches.forEach(i=>S.board[i]=null); reward(order.reward); S.deliveries++; S.orders.splice(index,1); fillOrders(); beep(520,.1,'triangle'); setTimeout(()=>beep(700,.1,'triangle'),90); setTimeout(()=>beep(920,.12,'triangle'),170); toast(`주문 완료! +🪙${order.reward.coin} +⭐${order.reward.star}${order.reward.ruby?` +💎${order.reward.ruby}`:''}`); save(); render();}
+function orderReady(order){return findInventoryMatches(order).every(i=>i>=0)}
+function demandKeys(){const m={}; S.orders.forEach(o=>o.needs.forEach(n=>{const k=n.chain+':'+n.lvl; m[k]=(m[k]||0)+1;})); return m}
+function claimMission(id){const mission=[...MISSIONS.daily,...MISSIONS.event,...MISSIONS.achievement].find(m=>m.id===id); if(!mission)return; if(S.missionClaimed.includes(id))return; const p=missionProgress(mission); if(p.value<mission.target){toast('아직 완료되지 않았어요.'); return} reward(mission.reward); if(mission.reward && mission.reward.styleUnlock){unlockStyleByMission(mission.reward.styleUnlock)} S.missionClaimed.push(id); toast('보상을 받았어요!'); save(); render();}
+function unlockStyleByMission(styleId){ if(styleId==='santa' && !S.missionClaimed.includes('event_help_santa')){} }
+function metricValue(metric){switch(metric){case 'merges': return S.merges; case 'deliveries': return S.deliveries; case 'generated': return S.generated; case 'highFeast': return S.stats.highFeast||0; case 'placed': return S.placed.length; case 'discovered': return discoveredCount(); case 'income': return incomePerMinute(); default:return 0}}
+function missionProgress(m){return {value:metricValue(m.metric), target:m.target}}
+function isMissionClaimed(id){return S.missionClaimed.includes(id)}
+function storyUnlocked(story){return Object.entries(story.need).every(([k,v])=>{if(k==='deliveries')return S.deliveries>=v; return false})}
+function styleUnlocked(groupKey,item){ if(item.unlockMission) return isMissionClaimed(item.unlockMission); return S.stars>=item.unlockStars }
+function selectStyle(groupKey,id){ const group=STYLE_GROUPS.find(g=>g.key===groupKey); const item=group.items.find(it=>it.id===id); if(!styleUnlocked(groupKey,item)){toast('아직 잠겨 있어요. 별이나 미션으로 해금하세요!'); return} S.avatar[groupKey]=id; save(); renderStyle(); }
+function shopUnlocked(shop){return S.stars>=shop.unlockStars}
+function buyPlace(shopId){ const shop=VILLAGE_SHOP.find(v=>v.id===shopId); if(!shopUnlocked(shop)){toast(`⭐ ${shop.unlockStars}개 이상 모으면 열려요.`); return} if(S.coins<shop.price){toast('코인이 부족해요.'); return} S.pendingPlace=shopId; renderVillage(); toast(`${shop.name}을(를) 어디에 둘까요? 빈 부지를 선택하세요.`)}
+function placeAt(slot){
+  if(S.pendingPlace){
+    if(S.placed.some(p=>p.slot===slot)){toast('이미 배치된 자리예요.'); return}
+    const shop=VILLAGE_SHOP.find(v=>v.id===S.pendingPlace);
+    S.coins-=shop.price; S.placed.push({shopId:shop.id,slot}); S.pendingPlace=null;
+    toast(shop.name+' 배치 완료!'); save(); render(); return;
   }
-  return `<g transform="translate(${x} ${y})"><ellipse rx="22" ry="5" cy="7" fill="#52877940"/><text y="4" x="0" text-anchor="middle" font-size="40">${def.icon}</text></g>`;
- }).join('');
- $('townVista').innerHTML=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 185" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="winterSky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#82c6e7"/><stop offset="1" stop-color="#f7ffff"/></linearGradient></defs><rect width="600" height="185" fill="url(#winterSky)"/>${stars}<circle cx="517" cy="30" r="20" fill="#fff6cc" opacity=".85"/>${hills}${places}<path d="M0 180 Q135 159 260 176 T600 172 L600 185 L0 185 Z" fill="#fff" opacity=".8"/></svg>`;
+  if(S.selectedVillageMove!=null && !S.placed.some(p=>p.slot===slot)){
+    const moveIdx=S.placed.findIndex(p=>p.slot===S.selectedVillageMove);
+    if(moveIdx>=0){ S.placed[moveIdx].slot=slot; S.selectedVillageMove=null; save(); renderVillage(); toast('위치를 바꿨어요.'); return }
+  }
+  const idx=S.placed.findIndex(p=>p.slot===slot); if(idx<0)return;
+  if(S.selectedVillageMove===slot){ S.selectedVillageMove=null; renderVillage(); return }
+  S.selectedVillageMove=slot; renderVillage(); toast('다른 빈 부지를 눌러 이동하세요.');
 }
-function renderVillage(){
- renderVista();
- $('villageGrid').innerHTML=Array.from({length:49},(_,pos)=>{
-   const place=S.places.find(p=>p.pos===pos),def=place&&definition(place.id),road=ROADS.has(pos),lake=WATER.has(pos);
-   const ambient=(!place&&!road&&!lake&&(pos%11===1||pos%13===4))?'❄':'';
-   const name=(def?.name||'빈 눈밭');
-   return `<button class="plot ${road?'road':''} ${road&&pos%7===3?'vertical':''} ${pos===24?'cross':''} ${lake?'lake':''} ${pos===moveFrom?'move-from':''} ${pos===justBuilt?'just-built':''}" data-plot="${pos}" type="button" aria-label="${name}" title="${name}" ${road||lake?'disabled':''}>${def?`<span class="town-icon ${place.id==='starter'?'starter':''}">${def.icon}</span><span class="place-name">${def.name}</span>`:`<span class="ambient">${ambient}</span>`}</button>`;
- }).join('');
- const income=townIncome(),houses=S.places.filter(p=>BUILDINGS.some(b=>b.id===p.id)||p.id==='starter').length;
- $('villageStatus').innerHTML=`<div><strong>${houses}</strong><small>운영 중인 건물</small></div><div><strong>${S.places.length}</strong><small>마을 시설/장식</small></div><div><strong>+${income}🪙</strong><small>1분마다 자동 수익</small></div>`;
- $('villageInstruction').textContent=moveFrom===null?'🏗️ 건설하면 지도에 자동 배치! 건물을 누르고 빈 땅을 누르면 위치를 바꿀 수 있어요.':`📍 ${placeName(S.places.find(p=>p.pos===moveFrom)?.id)} 이동 중 — 빈 땅을 누르거나 같은 건물을 다시 누르면 취소됩니다.`;
- const renderShop=(arr)=>arr.map(b=>{
-   const owned=BUILDINGS.includes(b)&&S.places.some(p=>p.id===b.id);
-   return `<div class="shop-card"><span class="shop-icon">${b.icon}</span><div class="shop-text"><strong>${b.name}</strong><small>${b.desc}${b.income?` · +${b.income}🪙/분`:''}</small><button data-build="${b.id}" ${owned?'disabled':''}>${owned?'건설 완료':`${b.currency==='star'?'⭐':'🪙'} ${b.price} · 설치`}</button></div></div>`;
- }).join('');
- $('buildingShop').innerHTML=renderShop(BUILDINGS);$('decorShop').innerHTML=renderShop(DECORS);
+function renderTop(){
+  syncTime(); $('energyText').textContent=`${S.energy} / ${MAX_ENERGY}`; $('energyTimer').textContent=S.energy>=MAX_ENERGY?'충전 완료':`+1 ${timerString(S.nextEnergyAt-Date.now())}`; $('coinText').textContent=fmt(S.coins); $('rubyText').textContent=fmt(S.rubies); $('starText').textContent=fmt(S.stars); $('deliverySummary').textContent=`납품 ${S.deliveries}회`; $('levelBadge').textContent=levelOf();
+  const currentStory=[...STORIES].reverse().find(storyUnlocked)||STORIES[0]; $('headerStory').textContent=currentStory.title;
 }
-function showTab(which){
- if(drag){drag.ghost?.remove();drag=null}
- tab=which;moveFrom=null;
- $('tabMerge').classList.toggle('active',which==='merge');$('tabVillage').classList.toggle('active',which==='village');
- $('mergePage').classList.toggle('active',which==='merge');$('villagePage').classList.toggle('active',which==='village');
- if(which==='village')renderVillage();else renderMerge();
- window.scrollTo({top:0,behavior:'instant'});
+function renderEvents(){
+  const items=[
+    {tag:'진행 중',title:'산타 도와주기',desc:'이벤트 미션을 완료하고 산타 룩을 해금하세요.',p:Math.min(100,metricValue('deliveries')/8*100)},
+    {tag:'이번 주',title:'눈꽃 마을 패스',desc:'마을 수입과 도감 수집도를 올려 보세요.',p:Math.min(100,discoveredCount()/20*100)},
+    {tag:'한정',title:'주인공 꾸미기',desc:'별을 모아 새로운 헤어와 의상을 열어 보세요.',p:Math.min(100,S.stars/24*100)}
+  ]; $('eventStrip').innerHTML=items.map(v=>`<button class="event-card" data-openmissions="1"><span class="tag">${v.tag}</span><strong>${v.title}</strong><p>${v.desc}</p><div class="mini-progress"><span style="width:${v.p}%"></span></div></button>`).join('');
 }
-function modal(title,body,actions){
- $('dialogTitle').textContent=title;$('dialogContent').innerHTML=body;
- $('dialogActions').innerHTML='';actions.forEach(a=>{const button=document.createElement('button');button.textContent=a.text;if(a.alt)button.className='alt';button.onclick=()=>{closeModal();a.fn?.()};$('dialogActions').appendChild(button)});
- $('overlay').classList.add('show');
+function renderTabs(){ $('tabs').innerHTML=TABS.map(t=>`<button class="tab ${S.tab===t.id?'active':''}" data-tab="${t.id}">${t.label}</button>`).join('') }
+function renderOrders(){ $('orderList').innerHTML=S.orders.map((o,i)=>{const ready=orderReady(o); const wants=o.needs.map(n=>{const cls=CHAINS[n.chain].klass; const ico=CHAINS[n.chain].levels[n.lvl].icon; return `<div class="want-item ${ready?'ok':''}"><div class="piece ${cls}"><span class="icon">${ico}</span></div><em>${n.lvl+1}</em></div>`}).join(''); return `<div class="order ${ready?'ready':''}"><div class="order-head"><div class="avatar-chip">${o.client[0]}</div><div><div class="name">${o.client[1]}</div><div class="line">${o.client[2]}</div></div></div><div class="want-row">${wants}</div><div class="order-reward">🪙${o.reward.coin} · ⭐${o.reward.star}${o.reward.ruby?` · 💎${o.reward.ruby}`:''}</div><button data-order="${i}" ${ready?'':'disabled'}>${ready?'주문 완료하기':'아이템 준비 중'}</button></div>`}).join('') }
+function renderBoard(){ const demand=demandKeys(); let used=0; $('board').innerHTML=S.board.map((item,i)=>{const selected=S.selected===i; const classes=['cell']; if(!item)classes.push('empty'); if(selected)classes.push('selected'); if(item&&demand[item.chain+':'+item.lvl])classes.push('match'); const inner=item?`<div class="piece ${CHAINS[item.chain].klass}"><span class="badge">${item.lvl+1}</span><span class="icon">${itemIcon(item)}</span></div>`:''; if(item)used++; return `<button class="${classes.join(' ')}" data-cell="${i}" aria-label="${item?itemName(item):'빈 칸'}">${inner}</button>`}).join(''); $('boardMeta').textContent=`${used} / ${GRID_SIZE} 칸 사용 중`; renderInfoBar() }
+function renderInfoBar(){ const item=S.board[S.selected]; if(!item){ $('infoBar').innerHTML=`<div class="info-icon">👆</div><div class="info-copy"><strong>아이템을 선택해 보세요</strong><small>같은 아이템끼리 머지하면 한 단계 올라가고, 손님 주문에 필요한 아이템은 초록빛으로 표시돼요.</small></div><div class="info-actions"><button class="small-btn" id="openTips">설명</button></div>`; $('openTips').onclick=()=>openHelp(); return }
+  const data=getLevelData(item.chain,item.lvl); $('infoBar').innerHTML=`<div class="info-icon"><div class="piece ${CHAINS[item.chain].klass}" style="width:42px;height:42px;border-radius:14px"><span class="icon">${data.icon}</span></div></div><div class="info-copy"><strong>${data.name} · ${item.lvl+1}단계</strong><small>${data.desc} · ${CHAINS[item.chain].name} 라인</small></div><div class="info-actions"><button class="small-btn" id="sellBtn">판매</button><button class="small-btn" id="bookBtn">느낌표</button></div>`; $('sellBtn').onclick=sellSelected; $('bookBtn').onclick=()=>openChainModal(item.chain,item.lvl) }
+function renderGenerators(){ $('generatorRow').innerHTML=GENERATORS.map(g=>{const locked=S.stars<g.unlockStars; const chain=CHAINS[g.chain]; return `<button class="generator ${locked?'locked':''}" data-generator="${g.id}"><div class="gen-top"><div class="gen-icon">${g.icon}</div><div><strong>${g.name}</strong><small>${chain.name} 아이템 생성</small></div></div><div class="gen-foot"><span class="gen-tag">${locked?`⭐ ${g.unlockStars} 필요`:'생성 가능'}</span><span class="gen-cost">⚡ ${g.cost}</span></div></button>`}).join('') }
+function renderMergeStory(){ const story=[...STORIES].reverse().find(storyUnlocked)||STORIES[0]; $('mergeStoryTitle').textContent=story.title; const preview=story.lines[0][1]||''; $('mergeStoryCopy').textContent=preview }
+function renderVillage(){ const income=incomePerMinute(); $('villageStatus').textContent=`마을 수입 +${income} / 1분 · 배치 ${S.placed.length}개`; $('placeHint').textContent=S.pendingPlace?'빈 부지를 눌러 배치하세요. 배치 후에는 항목을 눌러 이동할 수 있어요.':'상점에서 아이템을 선택하면 빈 부지에 배치할 수 있어요.'; const slots=Array.from({length:15},(_,i)=>i); $('plotGrid').innerHTML=slots.map(slot=>{const placed=S.placed.find(p=>p.slot===slot); const moving=S.selectedVillageMove===slot; if(!placed){ return `<button class="plot empty ${S.pendingPlace?'place-select':''}" data-plot="${slot}">${S.pendingPlace?'＋':'·'}</button>` } const def=VILLAGE_SHOP.find(v=>v.id===placed.shopId) || {icon:'🏠',name:'건물'}; return `<button class="plot ${moving?'place-select':''}" data-plot="${slot}">${def.icon}<span class="mini-label">${def.name}</span></button>`}).join(''); $('shopRow').innerHTML=VILLAGE_SHOP.map(shop=>{const locked=!shopUnlocked(shop); const ownedCount=S.placed.filter(p=>p.shopId===shop.id).length; return `<div class="shop-item"><div class="top"><div class="bico">${shop.icon}</div><div><strong>${shop.name}</strong><small>${shop.desc}</small></div></div><button class="buy ${locked?'owned':''}" data-buy="${shop.id}">${locked?`⭐ ${shop.unlockStars} 필요`:ownedCount?`배치 ${ownedCount}개 · 구매`: `구매 🪙${shop.price}`}</button></div>`}).join('') }
+function renderStyle(){ const av=$('avatarPreview'); av.className=`avatar outfit-${S.avatar.outfit}`; av.querySelector('.hair').className=`hair hair-${S.avatar.hair}`; av.querySelector('.acc').textContent=S.avatar.acc==='none'?'':STYLE_GROUPS.find(g=>g.key==='acc').items.find(v=>v.id===S.avatar.acc).emoji; $('styleOptions').innerHTML=STYLE_GROUPS.map(group=>`<div class="option-group"><h4>${group.title}</h4><div class="option-grid">${group.items.map(it=>{const unlocked=styleUnlocked(group.key,it); const active=S.avatar[group.key]===it.id; return `<button class="style-opt ${unlocked?'':'locked'} ${active?'active':''}" data-stylegroup="${group.key}" data-style="${it.id}"><div class="preview">${it.emoji}</div><strong>${it.name}</strong><small>${unlocked?'사용 가능':it.unlockMission?'미션 보상':`⭐ ${it.unlockStars}`}</small></button>`}).join('')}</div></div>`).join('') }
+function renderBook(){ const wrap=$('bookWrap'); wrap.innerHTML=Object.values(CHAINS).map(chain=>`<div class="book-group"><div class="section-top"><h3>${chain.name}</h3><button class="small-btn" data-chaininfo="${chain.id}">느낌표</button></div><div class="book-chain">${chain.levels.map((lv,i)=>{const known=S.discovered[chain.id][i]; return `<div class="book-item"><div class="bicon ${known?chain.klass:'q'}">${known?lv.icon:'?'}</div><strong>${known?lv.name:'미발견'}</strong><small>${known?`${i+1}단계`:'?'}</small></div>`}).join('')}</div></div>`).join('') }
+function renderMissionTabs(){ const arr=[['daily','일일 미션'],['event','이벤트'],['achievement','업적']]; $('missionTabs').innerHTML=arr.map(([id,label])=>`<button class="mission-tab ${missionView===id?'active':''}" data-missiontab="${id}">${label}</button>`).join('') }
+function renderMissions(){ renderMissionTabs(); const list=MISSIONS[missionView]; $('missionList').innerHTML=list.map(m=>{const prog=missionProgress(m); const pct=Math.min(100,prog.value/prog.target*100); const claimed=isMissionClaimed(m.id); const rewardText=[m.reward.coin?`🪙${m.reward.coin}`:'',m.reward.star?`⭐${m.reward.star}`:'',m.reward.ruby?`💎${m.reward.ruby}`:'',m.reward.energy?`⚡${m.reward.energy}`:'',m.reward.styleUnlock?'👗 스타일':''].filter(Boolean).join(' · '); return `<div class="mission"><div class="head"><strong>${m.title}</strong><span>${Math.min(prog.value,m.target)} / ${m.target}</span></div><p>${m.desc}</p><div class="progress"><span style="width:${pct}%"></span></div><div class="foot"><div class="reward-chip">보상 ${rewardText}</div><button class="claim ${!claimed && prog.value>=m.target?'ready':''}" data-claim="${m.id}" ${claimed?'disabled':''}>${claimed?'수령 완료':prog.value>=m.target?'보상 받기':'진행 중'}</button></div></div>`}).join('') }
+function renderPages(){ document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===`page-${S.tab}`)); }
+function renderAll(){ renderTop(); renderEvents(); renderTabs(); renderMergeStory(); renderOrders(); renderBoard(); renderGenerators(); renderVillage(); renderStyle(); renderBook(); renderMissions(); renderPages(); }
+function render(){ fillOrders(); renderAll(); }
+function setTab(tab){ S.tab=tab; save(); renderPages(); renderTabs(); }
+function openModal(head,body,alt=false){ $('modalBox').innerHTML=`<div class="modal-head ${alt?'alt':''}"><strong>${head}</strong><button class="close-btn" id="closeModal">✕</button></div><div class="modal-body">${body}</div>`; $('modalBackdrop').classList.add('show'); document.body.classList.add('modal-open'); $('closeModal').onclick=closeModal }
+function closeModal(){ $('modalBackdrop').classList.remove('show'); document.body.classList.remove('modal-open') }
+function openChainModal(chainId,focusLvl=0){ const chain=CHAINS[chainId]; const body=`<div class="dialogue"><div class="linebox"><strong>${chain.name} 족보</strong><p>같은 아이템 2개를 머지하면 다음 단계로 올라갑니다. 미발견 단계는 ? 로 가려집니다.</p></div></div><div style="height:12px"></div><div class="chain-flow">${chain.levels.map((lv,i)=>{const known=S.discovered[chain.id][i]; return `<div class="flow-item"><div class="bicon ${known?chain.klass:'locked-q'}">${known?lv.icon:'?'}</div><strong>${known?lv.name:'미발견'}</strong><small>${i+1}단계</small></div>`}).join('')}</div><div style="height:14px"></div><div class="linebox"><strong>생성 작업대</strong><p>${GENERATORS.find(g=>g.chain===chain.id).name} 에서 시작 아이템이 나옵니다.</p></div>`; openModal(chain.name,body) }
+function openStoryModal(){ const unlocked=STORIES.filter(storyUnlocked); const latest=unlocked[unlocked.length-1]||STORIES[0]; const body=`<div class="dialogue">${latest.lines.map(([who,line])=>`<div class="linebox"><strong>${who}</strong><p>${line}</p></div>`).join('')}</div>`; openModal(latest.title,body,true) }
+function openHelp(){ openModal('플레이 방법',`<div class="dialogue"><div class="linebox"><strong>1. 작업대를 눌러 아이템 생성</strong><p>선물상자, 다과 바구니, 포토 스튜디오 등 여러 생성기를 눌러 라인별 아이템을 뽑아 보세요.</p></div><div class="linebox"><strong>2. 같은 아이템을 머지</strong><p>드래그하거나 한 칸을 선택한 뒤 다른 칸을 눌러 머지할 수 있어요.</p></div><div class="linebox"><strong>3. 손님 주문 완료</strong><p>손님이 요구하는 아이템을 만들면 코인과 별, 경험치를 얻어요. 별이 많아질수록 더 많은 작업대와 꾸미기 요소가 열립니다.</p></div><div class="linebox"><strong>4. 마을/주인공 꾸미기</strong><p>별로 해금한 건물과 의상을 코인과 미션 보상으로 꾸며 보세요.</p></div></div>`) }
+function startDrag(e,idx){ const item=S.board[idx]; if(!item)return; drag={from:idx}; const ghost=document.createElement('div'); ghost.className='drag-ghost'; ghost.innerHTML=`<div class="piece ${CHAINS[item.chain].klass}" style="width:58px;height:58px"><span class="icon">${itemIcon(item)}</span></div>`; document.body.appendChild(ghost); drag.ghost=ghost; moveGhost(e); document.body.style.overflow='hidden'; const cell=document.querySelector(`[data-cell="${idx}"]`); if(cell)cell.classList.add('dragging') }
+function moveGhost(e){ if(!drag)return; const p=getPoint(e); drag.ghost.style.left=p.x+'px'; drag.ghost.style.top=p.y+'px'; document.querySelectorAll('.cell.target').forEach(el=>el.classList.remove('target')); const target=document.elementFromPoint(p.x,p.y)?.closest('.cell'); if(target)target.classList.add('target') }
+function endDrag(e){ if(!drag)return; const p=getPoint(e); const target=document.elementFromPoint(p.x,p.y)?.closest('.cell'); document.querySelectorAll('.cell.target,.cell.dragging').forEach(el=>el.classList.remove('target','dragging')); drag.ghost.remove(); document.body.style.overflow=''; if(target){ const to=Number(target.dataset.cell); S.selected=drag.from; moveItem(drag.from,to) } drag=null }
+function getPoint(e){ if(e.touches&&e.touches[0])return {x:e.touches[0].clientX,y:e.touches[0].clientY}; if(e.changedTouches&&e.changedTouches[0])return {x:e.changedTouches[0].clientX,y:e.changedTouches[0].clientY}; return {x:e.clientX,y:e.clientY} }
+function bindEvents(){
+  $('tabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]'); if(b)setTab(b.dataset.tab)});
+  $('eventStrip').addEventListener('click',e=>{if(e.target.closest('[data-openmissions]')) setTab('missions')});
+  $('orderList').addEventListener('click',e=>{const b=e.target.closest('[data-order]'); if(b)completeOrder(Number(b.dataset.order))});
+  $('board').addEventListener('click',e=>{const cell=e.target.closest('[data-cell]'); if(cell)selectCell(Number(cell.dataset.cell))});
+  $('board').addEventListener('pointerdown',e=>{const cell=e.target.closest('[data-cell]'); if(!cell)return; const idx=Number(cell.dataset.cell); if(!S.board[idx])return; e.preventDefault(); startDrag(e,idx)});
+  window.addEventListener('pointermove',e=>{ if(drag){ e.preventDefault(); moveGhost(e) } },{passive:false});
+  window.addEventListener('pointerup',e=>{ if(drag){ e.preventDefault(); endDrag(e) } },{passive:false});
+  $('generatorRow').addEventListener('click',e=>{const b=e.target.closest('[data-generator]'); if(b)spawnFromGenerator(b.dataset.generator)});
+  $('shopRow').addEventListener('click',e=>{const b=e.target.closest('[data-buy]'); if(b)buyPlace(b.dataset.buy)});
+  $('plotGrid').addEventListener('click',e=>{const b=e.target.closest('[data-plot]'); if(b)placeAt(Number(b.dataset.plot))});
+  $('styleOptions').addEventListener('click',e=>{const b=e.target.closest('[data-style]'); if(b)selectStyle(b.dataset.stylegroup,b.dataset.style)});
+  $('bookWrap').addEventListener('click',e=>{const b=e.target.closest('[data-chaininfo]'); if(b)openChainModal(b.dataset.chaininfo)});
+  $('missionTabs').addEventListener('click',e=>{const b=e.target.closest('[data-missiontab]'); if(b){missionView=b.dataset.missiontab; renderMissions()}});
+  $('missionList').addEventListener('click',e=>{const b=e.target.closest('[data-claim]'); if(b)claimMission(b.dataset.claim)});
+  $('storyBtn').onclick=openStoryModal; $('helpBtn').onclick=openHelp; $('soundBtn').onclick=()=>{S.sound=!S.sound; $('soundBtn').textContent=S.sound?'🔊':'🔇'; save()};
+  $('modalBackdrop').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});
 }
-function closeModal(){$('overlay').classList.remove('show')}
-function settings(){modal('🎄 산타의 머지 안내',
- `<p>💌 <b>주문:</b> 손님이 요청하는 아이템을 만들면 <b>납품하기</b> 버튼이 초록색으로 바뀝니다. 납품하면 코인과 건설용 별을 받아요.</p>
- <p>🎁 <b>제작:</b> 아래 제작소를 누를 때마다 번개 1개를 써서 선물을 만들어요. 같은 아이템을 드래그해서 합쳐 보세요.</p>
- <p>⚡ <b>충전:</b> 45초마다 번개가 1개 충전되고, 게임을 닫아 둔 동안도 시간이 계산돼요. 최대 30개입니다.</p>
- <p>🏘️ <b>마을:</b> 건물을 건설하면 마을 지도에 바로 놓입니다. 건물을 눌러 다른 빈 땅으로 이동할 수 있어요.</p>
- <p>🎵 효과음 ${S.sound?'켜짐':'꺼짐'}</p>`,
- [{text:S.sound?'🔇 소리 끄기':'🔊 소리 켜기',fn:()=>{S.sound=!S.sound;save();toast(S.sound?'효과음 켜짐':'효과음 꺼짐')}},{text:'🗑️ 초기화',alt:true,fn:confirmReset},{text:'게임 계속하기',fn:()=>{}}]
- )}
-function confirmReset(){modal('게임을 처음부터 시작할까요?','<p>현재 선물, 코인, 별, 건물 배치와 주문이 모두 초기화됩니다. 복구할 수 없습니다.</p>',[{text:'취소',alt:true},{text:'네, 초기화',fn:()=>{S=blank();selected=-1;moveFrom=null;prepareOrders();save();renderMerge();renderVillage();showTab('merge');toast('새로운 마을을 시작했어요!')}}])}
-function init(){
- load();renderMerge();renderVillage();installDrag();
- $('orders').addEventListener('click',e=>{const el=e.target.closest('[data-order]');if(el)completeOrder(Number(el.dataset.order))});
- $('generators').addEventListener('click',e=>{const el=e.target.closest('[data-gen]');if(el)produce(Number(el.dataset.gen))});
- $('villageGrid').addEventListener('click',e=>{const el=e.target.closest('[data-plot]');if(el)movePlot(Number(el.dataset.plot))});
- $('buildingShop').addEventListener('click',e=>{const el=e.target.closest('[data-build]');if(el)build(el.dataset.build)});
- $('decorShop').addEventListener('click',e=>{const el=e.target.closest('[data-build]');if(el)build(el.dataset.build)});
- $('tabMerge').onclick=()=>showTab('merge');$('tabVillage').onclick=()=>showTab('village');$('settings').onclick=settings;
- $('overlay').addEventListener('click',e=>{if(e.target===$('overlay'))closeModal()});
- setInterval(()=>{const beforeE=S.e,beforeC=S.c;syncTime();renderTop();if(beforeE!==S.e)renderGenerators();if(beforeC!==S.c&&tab==='village')renderVillage()},1000);
- document.addEventListener('visibilitychange',()=>{if(!document.hidden){syncTime();renderTop();renderGenerators();if(tab==='village')renderVillage()}});
- window.addEventListener('pagehide',save);
-}
-init();
+function startTicker(){ setInterval(()=>{syncTime(); renderTop(); if(S.tab==='missions')renderMissions(); if(S.tab==='village')renderVillage(); },1000) }
+load(); fillOrders(); bindEvents(); render(); startTicker();
 </script>
 </body>
 </html>
